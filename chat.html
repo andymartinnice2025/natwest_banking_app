@@ -6,13 +6,13 @@
   <title>NatWest Chat</title>
   <style>
     html,body{height:100%;margin:0;background:#fff}
-    body{overflow:hidden;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
-    .boot{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:18px;background:#fff;z-index:9999}
+    body{overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Segoe UI",Roboto,Arial,sans-serif}
+    .boot{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:20px;background:#fff;z-index:9999}
     .boot.hidden{display:none}
-    .bootLogo{height:38px;object-fit:contain;display:block;margin-bottom:6px}
-    .bootTitle{font-weight:1000;font-size:16px;color:#5A287D;text-align:center}
-    .bootSub{font-weight:800;font-size:12px;color:#667383;text-align:center;line-height:1.4;max-width:340px}
-    .bootBtn{border:none;border-radius:16px;padding:12px 14px;font-weight:1000;cursor:pointer;background:linear-gradient(180deg,#6F2DA8,#5A287D);color:#fff;width:min(340px,92vw);font-size:14px}
+    .bootLogo{height:42px;object-fit:contain;display:block;margin-bottom:8px}
+    .bootTitle{font-weight:650;font-size:16px;color:#5A287D;text-align:center}
+    .bootSub{font-weight:520;font-size:12px;color:#667383;text-align:center;line-height:1.45;max-width:320px}
+    .bootBtn{border:none;border-radius:18px;padding:14px 16px;font-weight:650;cursor:pointer;background:linear-gradient(180deg,#6F2DA8,#5A287D);color:#fff;width:min(340px,92vw);font-size:14px;box-shadow:0 14px 28px rgba(90,40,125,.20)}
     .hideChrome [class*="home" i],.hideChrome header[role="banner"],.hideChrome [role="banner"]{display:none!important}
   </style>
 </head>
@@ -20,7 +20,7 @@
   <div class="boot" id="boot">
     <img class="bootLogo" src="https://www.onlinebanking.natwest.com/assets/images/brandImages/logo.svg" alt="NatWest logo" />
     <div class="bootTitle">Support chat • NatWest</div>
-    <div class="bootSub">Loading chat… If it doesn’t open immediately, tap “Start chat”.<br>(The launcher can take a moment to render.)</div>
+    <div class="bootSub">Loading chat… If it doesn’t open immediately, tap “Start chat”.</div>
     <button class="bootBtn" id="bootStart">Start chat</button>
   </div>
 
@@ -40,75 +40,32 @@
       if (ce && ce.offsetWidth > 0 && ce.offsetHeight > 0) return true;
       return false;
     }
-
-    function hideBootIfReady() {
-      if (hasUsableInput()) {
-        boot.classList.add("hidden");
-        document.documentElement.classList.add("hideChrome");
-        return true;
-      }
+    function hideBootIfReady(){ if(hasUsableInput()){ boot.classList.add("hidden"); document.documentElement.classList.add("hideChrome"); return true; } return false; }
+    function clickLauncherIfPresent(){
+      const launcher = document.querySelector("[data-testid*='launcher' i]") || document.querySelector("[aria-label*='open' i][role='button']") || document.querySelector("button[aria-label*='open' i]") || document.querySelector("button[class*='launcher' i]") || document.querySelector("[class*='launcher' i] button");
+      if (launcher && launcher.offsetWidth > 0 && launcher.offsetHeight > 0) { launcher.click(); return true; }
       return false;
     }
-
-    function clickLauncherIfPresent() {
-      const launcher =
-        document.querySelector("[data-testid*='launcher' i]") ||
-        document.querySelector("[aria-label*='open' i][role='button']") ||
-        document.querySelector("button[aria-label*='open' i]") ||
-        document.querySelector("button[class*='launcher' i]") ||
-        document.querySelector("[class*='launcher' i] button");
-
-      if (launcher && launcher.offsetWidth > 0 && launcher.offsetHeight > 0) {
-        launcher.click();
-        return true;
-      }
-      return false;
-    }
-
-    function clickStartConversationIfPresent() {
+    function clickStartConversationIfPresent(){
       const labels = ["Start conversation","Start Conversation","Start","Begin","Get started"];
       const btns = Array.from(document.querySelectorAll("button"));
       for (const b of btns) {
         const txt = (b.innerText || "").trim();
         if (!txt) continue;
         if (labels.some((l) => txt.toLowerCase() === l.toLowerCase() || txt.toLowerCase().includes(l.toLowerCase()))) {
-          if (b.offsetWidth > 0 && b.offsetHeight > 0) {
-            b.click();
-            return true;
-          }
+          if (b.offsetWidth > 0 && b.offsetHeight > 0) { b.click(); return true; }
         }
       }
       return false;
     }
-
-    function attemptOpen() {
-      if (hideBootIfReady()) return true;
-      const didLauncher = clickLauncherIfPresent();
-      const didStart = clickStartConversationIfPresent();
-      hideBootIfReady();
-      return didLauncher || didStart;
-    }
-
-    bootStart.addEventListener("click", () => {
-      let i = 0;
-      const t = setInterval(() => {
-        i++;
-        attemptOpen();
-        if (hasUsableInput() || i >= 25) clearInterval(t);
-      }, 200);
-    });
+    function attemptOpen(){ if(hideBootIfReady()) return true; const didLauncher = clickLauncherIfPresent(); const didStart = clickStartConversationIfPresent(); hideBootIfReady(); return didLauncher || didStart; }
+    bootStart.addEventListener("click", () => { let i = 0; const t = setInterval(() => { i++; attemptOpen(); if (hasUsableInput() || i >= 30) clearInterval(t); }, 180); });
 
     function clearCognigyStorage() {
       try {
-        Object.keys(localStorage).forEach((key) => {
-          if (key.toLowerCase().includes("cognigy")) localStorage.removeItem(key);
-        });
-        Object.keys(sessionStorage).forEach((key) => {
-          if (key.toLowerCase().includes("cognigy")) sessionStorage.removeItem(key);
-        });
-      } catch (e) {
-        console.warn("Could not clear stored chat state", e);
-      }
+        Object.keys(localStorage).forEach((key) => { if (key.toLowerCase().includes("cognigy")) localStorage.removeItem(key); });
+        Object.keys(sessionStorage).forEach((key) => { if (key.toLowerCase().includes("cognigy")) sessionStorage.removeItem(key); });
+      } catch (e) { console.warn("Could not clear stored chat state", e); }
     }
     clearCognigyStorage();
 
@@ -129,22 +86,15 @@
           }
         }
       });
-    } catch (e) {
-      console.error("initWebchat failed:", e);
-    }
+    } catch (e) { console.error("initWebchat failed:", e); }
 
     let tries = 0;
-    const retry = setInterval(() => {
-      tries++;
-      attemptOpen();
-      if (hasUsableInput() || tries >= 60) clearInterval(retry);
-    }, 150);
-
-    const obs = new MutationObserver(() => {
-      attemptOpen();
-      if (hasUsableInput()) obs.disconnect();
-    });
+    const retry = setInterval(() => { tries++; attemptOpen(); if (hasUsableInput() || tries >= 90) clearInterval(retry); }, 120);
+    const obs = new MutationObserver(() => { attemptOpen(); if (hasUsableInput()) obs.disconnect(); });
     obs.observe(document.documentElement, { childList:true, subtree:true });
+    setTimeout(attemptOpen, 250);
+    setTimeout(attemptOpen, 900);
+    setTimeout(attemptOpen, 1800);
 
     (function installStreamMergeShim() {
       function isVisible(el){ return !!(el && el.getClientRects && el.getClientRects().length); }
@@ -167,10 +117,7 @@
         t1.innerText = ((t1.innerText || "").trimEnd()) + sep + chunk;
         b2.remove();
       }
-      const mergeObserver = new MutationObserver((mutations) => {
-        if (!mutations.some((m) => m.addedNodes && m.addedNodes.length)) return;
-        for (let i = 0; i < 4; i++) mergeIfNeeded();
-      });
+      const mergeObserver = new MutationObserver((mutations) => { if (!mutations.some((m) => m.addedNodes && m.addedNodes.length)) return; for (let i = 0; i < 4; i++) mergeIfNeeded(); });
       mergeObserver.observe(document.documentElement, { childList:true, subtree:true });
     })();
   </script>
