@@ -8,635 +8,275 @@
     :root{
       --purple:#5A287D;
       --purple2:#44205F;
-      --purple3:#6F2DA8;
-      --green:#29D48C;
-      --green2:#0FAE6A;
+      --green:#2ecc84;
+      --green2:#10b76a;
       --red:#FF4D5A;
-      --text:#0B1F26;
-      --muted:#6B7381;
+      --text:#1f2a36;
+      --muted:#7d8793;
       --line:rgba(0,0,0,.08);
       --card:#fff;
-      --font: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     }
 
     *{ box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
-    html, body{ margin:0; background:#d9dde5; font-family:var(--font); }
-    body{
-      min-height:100vh;
-      display:grid;
-      place-items:center;
-      padding:20px;
-    }
+    html,body{ margin:0; background:#d7dce5; font-family:var(--font); }
+    body{ min-height:100vh; display:grid; place-items:center; padding:20px; }
 
     .device{
       width:min(420px, 96vw);
       height:min(900px, 96vh);
       border-radius:44px;
-      background:#111318;
+      background:#0f1116;
       padding:14px;
-      box-shadow:
-        0 30px 90px rgba(0,0,0,.35),
-        inset 0 0 0 1px rgba(255,255,255,.06);
+      box-shadow:0 30px 90px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.06);
       position:relative;
     }
-
-    .screen{
-      position:relative;
-      height:100%;
-      border-radius:34px;
-      overflow:hidden;
-      background:#dce6ef;
-    }
+    .screen{ position:relative; height:100%; border-radius:34px; overflow:hidden; background:#dce6ef; }
 
     .homeScreen{
-      position:absolute;
-      inset:0;
-      color:#fff;
+      position:absolute; inset:0; color:#fff; overflow:hidden;
       background:
-        radial-gradient(120% 90% at 18% 15%, rgba(169,233,230,.95) 0%, rgba(169,233,230,.45) 18%, rgba(169,233,230,0) 34%),
-        radial-gradient(82% 100% at 86% 18%, rgba(57,84,185,.98) 0%, rgba(57,84,185,.52) 24%, rgba(57,84,185,0) 44%),
-        radial-gradient(66% 80% at 58% 84%, rgba(44,68,195,.82) 0%, rgba(44,68,195,.28) 24%, rgba(44,68,195,0) 46%),
-        linear-gradient(180deg, #d7e4ef 0%, #b7d7dc 46%, #9acdd3 100%);
-      transition:transform .34s ease, opacity .34s ease;
-      overflow:hidden;
-    }
-
-    .homeBlur{
-      position:absolute;
-      inset:0;
-      backdrop-filter:saturate(1.08);
-      pointer-events:none;
+        radial-gradient(95% 80% at 18% 16%, rgba(182,243,239,.95) 0%, rgba(182,243,239,.52) 20%, rgba(182,243,239,0) 42%),
+        radial-gradient(80% 90% at 84% 18%, rgba(73,95,197,.98) 0%, rgba(73,95,197,.48) 26%, rgba(73,95,197,0) 48%),
+        radial-gradient(54% 78% at 62% 90%, rgba(54,81,220,.88) 0%, rgba(54,81,220,.20) 26%, rgba(54,81,220,0) 50%),
+        linear-gradient(180deg, #d9e9ef 0%, #b9dbe0 44%, #a4d2d6 100%);
     }
 
     .statusBar{
-      position:absolute;
-      top:0; left:0; right:0;
-      display:grid;
-      grid-template-columns:1fr auto 1fr;
-      align-items:center;
-      padding:12px 18px 0;
-      z-index:4;
-      font-size:12px;
-      font-weight:800;
-      color:#fff;
-      text-shadow:0 1px 3px rgba(0,0,0,.18);
+      position:absolute; top:0; left:0; right:0; z-index:4;
+      display:grid; grid-template-columns:1fr auto 1fr; align-items:center;
+      padding:12px 18px 0; font-size:12px; font-weight:600; color:#fff;
+      text-shadow:0 1px 3px rgba(0,0,0,.12);
     }
     .statusLeft{ justify-self:start; }
-    .dynamicIsland{
-      width:120px;
-      height:28px;
-      background:#0b0b0d;
-      border-radius:999px;
-      justify-self:center;
-      box-shadow:0 1px 0 rgba(255,255,255,.06) inset;
-    }
-    .statusRight{
-      justify-self:end;
-      display:flex;
-      gap:6px;
-      align-items:center;
-      font-size:12px;
-    }
+    .dynamicIsland{ width:118px; height:28px; background:#08090b; border-radius:999px; justify-self:center; }
+    .statusRight{ justify-self:end; display:flex; align-items:center; gap:7px; }
+    .signalBars{ display:flex; gap:2px; align-items:flex-end; }
+    .signalBars span{ display:block; width:4px; background:#fff; border-radius:2px; }
+    .signalBars span:nth-child(1){ height:5px; opacity:.55; }
+    .signalBars span:nth-child(2){ height:8px; opacity:.72; }
+    .signalBars span:nth-child(3){ height:11px; opacity:.86; }
+    .signalBars span:nth-child(4){ height:14px; }
+    .battery{ width:26px; height:12px; border:1.6px solid #fff; border-radius:3px; position:relative; }
+    .battery:after{ content:""; position:absolute; right:-3px; top:3px; width:2px; height:4px; background:#fff; border-radius:1px; }
+    .batteryFill{ position:absolute; inset:1.5px; width:77%; border-radius:1.5px; background:#fff; }
 
-    .iconsArea{
-      position:absolute;
-      inset:56px 18px 102px;
-      display:flex;
-      flex-direction:column;
-      gap:14px;
-      z-index:2;
-    }
-
-    .widgetRow{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:14px;
-    }
+    .iconsArea{ position:absolute; inset:52px 18px 98px; display:flex; flex-direction:column; gap:16px; z-index:2; }
+    .widgetRow{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
     .widget{
-      border-radius:24px;
-      padding:14px;
-      color:#111;
-      background:rgba(255,255,255,.74);
-      backdrop-filter:blur(18px);
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.55),
-        0 8px 24px rgba(0,0,0,.08);
-      min-height:96px;
+      border-radius:26px; padding:14px 16px; min-height:104px; color:#111;
+      background:rgba(255,255,255,.72); backdrop-filter:blur(18px);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.55), 0 10px 24px rgba(0,0,0,.07);
     }
-    .weatherWidget{
-      background:linear-gradient(180deg, rgba(89,140,214,.9), rgba(104,153,226,.72));
-      color:#fff;
-    }
-    .widgetSmallLabel{
-      font-size:11px;
-      font-weight:700;
-      opacity:.82;
-      margin-top:auto;
-    }
-    .calendarWidgetTop{
-      color:#d16c56;
-      font-size:10px;
-      font-weight:900;
-      letter-spacing:.4px;
-    }
-    .calendarWidgetDate{
-      font-size:42px;
-      line-height:1;
-      margin-top:4px;
-      color:#111;
-      font-weight:300;
-    }
+    .weatherWidget{ background:linear-gradient(180deg, rgba(94,145,217,.88), rgba(105,152,225,.72)); color:#fff; }
+    .widgetSmallLabel{ font-size:11px; font-weight:600; opacity:.84; margin-top:auto; }
+    .calendarWidgetTop{ color:#d16c56; font-size:10px; font-weight:700; letter-spacing:.5px; }
+    .calendarWidgetDate{ font-size:43px; line-height:1; margin-top:4px; color:#111; font-weight:300; }
 
-    .iconGrid{
-      display:grid;
-      grid-template-columns:repeat(4, 1fr);
-      gap:14px 12px;
-    }
-    .iconItem{
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:6px;
-      user-select:none;
-    }
+    .iconGrid{ display:grid; grid-template-columns:repeat(4, 1fr); gap:16px 14px; }
+    .iconItem{ display:flex; flex-direction:column; align-items:center; gap:7px; user-select:none; }
     .appIcon{
-      width:58px;
-      height:58px;
-      border-radius:16px;
-      position:relative;
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.32),
-        0 8px 18px rgba(0,0,0,.12);
-      overflow:hidden;
-      display:grid;
-      place-items:center;
-      color:#fff;
-      font-weight:900;
-      font-size:20px;
+      width:56px; height:56px; border-radius:16px; position:relative; overflow:hidden;
+      display:grid; place-items:center; box-shadow:inset 0 1px 0 rgba(255,255,255,.28), 0 8px 16px rgba(0,0,0,.10); color:#fff;
     }
-    .label{
-      font-size:11px;
-      color:#fff;
-      text-shadow:0 1px 4px rgba(0,0,0,.2);
-      font-weight:500;
-    }
+    .label{ font-size:11px; color:#fff; text-shadow:0 1px 4px rgba(0,0,0,.16); font-weight:500; }
 
-    .icon-facetime{ background:linear-gradient(180deg, #8EEF77, #59D85B); }
-    .icon-calendar{ background:linear-gradient(180deg, #f8f8f8, #ebebeb); color:#111; }
-    .icon-photos{ background:radial-gradient(circle at 50% 50%, #fff 0 16%, #f1c32f 18% 28%, #ff7b5c 30% 40%, #f3478d 42% 52%, #6c75ff 54% 64%, #49c96c 66% 76%, #fff 78% 100%); }
-    .icon-camera{ background:linear-gradient(180deg, #70757d, #2e3338); }
-    .icon-mail{ background:linear-gradient(180deg, #69c4ff, #4f8df4); }
-    .icon-notes{ background:linear-gradient(180deg, #fff9d2 0 24%, #ffffff 24% 100%); color:#444; }
-    .icon-reminders{ background:linear-gradient(180deg, #ffffff, #f3f4f7); color:#444; }
-    .icon-clock{ background:linear-gradient(180deg, #ffffff, #eceef2); color:#222; }
-    .icon-news{ background:linear-gradient(180deg, #fff, #f2f2f3); color:#d53d3d; }
-    .icon-tv{ background:linear-gradient(180deg, #2c2d34, #101115); }
-    .icon-games{ background:linear-gradient(180deg, #ff8a59, #ff5377); }
-    .icon-store{ background:linear-gradient(180deg, #86b7ff, #5887ff); }
-    .icon-maps{ background:linear-gradient(180deg, #bff1ff, #92d2a1); color:#0b4f98; }
-    .icon-health{ background:linear-gradient(180deg, #fff, #f4f6f7); color:#ff5681; }
-    .icon-wallet{ background:linear-gradient(180deg, #2f3237, #13161c); }
-    .icon-settings{ background:linear-gradient(180deg, #d2d6dd, #9ea6b3); color:#515765; }
+    .icon-facetime{ background:linear-gradient(180deg,#7be870,#56d962); }
+    .icon-calendar{ background:linear-gradient(180deg,#ffffff,#ededed); }
+    .icon-photos{ background:radial-gradient(circle at 50% 50%, #fff 0 13%, #f3c331 14% 24%, #ff8c4e 25% 35%, #f84a8f 36% 46%, #6a78ff 47% 57%, #4ad66a 58% 68%, #ffffff 69% 100%); }
+    .icon-camera{ background:linear-gradient(180deg,#767b84,#2a2e34); }
+    .icon-mail{ background:linear-gradient(180deg,#74c5ff,#4e8ef4); }
+    .icon-notes{ background:linear-gradient(180deg,#fff4c8 0 22%, #ffffff 22% 100%); }
+    .icon-reminders{ background:linear-gradient(180deg,#ffffff,#f2f3f6); }
+    .icon-clock{ background:linear-gradient(180deg,#ffffff,#eceef2); }
+    .icon-news{ background:linear-gradient(180deg,#ffffff,#f0f1f4); }
+    .icon-tv{ background:linear-gradient(180deg,#2a2b34,#0e1014); }
+    .icon-games{ background:linear-gradient(180deg,#ff8d57,#ff5378); }
+    .icon-store{ background:linear-gradient(180deg,#8cbaff,#618dff); }
+    .icon-maps{ background:linear-gradient(180deg,#b7f2f6,#92d0a6); }
+    .icon-health{ background:linear-gradient(180deg,#ffffff,#f4f5f7); }
+    .icon-wallet{ background:linear-gradient(180deg,#2c3139,#12161d); }
+    .icon-settings{ background:linear-gradient(180deg,#d9dce4,#a2a8b4); }
 
-    .calendarMini .appIcon{ color:#111; font-size:11px; font-weight:900; }
-    .calendarMini .day{ color:#dd725d; font-size:10px; margin-top:6px; font-weight:900; }
-    .calendarMini .date{ font-size:28px; line-height:1; margin-top:2px; font-weight:300; }
+    .facetimeCam{ width:28px; height:18px; border-radius:6px; background:#fff; position:relative; }
+    .facetimeCam:after{ content:""; position:absolute; right:-7px; top:4px; border-left:10px solid #fff; border-top:5px solid transparent; border-bottom:5px solid transparent; }
+    .calendarMini .day{ color:#df715c; font-size:10px; font-weight:700; letter-spacing:.2px; }
+    .calendarMini .date{ font-size:27px; line-height:1; font-weight:300; color:#111; }
+    .mailEnvelope{ width:30px; height:20px; border-radius:4px; background:rgba(255,255,255,.22); position:relative; }
+    .mailEnvelope:before, .mailEnvelope:after{ content:""; position:absolute; left:0; right:0; margin:auto; width:22px; height:2px; background:rgba(255,255,255,.85); top:9px; transform:rotate(26deg); }
+    .mailEnvelope:after{ transform:rotate(-26deg); }
+    .notesGlyph{ width:24px; height:20px; }
+    .notesGlyph span{ display:block; height:3px; border-radius:2px; background:#3c3c3c; margin-bottom:5px; }
+    .remindersDots{ display:flex; gap:6px; }
+    .remindersDots span{ width:6px; height:6px; border-radius:50%; background:#4b4b4b; }
+    .clockFace{ width:36px; height:36px; border-radius:50%; border:2px solid #474747; position:relative; background:#fff; }
+    .clockFace:before, .clockFace:after{ content:""; position:absolute; left:50%; top:50%; transform-origin:bottom center; background:#333; border-radius:2px; }
+    .clockFace:before{ width:2px; height:11px; transform:translate(-50%,-100%) rotate(0deg); }
+    .clockFace:after{ width:2px; height:14px; transform:translate(-50%,-100%) rotate(52deg); }
+    .cameraLens{ width:38px; height:38px; border-radius:50%; background:radial-gradient(circle at 35% 35%, #9ec7ff 0%, #354761 22%, #0d1116 52%, #000 100%); box-shadow:0 0 0 4px rgba(255,255,255,.12); }
+    .newspaper{ width:26px; height:22px; border-radius:4px; background:#eceaf1; position:relative; border:1px solid rgba(0,0,0,.08); }
+    .newspaper:before{ content:""; position:absolute; left:5px; top:5px; width:8px; height:7px; background:#beb8ca; }
+    .newspaper:after{ content:""; position:absolute; right:4px; top:5px; width:8px; height:2px; background:#b1acba; box-shadow:0 4px 0 #b1acba, 0 8px 0 #b1acba; }
+    .mapsGlyph, .healthGlyph, .walletGlyph, .settingsGlyph, .gamesGlyph{ font-size:24px; }
+    .tvGlyph{ font-size:20px; font-weight:700; }
+    .storeGlyph{ font-size:18px; font-weight:700; }
+    .healthGlyph{ color:#ff5c87; }
+    .settingsGlyph{ color:#8f7ea1; }
 
-    .clockFace{
-      width:40px; height:40px; border-radius:50%;
-      border:2px solid #555; position:relative; background:#fff;
-    }
-    .clockFace:before, .clockFace:after{
-      content:""; position:absolute; left:50%; top:50%; transform-origin:bottom center; background:#333;
-      border-radius:2px;
-    }
-    .clockFace:before{ width:2px; height:12px; transform:translate(-50%,-100%) rotate(0deg); }
-    .clockFace:after{ width:2px; height:15px; transform:translate(-50%,-100%) rotate(55deg); }
+    .searchPill{ align-self:center; width:168px; height:24px; border-radius:999px; background:rgba(255,255,255,.16); backdrop-filter:blur(20px); display:flex; align-items:center; justify-content:center; gap:6px; color:rgba(255,255,255,.88); font-size:12px; font-weight:500; }
 
-    .cameraLens{
-      width:38px; height:38px; border-radius:50%;
-      background:radial-gradient(circle at 35% 35%, #9ec7ff 0%, #354761 22%, #0d1116 52%, #000 100%);
-      box-shadow:0 0 0 4px rgba(255,255,255,.12);
-    }
+    .dock{ position:absolute; left:14px; right:14px; bottom:10px; padding:12px; border-radius:32px; background:rgba(255,255,255,.24); backdrop-filter:blur(22px); box-shadow:inset 0 1px 0 rgba(255,255,255,.36); display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; z-index:3; }
+    .dock .appIcon{ width:60px; height:60px; justify-self:center; }
+    .icon-phone{ background:linear-gradient(180deg,#62dd67,#42ca4f); }
+    .icon-safari{ background:linear-gradient(180deg,#5fc0ff,#2b7dff); }
+    .icon-messages{ background:linear-gradient(180deg,#63ea6b,#35d14a); }
+    .icon-music{ background:linear-gradient(180deg,#ff7384,#ed445f); }
 
-    .searchPill{
-      align-self:center;
-      width:140px;
-      height:20px;
-      border-radius:999px;
-      background:rgba(255,255,255,.20);
-      backdrop-filter:blur(20px);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:6px;
-      color:rgba(255,255,255,.82);
-      font-size:11px;
-      font-weight:600;
-      margin-top:2px;
-    }
-
-    .dock{
-      position:absolute;
-      left:14px; right:14px; bottom:10px;
-      padding:10px 12px 14px;
-      border-radius:30px;
-      background:rgba(255,255,255,.24);
-      backdrop-filter:blur(20px);
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.36);
-      display:grid;
-      grid-template-columns:repeat(4, 1fr);
-      gap:12px;
-      z-index:3;
-    }
-    .dock .appIcon{
-      width:60px; height:60px; justify-self:center;
-    }
-    .icon-phone{ background:linear-gradient(180deg, #62db69, #3fc74f); }
-    .icon-safari{ background:linear-gradient(180deg, #5bbcff, #2a79ff); }
-    .icon-messages{ background:linear-gradient(180deg, #63ec6f, #32d14d); }
-    .icon-music{ background:linear-gradient(180deg, #ff6d79, #ed3f57); }
-
-    .pushOverlay{
-      position:absolute;
-      inset:0;
-      display:none;
-      align-items:flex-start;
-      justify-content:center;
-      padding:76px 16px 16px;
-      z-index:20;
-      pointer-events:none;
-    }
+    .pushOverlay{ position:absolute; inset:0; display:none; align-items:flex-start; justify-content:center; padding:72px 12px 16px; z-index:20; pointer-events:none; }
     .pushOverlay.show{ display:flex; }
-    .pushCard{
-      width:100%;
-      max-width:372px;
-      background:rgba(255,255,255,.78);
-      color:#111;
-      backdrop-filter:blur(22px);
-      border-radius:28px;
-      box-shadow:0 24px 70px rgba(0,0,0,.20);
-      border:1px solid rgba(255,255,255,.50);
-      padding:16px;
-      pointer-events:auto;
-      animation:pushIn .24s ease;
-    }
-    @keyframes pushIn{
-      from{ transform:translateY(-12px) scale(.98); opacity:0; }
-      to{ transform:translateY(0) scale(1); opacity:1; }
-    }
-    .pushHead{
-      display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px;
-    }
-    .pushLeft{
-      display:flex; align-items:center; gap:12px;
-    }
-    .pushIcon{
-      width:56px; height:56px; border-radius:18px;
-      background:linear-gradient(180deg, #5A287D, #44205F);
-      display:grid; place-items:center; box-shadow:0 10px 24px rgba(68,32,95,.22);
-    }
-    .pushIcon img{
-      width:38px; height:38px; object-fit:contain; display:block;
-    }
-    .pushTitle{ font-size:18px; font-weight:700; }
-    .pushSub, .pushTime{
-      font-size:12px; color:#7f8790; font-weight:800;
-    }
-    .pushText{
-      font-size:13px; line-height:1.5; color:#37444e; font-weight:800;
-    }
+    .pushCard{ width:100%; max-width:388px; background:rgba(255,255,255,.84); color:#111; backdrop-filter:blur(24px); border-radius:30px; box-shadow:0 24px 70px rgba(0,0,0,.18); border:1px solid rgba(255,255,255,.58); padding:18px; pointer-events:auto; }
+    .pushHead{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px; }
+    .pushLeft{ display:flex; align-items:center; gap:14px; }
+    .pushIcon{ width:54px; height:54px; border-radius:17px; background:linear-gradient(180deg,#5A287D,#44205F); display:grid; place-items:center; box-shadow:0 10px 24px rgba(68,32,95,.18); flex:0 0 auto; }
+    .pushIcon img{ width:36px; height:36px; object-fit:contain; display:block; }
+    .pushTitle{ font-size:18px; font-weight:650; color:#18232d; }
+    .pushSub,.pushTime{ font-size:12px; color:#7f8790; font-weight:650; }
+    .pushText{ font-size:16px; line-height:1.42; color:#35424d; font-weight:560; }
     .btnRow{ display:flex; gap:10px; flex-wrap:wrap; margin-top:16px; }
-    .btn{
-      appearance:none; border:none; cursor:pointer;
-      border-radius:16px; padding:12px 16px; font-weight:1000; font-size:13px;
-      display:inline-flex; align-items:center; justify-content:center; gap:10px;
-    }
-    .btn.primary{
-      color:#fff; background:linear-gradient(180deg, var(--green), var(--green2));
-      box-shadow:0 14px 28px rgba(0,0,0,.12);
-    }
-    .btn.secondary{
-      color:#30414d; background:rgba(255,255,255,.7); border:1px solid rgba(0,0,0,.10);
-    }
+    .btn{ appearance:none; border:none; cursor:pointer; border-radius:16px; padding:12px 16px; font-weight:650; font-size:13px; display:inline-flex; align-items:center; justify-content:center; gap:10px; }
+    .btn.primary{ color:#fff; background:linear-gradient(180deg, var(--green), var(--green2)); box-shadow:0 14px 28px rgba(0,0,0,.12); }
+    .btn.secondary{ color:#30414d; background:rgba(255,255,255,.7); border:1px solid rgba(0,0,0,.10); }
 
-    .appScene{
-      position:absolute;
-      inset:0;
-      display:none;
-      z-index:30;
-      background:#EEF1F5;
-      flex-direction:column;
-    }
+    .appScene{ position:absolute; inset:0; display:none; z-index:30; background:#EEF1F5; flex-direction:column; }
     .appScene.show{ display:flex; }
 
-    .header{
-      padding:18px 18px 14px;
-      color:#fff;
-      background:
-        radial-gradient(920px 260px at 20% 0%, rgba(255,255,255,.16), rgba(255,255,255,0) 60%),
-        linear-gradient(180deg, var(--purple), var(--purple2));
-      box-shadow:0 10px 30px rgba(0,0,0,.22);
-    }
-    .topRow{
-      display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:10px;
-      font-size:12px; opacity:.96;
-    }
-    .topTime{ justify-self:start; font-weight:900; }
+    .header{ padding:18px 18px 14px; color:#fff; background:radial-gradient(920px 260px at 20% 0%, rgba(255,255,255,.16), rgba(255,255,255,0) 60%), linear-gradient(180deg, var(--purple), var(--purple2)); box-shadow:0 10px 30px rgba(0,0,0,.22); }
+    .topRow{ display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:10px; font-size:12px; opacity:.96; }
+    .topTime{ justify-self:start; font-weight:600; }
     .rightIcons{ justify-self:end; display:flex; gap:10px; align-items:center; }
-    .badge{
-      width:28px; height:28px; border-radius:12px; border:1px solid rgba(255,255,255,.22);
-      background:rgba(255,255,255,.10); display:grid; place-items:center; position:relative; cursor:pointer; user-select:none;
-    }
-    .badgeDot{
-      position:absolute; top:-6px; right:-6px; width:18px; height:18px; border-radius:999px; background:var(--red); color:#fff;
-      font-size:11px; display:grid; place-items:center; font-weight:1000; border:2px solid var(--purple2);
-    }
-    .logoCenter{
-      justify-self:center; display:flex; align-items:center; justify-content:center; min-width:140px;
-    }
-    .nwLogo{
-      height:46px; object-fit:contain; display:block; filter:drop-shadow(0 4px 10px rgba(0,0,0,.20));
-    }
-    .headline{
-      display:flex; align-items:flex-end; justify-content:space-between; gap:10px; margin-top:10px;
-    }
-    .h1{ font-size:26px; font-weight:1100; margin:0; letter-spacing:-.3px; }
-    .sub{ margin-top:4px; font-size:12.5px; opacity:.92; font-weight:800; }
-    .pillStatus{
-      display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,.14);
-      border:1px solid rgba(255,255,255,.18); border-radius:999px; padding:8px 12px;
-      font-weight:900; font-size:12px; backdrop-filter:blur(10px); white-space:nowrap;
-    }
+    .badge{ width:28px; height:28px; border-radius:12px; border:1px solid rgba(255,255,255,.22); background:rgba(255,255,255,.10); display:grid; place-items:center; position:relative; cursor:pointer; user-select:none; font-size:14px; }
+    .badgeDot{ position:absolute; top:-6px; right:-6px; width:18px; height:18px; border-radius:999px; background:var(--red); color:#fff; font-size:11px; display:grid; place-items:center; font-weight:700; border:2px solid var(--purple2); }
+    .logoCenter{ justify-self:center; display:flex; align-items:center; justify-content:center; min-width:140px; }
+    .nwLogo{ height:46px; object-fit:contain; display:block; filter:drop-shadow(0 4px 10px rgba(0,0,0,.20)); }
+    .headline{ display:flex; align-items:flex-end; justify-content:space-between; gap:10px; margin-top:10px; }
+    .h1{ font-size:26px; font-weight:560; margin:0; letter-spacing:-.4px; }
+    .sub{ margin-top:4px; font-size:12.5px; opacity:.92; font-weight:560; }
+    .pillStatus{ display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.18); border-radius:999px; padding:8px 12px; font-weight:600; font-size:12px; backdrop-filter:blur(10px); white-space:nowrap; }
     .dot{ width:10px; height:10px; border-radius:999px; background:#43d17b; box-shadow:0 0 0 3px rgba(67,209,123,.18); }
-    .summaryWrap{
-      margin-top:14px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.16);
-      border-radius:22px; padding:14px; backdrop-filter:blur(10px);
-    }
+    .summaryWrap{ margin-top:14px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.16); border-radius:22px; padding:14px; backdrop-filter:blur(10px); }
     .sumTop{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; }
-    .sumLabel{ font-weight:900; font-size:12px; opacity:.85; }
-    .sumValue{ font-size:34px; font-weight:1100; letter-spacing:-.6px; }
+    .sumLabel{ font-weight:600; font-size:12px; opacity:.85; }
+    .sumValue{ font-size:34px; font-weight:360; letter-spacing:-.8px; }
     .sumGrid{ display:grid; grid-template-columns:1fr 120px; gap:14px; margin-top:10px; align-items:center; }
     .legend{ display:flex; flex-direction:column; gap:10px; }
-    .legRow{
-      display:flex; align-items:center; justify-content:space-between; gap:10px; font-size:13px; font-weight:900; color:rgba(255,255,255,.92);
-    }
+    .legRow{ display:flex; align-items:center; justify-content:space-between; gap:10px; font-size:13px; font-weight:560; color:rgba(255,255,255,.92); }
     .legLeft{ display:flex; align-items:center; gap:10px; }
     .swatch{ width:10px; height:10px; border-radius:999px; background:#B162FF; box-shadow:0 0 0 3px rgba(177,98,255,.18); }
     .swatch.pink{ background:#FF8FD8; box-shadow:0 0 0 3px rgba(255,143,216,.18); }
-    .legSmall{ font-size:12px; opacity:.86; font-weight:900; }
-    .donut{
-      width:120px; height:120px; border-radius:999px;
-      background:conic-gradient(#B162FF 0 290deg, #FF8FD8 290deg 336deg, rgba(255,255,255,.22) 336deg 360deg);
-      display:grid; place-items:center; position:relative; box-shadow:0 18px 40px rgba(0,0,0,.18);
-    }
-    .donut::after{
-      content:""; width:88px; height:88px; border-radius:999px;
-      background:linear-gradient(180deg, rgba(68,32,95,.92), rgba(68,32,95,.84));
-      border:1px solid rgba(255,255,255,.18); position:absolute;
-    }
-    .donut span{ position:relative; z-index:1; font-weight:1100; font-size:26px; opacity:.95; }
-
-    .content{
-      flex:1; overflow:auto; padding:16px 16px 104px;
-    }
+    .legSmall{ font-size:12px; opacity:.86; font-weight:520; }
+    .donut{ width:120px; height:120px; border-radius:999px; background:conic-gradient(#B162FF 0 290deg, #FF8FD8 290deg 336deg, rgba(255,255,255,.22) 336deg 360deg); display:grid; place-items:center; position:relative; box-shadow:0 18px 40px rgba(0,0,0,.18); }
+    .donut::after{ content:""; width:88px; height:88px; border-radius:999px; background:linear-gradient(180deg, rgba(68,32,95,.92), rgba(68,32,95,.84)); border:1px solid rgba(255,255,255,.18); position:absolute; }
+    .donut span{ position:relative; z-index:1; font-weight:560; font-size:26px; opacity:.95; }
+    .content{ flex:1; overflow:auto; padding:16px 16px 104px; }
     .tabs{ display:flex; gap:10px; margin:2px 2px 12px; }
-    .tab{
-      flex:1; border-radius:16px; padding:10px 12px; font-weight:1000; font-size:13px;
-      border:1px solid var(--line); background:#fff; color:rgba(11,31,38,.70); cursor:pointer; user-select:none; box-shadow:0 10px 22px rgba(0,0,0,.06);
-    }
-    .tab.active{
-      background:rgba(90,40,125,.10); border:1px solid rgba(90,40,125,.18); color:rgba(68,32,95,.95); box-shadow:none;
-    }
-    .card{
-      background:var(--card); border:1px solid var(--line); border-radius:22px; box-shadow:0 14px 34px rgba(68,32,95,.12);
-    }
-    .rowCard{
-      display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px; cursor:pointer; user-select:none;
-    }
-    .pillCount{
-      width:30px; height:30px; border-radius:999px; background:rgba(90,40,125,.12);
-      border:1px solid rgba(90,40,125,.20); display:grid; place-items:center; font-weight:1100; color:var(--purple);
-    }
-    .chev{ font-weight:1100; color:rgba(11,31,38,.45); font-size:18px; }
-    .sectionTitle{
-      font-weight:1100; color:rgba(11,31,38,.55); font-size:13px; margin:18px 2px 10px; display:flex; align-items:center; justify-content:space-between; gap:10px;
-    }
+    .tab{ flex:1; border-radius:16px; padding:10px 12px; font-weight:600; font-size:13px; border:1px solid var(--line); background:#fff; color:rgba(11,31,38,.70); cursor:pointer; user-select:none; box-shadow:0 10px 22px rgba(0,0,0,.06); }
+    .tab.active{ background:rgba(90,40,125,.10); border:1px solid rgba(90,40,125,.18); color:rgba(68,32,95,.95); box-shadow:none; }
+    .card{ background:var(--card); border:1px solid var(--line); border-radius:22px; box-shadow:0 14px 34px rgba(68,32,95,.12); }
+    .rowCard{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px; cursor:pointer; user-select:none; }
+    .pillCount{ width:30px; height:30px; border-radius:999px; background:rgba(90,40,125,.12); border:1px solid rgba(90,40,125,.20); display:grid; place-items:center; font-weight:650; color:var(--purple); }
+    .chev{ font-weight:650; color:rgba(11,31,38,.45); font-size:18px; }
+    .sectionTitle{ font-weight:650; color:rgba(11,31,38,.55); font-size:13px; margin:18px 2px 10px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
     .accountList{ display:grid; gap:12px; }
-    .accountCard{
-      padding:14px; display:grid; grid-template-columns:4px 1fr auto; gap:12px; align-items:center; cursor:pointer; user-select:none;
-    }
+    .accountCard{ padding:14px; display:grid; grid-template-columns:4px 1fr auto; gap:12px; align-items:center; cursor:pointer; user-select:none; }
     .bar{ width:4px; height:44px; border-radius:99px; background:#A43BE2; }
     .bar.pink{ background:#FF8FD8; }
-    .acctName{ font-weight:1100; color:rgba(11,31,38,.92); }
-    .acctNum{ font-weight:900; font-size:12px; color:rgba(11,31,38,.55); margin-top:2px; }
+    .acctName{ font-weight:620; color:rgba(11,31,38,.92); }
+    .acctNum{ font-weight:520; font-size:12px; color:rgba(11,31,38,.55); margin-top:2px; }
     .acctRight{ text-align:right; display:flex; flex-direction:column; gap:2px; min-width:120px; }
-    .bal{ font-weight:1100; color:rgba(11,31,38,.92); font-size:16px; }
-    .avail{ font-weight:900; color:rgba(11,31,38,.55); font-size:12px; }
-    .mortgageHero{
-      padding:16px; background:linear-gradient(135deg, rgba(90,40,125,.96), rgba(111,45,168,.92)); color:#fff; border-radius:22px; box-shadow:0 14px 34px rgba(68,32,95,.12);
-    }
-    .mortgageHero h3{ margin:0 0 8px; font-size:20px; }
-    .mortgageHero p{ margin:0; line-height:1.45; font-size:13px; font-weight:800; opacity:.95; }
+    .bal{ font-weight:620; color:rgba(11,31,38,.92); font-size:16px; }
+    .avail{ font-weight:520; color:rgba(11,31,38,.55); font-size:12px; }
+    .mortgageHero{ padding:16px; background:linear-gradient(135deg, rgba(90,40,125,.96), rgba(111,45,168,.92)); color:#fff; border-radius:22px; box-shadow:0 14px 34px rgba(68,32,95,.12); }
+    .mortgageHero h3{ margin:0 0 8px; font-size:20px; font-weight:620; }
+    .mortgageHero p{ margin:0; line-height:1.45; font-size:13px; font-weight:520; opacity:.95; }
     .offerGrid{ display:grid; gap:12px; margin-top:14px; }
     .offerCard{ padding:14px; }
-    .offerTag{
-      display:inline-flex; align-items:center; gap:8px; border-radius:999px; padding:6px 10px; background:rgba(90,40,125,.08);
-      border:1px solid rgba(90,40,125,.14); color:var(--purple); font-size:11px; font-weight:1000; margin-bottom:10px;
-    }
-    .offerTitle{ font-weight:1100; color:rgba(11,31,38,.92); font-size:15px; }
-    .offerDesc{ margin-top:6px; font-size:12.5px; line-height:1.45; font-weight:900; color:rgba(11,31,38,.62); }
-    .nav{
-      position:absolute; left:0; right:0; bottom:0; background:rgba(255,255,255,.92); border-top:1px solid rgba(0,0,0,.06);
-      padding:10px 10px 14px; display:flex; justify-content:space-around; z-index:10; backdrop-filter:blur(10px);
-    }
-    .navItem{
-      display:flex; flex-direction:column; align-items:center; gap:6px; font-size:11px; font-weight:1000; color:rgba(11,31,38,.45); min-width:64px; cursor:pointer; user-select:none;
-    }
+    .offerTag{ display:inline-flex; align-items:center; gap:8px; border-radius:999px; padding:6px 10px; background:rgba(90,40,125,.08); border:1px solid rgba(90,40,125,.14); color:var(--purple); font-size:11px; font-weight:650; margin-bottom:10px; }
+    .offerTitle{ font-weight:620; color:rgba(11,31,38,.92); font-size:15px; }
+    .offerDesc{ margin-top:6px; font-size:12.5px; line-height:1.45; font-weight:520; color:rgba(11,31,38,.62); }
+    .nav{ position:absolute; left:0; right:0; bottom:0; background:rgba(255,255,255,.92); border-top:1px solid rgba(0,0,0,.06); padding:10px 10px 14px; display:flex; justify-content:space-around; z-index:10; backdrop-filter:blur(10px); }
+    .navItem{ display:flex; flex-direction:column; align-items:center; gap:6px; font-size:11px; font-weight:560; color:rgba(11,31,38,.45); min-width:64px; cursor:pointer; user-select:none; }
     .navItem .ico{ width:28px; height:28px; display:grid; place-items:center; border-radius:12px; }
     .navItem.active{ color:var(--purple); }
     .navItem.active .ico{ background:rgba(90,40,125,.12); border:1px solid rgba(90,40,125,.16); color:var(--purple); }
 
-    .authOverlay{
-      position:absolute; inset:0; display:none; align-items:center; justify-content:center;
-      z-index:40; background:rgba(10,12,18,.30); backdrop-filter:blur(10px); padding:18px;
-    }
+    .authOverlay{ position:absolute; inset:0; display:none; align-items:center; justify-content:center; z-index:40; background:rgba(10,12,18,.28); backdrop-filter:blur(16px); padding:18px; }
     .authOverlay.show{ display:flex; }
-    .authCard{
-      width:100%; max-width:360px; background:rgba(255,255,255,.88); backdrop-filter:blur(22px);
-      border-radius:28px; padding:20px; box-shadow:0 26px 80px rgba(0,0,0,.30); border:1px solid rgba(255,255,255,.55);
-    }
-    .authLogoWrap{
-      width:64px; height:64px; border-radius:20px; margin-bottom:14px;
-      background:linear-gradient(180deg,#5A287D,#44205F); display:grid; place-items:center;
-      box-shadow:0 14px 28px rgba(68,32,95,.22);
-    }
-    .authLogoWrap img{ width:42px; height:42px; object-fit:contain; display:block; }
-    .authTitle{ font-size:22px; font-weight:1100; color:#1d2932; margin:0 0 6px; }
-    .authSub{ font-size:13px; line-height:1.45; color:#667383; font-weight:800; margin-bottom:16px; }
-    .codeInput{
-      width:100%; border:1px solid rgba(0,0,0,.12); border-radius:18px; padding:16px;
-      font-size:24px; letter-spacing:8px; text-align:center; font-weight:1100; outline:none; color:#1d2932; margin-bottom:12px; background:#fff;
-    }
-    .authHint{ font-size:12px; color:#667383; font-weight:900; margin-bottom:12px; }
-    .authError{ min-height:18px; font-size:12px; color:#D62D2D; font-weight:1000; }
+    .authCard{ width:100%; max-width:372px; background:rgba(255,255,255,.88); backdrop-filter:blur(22px); border-radius:30px; padding:24px; box-shadow:0 26px 80px rgba(0,0,0,.24); border:1px solid rgba(255,255,255,.56); }
+    .authLogoWrap{ width:62px; height:62px; border-radius:20px; margin-bottom:16px; background:linear-gradient(180deg,#5A287D,#44205F); display:grid; place-items:center; box-shadow:0 14px 28px rgba(68,32,95,.18); }
+    .authLogoWrap img{ width:40px; height:40px; object-fit:contain; display:block; }
+    .authTitle{ font-size:22px; font-weight:650; color:#27313d; margin:0 0 6px; letter-spacing:-.2px; }
+    .authSub{ font-size:13px; line-height:1.45; color:#687281; font-weight:540; margin-bottom:16px; }
+    .codeInput{ width:100%; border:1px solid rgba(0,0,0,.10); border-radius:20px; padding:18px; font-size:26px; letter-spacing:8px; text-align:center; font-weight:560; outline:none; color:#1d2932; margin-bottom:12px; background:#fff; }
+    .authError{ min-height:18px; font-size:12px; color:#D62D2D; font-weight:600; }
 
-    .chatOverlay{
-      position:absolute; inset:0; display:none; align-items:center; justify-content:center;
-      background:rgba(68,32,95,.42); padding:12px; z-index:50;
-    }
+    .chatOverlay{ position:absolute; inset:0; display:none; align-items:center; justify-content:center; background:rgba(68,32,95,.42); padding:10px; z-index:50; }
     .chatOverlay.show{ display:flex; }
-    .chatSheet{
-      position:relative; width:100%; height:100%; border-radius:26px; background:#fff; border:1px solid rgba(255,255,255,.65);
-      box-shadow:0 30px 90px rgba(0,0,0,.35); overflow:hidden; display:flex; flex-direction:column;
-    }
+    .chatSheet{ position:relative; width:100%; height:100%; border-radius:28px; background:#fff; border:1px solid rgba(255,255,255,.68); box-shadow:0 30px 90px rgba(0,0,0,.32); overflow:hidden; display:flex; flex-direction:column; }
     .chatMount{ flex:1; min-height:0; position:relative; overflow:hidden; background:#fff; }
     #chatFrame{ position:absolute; inset:0; width:100%; height:100%; border:0; display:block; background:#fff; }
-    .chatCloseFab{
-      position:absolute; top:12px; left:12px; width:44px; height:44px; border-radius:16px; border:1px solid rgba(0,0,0,.08);
-      background:#fff; font-weight:1100; cursor:pointer; box-shadow:0 12px 28px rgba(0,0,0,.12); z-index:5; display:grid; place-items:center;
-    }
+    .chatCloseFab{ position:absolute; top:14px; left:14px; width:44px; height:44px; border-radius:16px; border:1px solid rgba(0,0,0,.08); background:#fff; font-weight:500; cursor:pointer; box-shadow:0 12px 28px rgba(0,0,0,.10); z-index:5; display:grid; place-items:center; font-size:26px; line-height:1; }
   </style>
 </head>
 <body>
   <div class="device">
     <div class="screen">
-
       <div class="homeScreen" id="homeScreen">
-        <div class="homeBlur"></div>
-
         <div class="statusBar">
           <div class="statusLeft">12:00</div>
           <div class="dynamicIsland"></div>
-          <div class="statusRight">⋮&nbsp;📶&nbsp;▂▃▅&nbsp;▉</div>
+          <div class="statusRight"><span style="font-size:12px;">⋮</span><div class="signalBars"><span></span><span></span><span></span><span></span></div><div class="battery"><div class="batteryFill"></div></div></div>
         </div>
-
         <div class="iconsArea">
           <div class="widgetRow">
-            <div class="widget weatherWidget">
-              <div style="height:58px;"></div>
-              <div class="widgetSmallLabel">Weather</div>
-            </div>
-            <div class="widget">
-              <div class="calendarWidgetTop">WEDNESDAY</div>
-              <div class="calendarWidgetDate">1</div>
-              <div class="widgetSmallLabel" style="color:#8a9097;">Calendar</div>
-            </div>
+            <div class="widget weatherWidget"><div style="height:60px;"></div><div class="widgetSmallLabel">Weather</div></div>
+            <div class="widget"><div class="calendarWidgetTop">WEDNESDAY</div><div class="calendarWidgetDate">1</div><div class="widgetSmallLabel" style="color:#8a9097;">Calendar</div></div>
           </div>
-
           <div class="iconGrid">
-            <div class="iconItem">
-              <div class="appIcon icon-facetime">📹</div>
-              <div class="label">FaceTime</div>
-            </div>
-            <div class="iconItem calendarMini">
-              <div class="appIcon icon-calendar">
-                <div style="text-align:center;">
-                  <div class="day">Wed</div>
-                  <div class="date">1</div>
-                </div>
-              </div>
-              <div class="label">Calendar</div>
-            </div>
-            <div class="iconItem">
-              <div class="appIcon icon-photos"></div>
-              <div class="label">Photos</div>
-            </div>
-            <div class="iconItem">
-              <div class="appIcon icon-camera"><div class="cameraLens"></div></div>
-              <div class="label">Camera</div>
-            </div>
-
-            <div class="iconItem">
-              <div class="appIcon icon-mail">✉️</div>
-              <div class="label">Mail</div>
-            </div>
-            <div class="iconItem">
-              <div class="appIcon icon-notes">☰</div>
-              <div class="label">Notes</div>
-            </div>
-            <div class="iconItem">
-              <div class="appIcon icon-reminders">• • •</div>
-              <div class="label">Reminders</div>
-            </div>
-            <div class="iconItem">
-              <div class="appIcon icon-clock"><div class="clockFace"></div></div>
-              <div class="label">Clock</div>
-            </div>
-
-            <div class="iconItem">
-              <div class="appIcon icon-news">📰</div>
-              <div class="label">News</div>
-            </div>
-            <div class="iconItem">
-              <div class="appIcon icon-tv">tv</div>
-              <div class="label">TV</div>
-            </div>
-            <div class="iconItem">
-              <div class="appIcon icon-games">🚀</div>
-              <div class="label">Games</div>
-            </div>
-            <div class="iconItem">
-              <div class="appIcon icon-store">A</div>
-              <div class="label">App Store</div>
-            </div>
-
-            <div class="iconItem">
-              <div class="appIcon icon-maps">🗺️</div>
-              <div class="label">Maps</div>
-            </div>
-            <div class="iconItem">
-              <div class="appIcon icon-health">♥</div>
-              <div class="label">Health</div>
-            </div>
-            <div class="iconItem">
-              <div class="appIcon icon-wallet">💳</div>
-              <div class="label">Wallet</div>
-            </div>
-            <div class="iconItem">
-              <div class="appIcon icon-settings">⚙️</div>
-              <div class="label">Settings</div>
-            </div>
+            <div class="iconItem"><div class="appIcon icon-facetime"><div class="facetimeCam"></div></div><div class="label">FaceTime</div></div>
+            <div class="iconItem calendarMini"><div class="appIcon icon-calendar"><div style="text-align:center;"><div class="day">Wed</div><div class="date">1</div></div></div><div class="label">Calendar</div></div>
+            <div class="iconItem"><div class="appIcon icon-photos"></div><div class="label">Photos</div></div>
+            <div class="iconItem"><div class="appIcon icon-camera"><div class="cameraLens"></div></div><div class="label">Camera</div></div>
+            <div class="iconItem"><div class="appIcon icon-mail"><div class="mailEnvelope"></div></div><div class="label">Mail</div></div>
+            <div class="iconItem"><div class="appIcon icon-notes"><div class="notesGlyph"><span></span><span></span><span></span></div></div><div class="label">Notes</div></div>
+            <div class="iconItem"><div class="appIcon icon-reminders"><div class="remindersDots"><span></span><span></span><span></span></div></div><div class="label">Reminders</div></div>
+            <div class="iconItem"><div class="appIcon icon-clock"><div class="clockFace"></div></div><div class="label">Clock</div></div>
+            <div class="iconItem"><div class="appIcon icon-news"><div class="newspaper"></div></div><div class="label">News</div></div>
+            <div class="iconItem"><div class="appIcon icon-tv"><div class="tvGlyph">tv</div></div><div class="label">TV</div></div>
+            <div class="iconItem"><div class="appIcon icon-games"><div class="gamesGlyph">🚀</div></div><div class="label">Games</div></div>
+            <div class="iconItem"><div class="appIcon icon-store"><div class="storeGlyph">A</div></div><div class="label">App Store</div></div>
+            <div class="iconItem"><div class="appIcon icon-maps"><div class="mapsGlyph">🗺️</div></div><div class="label">Maps</div></div>
+            <div class="iconItem"><div class="appIcon icon-health"><div class="healthGlyph">♥</div></div><div class="label">Health</div></div>
+            <div class="iconItem"><div class="appIcon icon-wallet"><div class="walletGlyph">💳</div></div><div class="label">Wallet</div></div>
+            <div class="iconItem"><div class="appIcon icon-settings"><div class="settingsGlyph">⚙︎</div></div><div class="label">Settings</div></div>
           </div>
-
           <div class="searchPill">⌕ Search</div>
         </div>
-
         <div class="dock">
-          <div class="iconItem" style="gap:0;">
-            <div class="appIcon icon-phone">📞</div>
-          </div>
-          <div class="iconItem" style="gap:0;">
-            <div class="appIcon icon-safari">🧭</div>
-          </div>
-          <div class="iconItem" style="gap:0;">
-            <div class="appIcon icon-messages">💬</div>
-          </div>
-          <div class="iconItem" style="gap:0;">
-            <div class="appIcon icon-music">🎵</div>
-          </div>
+          <div class="iconItem" style="gap:0;"><div class="appIcon icon-phone">📞</div></div>
+          <div class="iconItem" style="gap:0;"><div class="appIcon icon-safari">🧭</div></div>
+          <div class="iconItem" style="gap:0;"><div class="appIcon icon-messages">💬</div></div>
+          <div class="iconItem" style="gap:0;"><div class="appIcon icon-music">🎵</div></div>
         </div>
       </div>
 
       <div class="pushOverlay" id="pushOverlay">
         <div class="pushCard">
           <div class="pushHead">
-            <div class="pushLeft">
-              <div class="pushIcon">
-                <img src="https://www.onlinebanking.natwest.com/assets/images/brandImages/logo.svg" alt="NatWest logo">
-              </div>
-              <div>
-                <div class="pushTitle">Cora</div>
-                <div class="pushSub">New in-app message</div>
-              </div>
-            </div>
+            <div class="pushLeft"><div class="pushIcon"><img src="https://www.onlinebanking.natwest.com/assets/images/brandImages/logo.svg" alt="NatWest logo"></div><div><div class="pushTitle">Cora</div><div class="pushSub">New in-app message</div></div></div>
             <div class="pushTime">Just now</div>
           </div>
           <div class="pushText" id="pushText">Hi Sarah. We noticed you’ve been exploring properties recently. Thinking about buying? I can help you work out what’s possible, no commitment, just a conversation</div>
-          <div class="btnRow">
-            <button class="btn primary" id="btnEngagePush">💬 Tap to open</button>
-            <button class="btn secondary" id="btnDismissPush">Dismiss</button>
-          </div>
+          <div class="btnRow"><button class="btn primary" id="btnEngagePush">💬 Tap to open</button><button class="btn secondary" id="btnDismissPush">Dismiss</button></div>
         </div>
       </div>
 
@@ -644,168 +284,24 @@
         <div class="header">
           <div class="topRow">
             <div class="topTime">9:41</div>
-
-            <div class="logoCenter" title="NatWest">
-              <img class="nwLogo" src="https://www.onlinebanking.natwest.com/assets/images/brandImages/logo.svg" alt="NatWest logo" />
-            </div>
-
-            <div class="rightIcons">
-              <div class="badge" id="btnHeaderChat" title="Support chat">💬</div>
-              <div class="badge" title="Alerts">
-                🔔
-                <div class="badgeDot">3</div>
-              </div>
-            </div>
+            <div class="logoCenter"><img class="nwLogo" src="https://www.onlinebanking.natwest.com/assets/images/brandImages/logo.svg" alt="NatWest logo" /></div>
+            <div class="rightIcons"><div class="badge" id="btnHeaderChat" title="Support chat">💬</div><div class="badge" title="Alerts">🔔<div class="badgeDot">3</div></div></div>
           </div>
-
-          <div class="headline">
-            <div>
-              <div class="h1">Hello Sarah</div>
-              <div class="sub"><b>Sarah Johnson</b> • Customer number <b>45719382</b></div>
-            </div>
-            <div class="pillStatus"><span class="dot"></span> Cora available</div>
-          </div>
-
-          <div class="summaryWrap">
-            <div class="sumTop">
-              <div class="sumLabel">Total balance</div>
-              <div class="sumValue">£18,742.61</div>
-            </div>
-
-            <div class="sumGrid">
-              <div class="legend">
-                <div class="legRow">
-                  <div class="legLeft"><span class="swatch"></span> Current</div>
-                  <div>£4,286.14</div>
-                </div>
-                <div class="legRow">
-                  <div class="legLeft"><span class="swatch pink"></span> Savings</div>
-                  <div>£14,456.47</div>
-                </div>
-                <div class="legSmall">Spending insights • Everyday banking</div>
-              </div>
-              <div class="donut"><span>£</span></div>
-            </div>
-          </div>
+          <div class="headline"><div><div class="h1">Hello Sarah</div><div class="sub"><b>Sarah Johnson</b> • Customer number <b>45719382</b></div></div><div class="pillStatus"><span class="dot"></span> Cora available</div></div>
+          <div class="summaryWrap"><div class="sumTop"><div class="sumLabel">Total balance</div><div class="sumValue">£18,742.61</div></div><div class="sumGrid"><div class="legend"><div class="legRow"><div class="legLeft"><span class="swatch"></span> Current</div><div>£4,286.14</div></div><div class="legRow"><div class="legLeft"><span class="swatch pink"></span> Savings</div><div>£14,456.47</div></div><div class="legSmall">Spending insights • Everyday banking</div></div><div class="donut"><span>£</span></div></div></div>
         </div>
-
         <div class="content">
-          <div class="tabs">
-            <button class="tab active" id="tabAccounts">Accounts</button>
-            <button class="tab" id="tabPayments">Payments</button>
-            <button class="tab" id="tabMortgages">Mortgages</button>
-          </div>
-
-          <div id="viewAccounts">
-            <div class="card rowCard">
-              <div style="display:flex; align-items:center; gap:12px;">
-                <div class="pillCount">3</div>
-                <div style="font-weight:1100; color:rgba(11,31,38,.92);">Money tools & insights</div>
-              </div>
-              <div class="chev">›</div>
-            </div>
-
-            <div class="sectionTitle"><span>CURRENT</span><span></span></div>
-            <div class="accountList">
-              <div class="card accountCard">
-                <div class="bar"></div>
-                <div>
-                  <div class="acctName">Select Account</div>
-                  <div class="acctNum">•••• 2094 • Sort code 60-21-17</div>
-                </div>
-                <div class="acctRight">
-                  <div class="bal">£4,286.14</div>
-                  <div class="avail">Available: £4,286.14</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="sectionTitle"><span>SAVINGS</span><span></span></div>
-            <div class="accountList">
-              <div class="card accountCard">
-                <div class="bar pink"></div>
-                <div>
-                  <div class="acctName">Digital Regular Saver</div>
-                  <div class="acctNum">Easy access • Goal based</div>
-                </div>
-                <div class="acctRight">
-                  <div class="bal">£14,456.47</div>
-                  <div class="avail">Available: £14,456.47</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div id="viewPayments" style="display:none;">
-            <div class="card" style="padding:14px;">
-              <div style="font-weight:1100; color:rgba(11,31,38,.92);">Payments</div>
-              <div style="margin-top:6px; font-weight:900; color:rgba(11,31,38,.55); font-size:12px; line-height:1.35;">
-                Manage transfers, standing orders and upcoming bills from one place.
-              </div>
-            </div>
-          </div>
-
-          <div id="viewMortgages" style="display:none;">
-            <div class="mortgageHero">
-              <h3>Thinking about your next move?</h3>
-              <p>Explore NatWest mortgage options, compare routes into home ownership and chat with Cora to understand what could work for you.</p>
-            </div>
-
-            <div class="sectionTitle"><span>Mortgage options</span><span></span></div>
-            <div class="offerGrid">
-              <div class="card offerCard">
-                <div class="offerTag">First-time buyers</div>
-                <div class="offerTitle">Start with practical tools and guidance</div>
-                <div class="offerDesc">Discover ways to estimate borrowing, understand deposits and get ready for a smoother first step onto the property ladder.</div>
-              </div>
-
-              <div class="card offerCard">
-                <div class="offerTag">Moving home</div>
-                <div class="offerTitle">Explore options for your next property</div>
-                <div class="offerDesc">If you are planning your next move, NatWest can help you look at fresh borrowing options, switching deals and keeping things simple.</div>
-              </div>
-
-              <div class="btnRow">
-                <button class="btn primary" id="btnShowPushAgain">🔔 Show push again</button>
-              </div>
-            </div>
-          </div>
+          <div class="tabs"><button class="tab active" id="tabAccounts">Accounts</button><button class="tab" id="tabPayments">Payments</button><button class="tab" id="tabMortgages">Mortgages</button></div>
+          <div id="viewAccounts"><div class="card rowCard"><div style="display:flex; align-items:center; gap:12px;"><div class="pillCount">3</div><div style="font-weight:620; color:rgba(11,31,38,.92);">Money tools & insights</div></div><div class="chev">›</div></div><div class="sectionTitle"><span>CURRENT</span><span></span></div><div class="accountList"><div class="card accountCard"><div class="bar"></div><div><div class="acctName">Select Account</div><div class="acctNum">•••• 2094 • Sort code 60-21-17</div></div><div class="acctRight"><div class="bal">£4,286.14</div><div class="avail">Available: £4,286.14</div></div></div></div><div class="sectionTitle"><span>SAVINGS</span><span></span></div><div class="accountList"><div class="card accountCard"><div class="bar pink"></div><div><div class="acctName">Digital Regular Saver</div><div class="acctNum">Easy access • Goal based</div></div><div class="acctRight"><div class="bal">£14,456.47</div><div class="avail">Available: £14,456.47</div></div></div></div></div>
+          <div id="viewPayments" style="display:none;"><div class="card" style="padding:14px;"><div style="font-weight:620; color:rgba(11,31,38,.92);">Payments</div><div style="margin-top:6px; font-weight:520; color:rgba(11,31,38,.55); font-size:12px; line-height:1.35;">Manage transfers, standing orders and upcoming bills from one place.</div></div></div>
+          <div id="viewMortgages" style="display:none;"><div class="mortgageHero"><h3>Thinking about your next move?</h3><p>Explore NatWest mortgage options, compare routes into home ownership and chat with Cora to understand what could work for you.</p></div><div class="sectionTitle"><span>Mortgage options</span><span></span></div><div class="offerGrid"><div class="card offerCard"><div class="offerTag">First-time buyers</div><div class="offerTitle">Start with practical tools and guidance</div><div class="offerDesc">Discover ways to estimate borrowing, understand deposits and get ready for a smoother first step onto the property ladder.</div></div><div class="card offerCard"><div class="offerTag">Moving home</div><div class="offerTitle">Explore options for your next property</div><div class="offerDesc">If you are planning your next move, NatWest can help you look at fresh borrowing options, switching deals and keeping things simple.</div></div><div class="btnRow"><button class="btn primary" id="btnShowPushAgain">🔔 Show push again</button></div></div></div>
         </div>
-
-        <div class="nav">
-          <div class="navItem active" id="navAccounts"><div class="ico">🏠</div><div>Home</div></div>
-          <div class="navItem" id="navPayments"><div class="ico">⇄</div><div>Payments</div></div>
-          <div class="navItem" id="navMortgages"><div class="ico">🏡</div><div>Mortgages</div></div>
-          <div class="navItem" id="navChat"><div class="ico">💬</div><div>Chat</div></div>
-        </div>
+        <div class="nav"><div class="navItem active" id="navAccounts"><div class="ico">🏠</div><div>Home</div></div><div class="navItem" id="navPayments"><div class="ico">⇄</div><div>Payments</div></div><div class="navItem" id="navMortgages"><div class="ico">🏡</div><div>Mortgages</div></div><div class="navItem" id="navChat"><div class="ico">💬</div><div>Chat</div></div></div>
       </div>
 
-      <div class="authOverlay" id="authOverlay">
-        <div class="authCard">
-          <div class="authLogoWrap">
-            <img src="https://www.onlinebanking.natwest.com/assets/images/brandImages/logo.svg" alt="NatWest logo">
-          </div>
-          <h2 class="authTitle">Confirm it’s you</h2>
-          <div class="authSub">Before entering your NatWest app, enter your 6 digit passcode.</div>
-          <input class="codeInput" id="authCode" type="password" inputmode="numeric" maxlength="6" placeholder="••••••" />
-          <div class="authHint">Demo code: 360948</div>
-          <div class="authError" id="authError"></div>
-          <div class="btnRow">
-            <button class="btn primary" id="btnAuthContinue">Continue</button>
-            <button class="btn secondary" id="btnAuthCancel">Cancel</button>
-          </div>
-        </div>
-      </div>
+      <div class="authOverlay" id="authOverlay"><div class="authCard"><div class="authLogoWrap"><img src="https://www.onlinebanking.natwest.com/assets/images/brandImages/logo.svg" alt="NatWest logo"></div><h2 class="authTitle">Confirm it’s you</h2><div class="authSub">Before entering your NatWest app, enter your 6 digit passcode.</div><input class="codeInput" id="authCode" type="password" inputmode="numeric" maxlength="6" placeholder="••••••" /><div class="authError" id="authError"></div><div class="btnRow"><button class="btn primary" id="btnAuthContinue">Continue</button><button class="btn secondary" id="btnAuthCancel">Cancel</button></div></div></div>
 
-      <div class="chatOverlay" id="chatOverlay">
-        <div class="chatSheet">
-          <button class="chatCloseFab" id="btnCloseChat" aria-label="Close chat">✕</button>
-          <div class="chatMount">
-            <iframe id="chatFrame" title="NatWest Support Chat" src="chat.html"></iframe>
-          </div>
-        </div>
-      </div>
-
+      <div class="chatOverlay" id="chatOverlay"><div class="chatSheet"><button class="chatCloseFab" id="btnCloseChat" aria-label="Close chat">×</button><div class="chatMount"><iframe id="chatFrame" title="NatWest Support Chat" src="chat.html"></iframe></div></div></div>
     </div>
   </div>
 
@@ -813,11 +309,9 @@
     const DEMO_CODE = "360948";
     const NTFY_TOPIC = "natwest-cora-proactive-demo-4f8e2b91";
     const DEFAULT_PUSH = "Hi Sarah. We noticed you’ve been exploring properties recently. Thinking about buying? I can help you work out what’s possible, no commitment, just a conversation";
-
     const byId = (id) => document.getElementById(id);
     const show = (el) => el.classList.add("show");
     const hide = (el) => el.classList.remove("show");
-
     const pushOverlay = byId("pushOverlay");
     const appScene = byId("appScene");
     const authOverlay = byId("authOverlay");
@@ -829,109 +323,62 @@
       byId("tabAccounts").classList.toggle("active", which === "accounts");
       byId("tabPayments").classList.toggle("active", which === "payments");
       byId("tabMortgages").classList.toggle("active", which === "mortgages");
-
       byId("viewAccounts").style.display = which === "accounts" ? "block" : "none";
       byId("viewPayments").style.display = which === "payments" ? "block" : "none";
       byId("viewMortgages").style.display = which === "mortgages" ? "block" : "none";
-
       byId("navAccounts").classList.toggle("active", which === "accounts");
       byId("navPayments").classList.toggle("active", which === "payments");
       byId("navMortgages").classList.toggle("active", which === "mortgages");
     }
 
-    function showPush(text = DEFAULT_PUSH){
-      byId("pushText").textContent = text;
-      show(pushOverlay);
-    }
-
-    function hidePush(){
-      hide(pushOverlay);
-    }
-
-    function openAuth(){
-      hidePush();
-      show(authOverlay);
-      authError.textContent = "";
-      authCode.value = "";
-      setTimeout(() => authCode.focus(), 80);
-    }
-
-    function enterApp(){
-      hide(authOverlay);
-      show(appScene);
-    }
-
-    function openChat(){
-      show(chatOverlay);
-    }
-
-    function closeChat(){
-      hide(chatOverlay);
-    }
-
-    function validateCode(){
-      const value = (authCode.value || "").trim();
-      if (value === DEMO_CODE) {
-        enterApp();
-        openChat();
-      } else {
-        authError.textContent = "Please enter the correct 6 digit code.";
-      }
-    }
+    function showPush(text = DEFAULT_PUSH){ byId("pushText").textContent = text; show(pushOverlay); }
+    function hidePush(){ hide(pushOverlay); }
+    function openAuth(){ hidePush(); show(authOverlay); authError.textContent = ""; authCode.value = ""; setTimeout(() => authCode.focus(), 80); }
+    function enterApp(){ hide(authOverlay); show(appScene); }
+    function openChat(){ show(chatOverlay); }
+    function closeChat(){ hide(chatOverlay); }
+    function validateCode(){ ((authCode.value || "").trim() === DEMO_CODE) ? (enterApp(), openChat()) : authError.textContent = "Please enter the correct passcode."; }
 
     function parseIncomingNtfyMessage(message){
-      if (!message) return null;
-      if (typeof message === "object") return message;
-
+      if (!message) return DEFAULT_PUSH;
+      if (typeof message === "object") return DEFAULT_PUSH;
       const raw = String(message).trim();
-      if (!raw) return null;
-
-      try { return JSON.parse(raw); } catch {}
-
-      if (raw.startsWith("message=")) {
-        const value = raw.slice(8);
-        try { return JSON.parse(value); }
-        catch { return { text: decodeURIComponent(value.replace(/\+/g, " ")) }; }
-      }
-
-      return { text: raw };
+      if (!raw) return DEFAULT_PUSH;
+      try { const parsed = JSON.parse(raw); return parsed?.text || DEFAULT_PUSH; } catch {}
+      try {
+        const decoded = decodeURIComponent(raw.replace(/\+/g, " "));
+        try { const parsedDecoded = JSON.parse(decoded); return parsedDecoded?.text || DEFAULT_PUSH; } catch {}
+        if (decoded.startsWith("{") || decoded.includes('"type"')) return DEFAULT_PUSH;
+        if (decoded) return decoded;
+      } catch {}
+      return raw.includes("%7B") || raw.includes("%22type%22") ? DEFAULT_PUSH : raw;
     }
 
     function subscribeToNtfy(){
       const es = new EventSource(`https://ntfy.sh/${NTFY_TOPIC}/sse`);
-
       es.onmessage = (event) => {
         try {
           const envelope = JSON.parse(event.data);
-          const parsed = parseIncomingNtfyMessage(envelope.message);
-          if (parsed) showPush(parsed.text || DEFAULT_PUSH);
+          showPush(parseIncomingNtfyMessage(envelope.message) || DEFAULT_PUSH);
         } catch (e) {
           console.warn("ntfy parse issue", e);
+          showPush(DEFAULT_PUSH);
         }
       };
-
-      es.onerror = () => {
-        console.warn("ntfy subscription disconnected; browser will retry automatically.");
-      };
+      es.onerror = () => console.warn("ntfy subscription disconnected; browser will retry automatically.");
     }
 
     document.addEventListener("DOMContentLoaded", () => {
       subscribeToNtfy();
-
       byId("btnEngagePush").onclick = openAuth;
       byId("btnDismissPush").onclick = hidePush;
-
       byId("btnAuthContinue").onclick = validateCode;
       byId("btnAuthCancel").onclick = () => hide(authOverlay);
-      authCode.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") validateCode();
-      });
-
+      authCode.addEventListener("keydown", (e) => { if (e.key === "Enter") validateCode(); });
       byId("btnHeaderChat").onclick = openChat;
       byId("navChat").onclick = openChat;
       byId("btnCloseChat").onclick = closeChat;
-      byId("btnShowPushAgain").onclick = () => showPush();
-
+      byId("btnShowPushAgain").onclick = () => showPush(DEFAULT_PUSH);
       byId("tabAccounts").onclick = () => setActiveTab("accounts");
       byId("tabPayments").onclick = () => setActiveTab("payments");
       byId("tabMortgages").onclick = () => setActiveTab("mortgages");
