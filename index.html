@@ -6,385 +6,746 @@
   <title>NatWest Mobile Journey Mock</title>
   <style>
     :root{
-      --purple:#5A287D;
-      --purple2:#44205F;
-      --green:#2ecc84;
-      --green2:#10b76a;
-      --red:#FF4D5A;
-      --text:#1f2a36;
-      --muted:#7d8793;
-      --line:rgba(0,0,0,.08);
-      --card:#fff;
+      --purple:#5A287D;--purple2:#44205F;--purple3:#3a1a52;
+      --green:#2ecc84;--green2:#10b76a;--red:#FF4D5A;
+      --text:#1f2a36;--muted:#7d8793;--line:rgba(0,0,0,.08);--card:#fff;
       --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     }
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+    html,body{margin:0;font-family:var(--font);}
+    body{
+      min-height:100vh;display:grid;place-items:center;padding:24px;
+      background:radial-gradient(ellipse 80% 60% at 20% 10%,#c8d4e8 0%,transparent 60%),
+                 radial-gradient(ellipse 60% 50% at 80% 80%,#b4c6d8 0%,transparent 55%),
+                 linear-gradient(145deg,#d8e2ec 0%,#c9d6e3 40%,#bccad8 100%);
+    }
 
-    *{ box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
-    html,body{ margin:0; background:#d7dce5; font-family:var(--font); }
-    body{ min-height:100vh; display:grid; place-items:center; padding:20px; }
+    /* Device shell */
+    .deviceWrap{position:relative;display:flex;align-items:center;justify-content:center;}
+    .btnSilent{position:absolute;left:-4px;top:120px;width:4px;height:34px;background:linear-gradient(90deg,#1a1a1a,#2e2e2e);border-radius:3px 0 0 3px;box-shadow:-1px 0 3px rgba(0,0,0,.5);}
+    .btnVolUp{position:absolute;left:-4px;top:172px;width:4px;height:58px;background:linear-gradient(90deg,#1a1a1a,#2e2e2e);border-radius:3px 0 0 3px;box-shadow:-1px 0 3px rgba(0,0,0,.5);}
+    .btnVolDn{position:absolute;left:-4px;top:244px;width:4px;height:58px;background:linear-gradient(90deg,#1a1a1a,#2e2e2e);border-radius:3px 0 0 3px;box-shadow:-1px 0 3px rgba(0,0,0,.5);}
+    .btnPower{position:absolute;right:-4px;top:190px;width:4px;height:80px;background:linear-gradient(270deg,#1a1a1a,#2e2e2e);border-radius:0 3px 3px 0;box-shadow:1px 0 3px rgba(0,0,0,.5);}
 
     .device{
-      width:min(420px, 96vw);
-      height:min(900px, 96vh);
-      border-radius:44px;
-      background:#0f1116;
+      width:min(390px,92vw);aspect-ratio:390/844;
+      border-radius:52px;
+      background:linear-gradient(160deg,#2e2e2e 0%,#1c1c1c 40%,#101010 100%);
       padding:14px;
-      box-shadow:0 30px 90px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.06);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.09),
+        0 0 0 2.5px #080808,
+        0 50px 130px rgba(0,0,0,.6),
+        0 10px 24px rgba(0,0,0,.44),
+        inset 0 0 0 1px rgba(255,255,255,.05),
+        inset 0 1px 0 rgba(255,255,255,.12);
       position:relative;
     }
-    .screen{ position:relative; height:100%; border-radius:34px; overflow:hidden; background:#dce6ef; }
+    /* Titanium sheen */
+    .device::before{
+      content:"";position:absolute;inset:0;border-radius:52px;
+      background:linear-gradient(130deg,rgba(255,255,255,.14) 0%,rgba(255,255,255,.04) 22%,transparent 52%,rgba(255,255,255,.02) 78%,rgba(255,255,255,.09) 100%);
+      pointer-events:none;z-index:100;
+    }
 
+    .screen{position:relative;height:100%;border-radius:40px;overflow:hidden;background:#dce6ef;}
+
+    /* ── HOME SCREEN ── */
     .homeScreen{
-      position:absolute; inset:0; color:#fff; overflow:hidden;
+      position:absolute;inset:0;color:#fff;overflow:hidden;
       background:
-        radial-gradient(95% 80% at 18% 16%, rgba(182,243,239,.95) 0%, rgba(182,243,239,.52) 20%, rgba(182,243,239,0) 42%),
-        radial-gradient(80% 90% at 84% 18%, rgba(73,95,197,.98) 0%, rgba(73,95,197,.48) 26%, rgba(73,95,197,0) 48%),
-        radial-gradient(54% 78% at 62% 90%, rgba(54,81,220,.88) 0%, rgba(54,81,220,.20) 26%, rgba(54,81,220,0) 50%),
-        linear-gradient(180deg, #d9e9ef 0%, #b9dbe0 44%, #a4d2d6 100%);
+        radial-gradient(95% 80% at 18% 16%,rgba(182,243,239,.95) 0%,rgba(182,243,239,.52) 20%,rgba(182,243,239,0) 42%),
+        radial-gradient(80% 90% at 84% 18%,rgba(73,95,197,.98) 0%,rgba(73,95,197,.48) 26%,rgba(73,95,197,0) 48%),
+        radial-gradient(54% 78% at 62% 90%,rgba(54,81,220,.88) 0%,rgba(54,81,220,.20) 26%,rgba(54,81,220,0) 50%),
+        linear-gradient(180deg,#d9e9ef 0%,#b9dbe0 44%,#a4d2d6 100%);
     }
-
     .statusBar{
-      position:absolute; top:0; left:0; right:0; z-index:4;
-      display:grid; grid-template-columns:1fr auto 1fr; align-items:center;
-      padding:12px 18px 0; font-size:12px; font-weight:600; color:#fff;
-      text-shadow:0 1px 3px rgba(0,0,0,.12);
+      position:absolute;top:0;left:0;right:0;z-index:4;
+      display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+      padding:14px 22px 0;font-size:15px;font-weight:600;color:#fff;
+      text-shadow:0 1px 4px rgba(0,0,0,.15);
     }
-    .statusLeft{ justify-self:start; }
-    .dynamicIsland{ width:118px; height:28px; background:#08090b; border-radius:999px; justify-self:center; }
-    .statusRight{ justify-self:end; display:flex; align-items:center; gap:7px; }
-    .signalBars{ display:flex; gap:2px; align-items:flex-end; }
-    .signalBars span{ display:block; width:4px; background:#fff; border-radius:2px; }
-    .signalBars span:nth-child(1){ height:5px; opacity:.55; }
-    .signalBars span:nth-child(2){ height:8px; opacity:.72; }
-    .signalBars span:nth-child(3){ height:11px; opacity:.86; }
-    .signalBars span:nth-child(4){ height:14px; }
-    .battery{ width:26px; height:12px; border:1.6px solid #fff; border-radius:3px; position:relative; }
-    .battery:after{ content:""; position:absolute; right:-3px; top:3px; width:2px; height:4px; background:#fff; border-radius:1px; }
-    .batteryFill{ position:absolute; inset:1.5px; width:77%; border-radius:1.5px; background:#fff; }
+    .statusLeft{justify-self:start;font-size:15px;font-weight:600;letter-spacing:-.2px;}
+    .dynamicIsland{
+      width:122px;height:35px;background:#08090b;border-radius:999px;
+      justify-self:center;position:relative;overflow:hidden;
+      box-shadow:0 2px 10px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.04);
+    }
+    .dynamicIsland::after{
+      content:"";position:absolute;right:18px;top:50%;transform:translateY(-50%);
+      width:10px;height:10px;border-radius:50%;
+      background:radial-gradient(circle at 35% 35%,#2a4060,#0a1520);
+      box-shadow:0 0 0 2px rgba(0,0,0,.9);
+    }
+    .statusRight{justify-self:end;display:flex;align-items:center;gap:6px;}
+    .signalBars{display:flex;gap:2px;align-items:flex-end;}
+    .signalBars span{display:block;width:3.5px;background:#fff;border-radius:2px;}
+    .signalBars span:nth-child(1){height:4px;opacity:.5;}
+    .signalBars span:nth-child(2){height:7px;opacity:.68;}
+    .signalBars span:nth-child(3){height:10px;opacity:.84;}
+    .signalBars span:nth-child(4){height:13px;}
+    .wifiIcon{display:flex;flex-direction:column-reverse;align-items:center;gap:1.5px;width:14px;}
+    .wifiIcon span{display:block;height:2px;border-radius:2px;background:#fff;}
+    .wifiIcon span:nth-child(1){width:14px;}
+    .wifiIcon span:nth-child(2){width:10px;opacity:.8;}
+    .wifiIcon span:nth-child(3){width:6px;opacity:.6;}
+    .battery{width:27px;height:13px;border:1.5px solid rgba(255,255,255,.8);border-radius:3.5px;position:relative;}
+    .battery:after{content:"";position:absolute;right:-4px;top:3px;width:2.5px;height:5px;background:rgba(255,255,255,.8);border-radius:0 2px 2px 0;}
+    .batteryFill{position:absolute;inset:2px;width:72%;border-radius:1.5px;background:#fff;}
 
-    .iconsArea{ position:absolute; inset:52px 18px 98px; display:flex; flex-direction:column; gap:16px; z-index:2; }
-    .widgetRow{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .iconsArea{position:absolute;inset:58px 18px 118px;display:flex;flex-direction:column;gap:12px;z-index:2;}
+    .widgetRow{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
     .widget{
-      border-radius:26px; padding:14px 16px; min-height:104px; color:#111;
-      background:rgba(255,255,255,.72); backdrop-filter:blur(18px);
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.55), 0 10px 24px rgba(0,0,0,.07);
+      border-radius:26px;padding:12px 14px;min-height:104px;
+      background:rgba(255,255,255,.72);backdrop-filter:blur(22px);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 8px 24px rgba(0,0,0,.08);
+      color:#111;
     }
-    .weatherWidget{ background:linear-gradient(180deg, rgba(94,145,217,.88), rgba(105,152,225,.72)); color:#fff; }
-    .widgetSmallLabel{ font-size:11px; font-weight:600; opacity:.84; margin-top:auto; }
-    .calendarWidgetTop{ color:#d16c56; font-size:10px; font-weight:700; letter-spacing:.5px; }
-    .calendarWidgetDate{ font-size:43px; line-height:1; margin-top:4px; color:#111; font-weight:300; }
+    .weatherWidget{
+      background:linear-gradient(160deg,rgba(88,140,220,.92),rgba(100,150,230,.76));
+      color:#fff;position:relative;overflow:hidden;
+    }
+    .weatherWidget::before{
+      content:"";position:absolute;top:-20px;right:-20px;
+      width:80px;height:80px;border-radius:50%;
+      background:rgba(255,200,50,.26);box-shadow:0 0 30px rgba(255,200,50,.4);
+    }
+    .weatherTemp{font-size:36px;font-weight:200;line-height:1;}
+    .weatherDesc{font-size:11px;font-weight:600;opacity:.88;margin-top:2px;}
+    .widgetSmallLabel{font-size:11px;font-weight:600;opacity:.8;margin-top:auto;padding-top:6px;}
+    .calendarWidgetTop{color:#d16c56;font-size:10px;font-weight:700;letter-spacing:.6px;}
+    .calendarWidgetDate{font-size:44px;line-height:1;margin-top:2px;color:#111;font-weight:200;}
 
-    .iconGrid{ display:grid; grid-template-columns:repeat(4, 1fr); gap:16px 14px; }
-    .iconItem{ display:flex; flex-direction:column; align-items:center; gap:7px; user-select:none; }
+    .iconGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px 10px;}
+    .iconItem{display:flex;flex-direction:column;align-items:center;gap:6px;user-select:none;}
     .appIcon{
-      width:56px; height:56px; border-radius:16px; position:relative; overflow:hidden;
-      display:grid; place-items:center; box-shadow:inset 0 1px 0 rgba(255,255,255,.28), 0 8px 16px rgba(0,0,0,.10); color:#fff;
+      width:54px;height:54px;border-radius:15px;position:relative;overflow:hidden;
+      display:grid;place-items:center;color:#fff;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 5px 12px rgba(0,0,0,.14);
+      transition:transform .1s;
     }
-    .label{ font-size:11px; color:#fff; text-shadow:0 1px 4px rgba(0,0,0,.16); font-weight:500; }
+    .appIcon:active{transform:scale(.88);}
+    .label{font-size:10.5px;color:#fff;text-shadow:0 1px 5px rgba(0,0,0,.22);font-weight:500;text-align:center;}
 
-    .icon-facetime{ background:linear-gradient(180deg,#7be870,#56d962); }
-    .icon-calendar{ background:linear-gradient(180deg,#ffffff,#ededed); }
-    .icon-photos{ background:radial-gradient(circle at 50% 50%, #fff 0 13%, #f3c331 14% 24%, #ff8c4e 25% 35%, #f84a8f 36% 46%, #6a78ff 47% 57%, #4ad66a 58% 68%, #ffffff 69% 100%); }
-    .icon-camera{ background:linear-gradient(180deg,#767b84,#2a2e34); }
-    .icon-mail{ background:linear-gradient(180deg,#74c5ff,#4e8ef4); }
-    .icon-notes{ background:linear-gradient(180deg,#fff4c8 0 22%, #ffffff 22% 100%); }
-    .icon-reminders{ background:linear-gradient(180deg,#ffffff,#f2f3f6); }
-    .icon-clock{ background:linear-gradient(180deg,#ffffff,#eceef2); }
-    .icon-news{ background:linear-gradient(180deg,#ffffff,#f0f1f4); }
-    .icon-tv{ background:linear-gradient(180deg,#2a2b34,#0e1014); }
-    .icon-games{ background:linear-gradient(180deg,#ff8d57,#ff5378); }
-    .icon-store{ background:linear-gradient(180deg,#8cbaff,#618dff); }
-    .icon-maps{ background:linear-gradient(180deg,#b7f2f6,#92d0a6); }
-    .icon-health{ background:linear-gradient(180deg,#ffffff,#f4f5f7); }
-    .icon-wallet{ background:linear-gradient(180deg,#2c3139,#12161d); }
-    .icon-settings{ background:linear-gradient(180deg,#d9dce4,#a2a8b4); }
+    .icon-facetime{background:linear-gradient(180deg,#7be870,#56d962);}
+    .icon-calendar{background:linear-gradient(180deg,#ffffff,#ededed);}
+    .icon-photos{background:radial-gradient(circle at 50% 50%,#fff 0 13%,#f3c331 14% 24%,#ff8c4e 25% 35%,#f84a8f 36% 46%,#6a78ff 47% 57%,#4ad66a 58% 68%,#ffffff 69% 100%);}
+    .icon-camera{background:linear-gradient(180deg,#767b84,#2a2e34);}
+    .icon-mail{background:linear-gradient(180deg,#74c5ff,#4e8ef4);}
+    .icon-notes{background:linear-gradient(180deg,#fff4c8 0 22%,#ffffff 22% 100%);}
+    .icon-reminders{background:linear-gradient(180deg,#ffffff,#f2f3f6);}
+    .icon-clock{background:linear-gradient(180deg,#ffffff,#eceef2);}
+    .icon-news{background:linear-gradient(180deg,#ffffff,#f0f1f4);}
+    .icon-tv{background:linear-gradient(180deg,#2a2b34,#0e1014);}
+    .icon-games{background:linear-gradient(180deg,#ff8d57,#ff5378);}
+    .icon-store{background:linear-gradient(180deg,#8cbaff,#618dff);}
+    .icon-maps{background:linear-gradient(180deg,#b7f2f6,#92d0a6);}
+    .icon-health{background:linear-gradient(180deg,#ffffff,#f4f5f7);}
+    .icon-wallet{background:linear-gradient(180deg,#2c3139,#12161d);}
+    .icon-settings{background:linear-gradient(180deg,#d9dce4,#a2a8b4);}
 
-    .facetimeCam{ width:28px; height:18px; border-radius:6px; background:#fff; position:relative; }
-    .facetimeCam:after{ content:""; position:absolute; right:-7px; top:4px; border-left:10px solid #fff; border-top:5px solid transparent; border-bottom:5px solid transparent; }
-    .calendarMini .day{ color:#df715c; font-size:10px; font-weight:700; letter-spacing:.2px; }
-    .calendarMini .date{ font-size:27px; line-height:1; font-weight:300; color:#111; }
-    .mailEnvelope{ width:30px; height:20px; border-radius:4px; background:rgba(255,255,255,.22); position:relative; }
-    .mailEnvelope:before, .mailEnvelope:after{ content:""; position:absolute; left:0; right:0; margin:auto; width:22px; height:2px; background:rgba(255,255,255,.85); top:9px; transform:rotate(26deg); }
-    .mailEnvelope:after{ transform:rotate(-26deg); }
-    .notesGlyph{ width:24px; height:20px; }
-    .notesGlyph span{ display:block; height:3px; border-radius:2px; background:#3c3c3c; margin-bottom:5px; }
-    .remindersDots{ display:flex; gap:6px; }
-    .remindersDots span{ width:6px; height:6px; border-radius:50%; background:#4b4b4b; }
-    .clockFace{ width:36px; height:36px; border-radius:50%; border:2px solid #474747; position:relative; background:#fff; }
-    .clockFace:before, .clockFace:after{ content:""; position:absolute; left:50%; top:50%; transform-origin:bottom center; background:#333; border-radius:2px; }
-    .clockFace:before{ width:2px; height:11px; transform:translate(-50%,-100%) rotate(0deg); }
-    .clockFace:after{ width:2px; height:14px; transform:translate(-50%,-100%) rotate(52deg); }
-    .cameraLens{ width:38px; height:38px; border-radius:50%; background:radial-gradient(circle at 35% 35%, #9ec7ff 0%, #354761 22%, #0d1116 52%, #000 100%); box-shadow:0 0 0 4px rgba(255,255,255,.12); }
-    .newspaper{ width:26px; height:22px; border-radius:4px; background:#eceaf1; position:relative; border:1px solid rgba(0,0,0,.08); }
-    .newspaper:before{ content:""; position:absolute; left:5px; top:5px; width:8px; height:7px; background:#beb8ca; }
-    .newspaper:after{ content:""; position:absolute; right:4px; top:5px; width:8px; height:2px; background:#b1acba; box-shadow:0 4px 0 #b1acba, 0 8px 0 #b1acba; }
-    .mapsGlyph, .healthGlyph, .walletGlyph, .settingsGlyph, .gamesGlyph{ font-size:24px; }
-    .tvGlyph{ font-size:20px; font-weight:700; }
-    .storeGlyph{ font-size:18px; font-weight:700; }
-    .healthGlyph{ color:#ff5c87; }
-    .settingsGlyph{ color:#8f7ea1; }
+    .facetimeCam{width:28px;height:18px;border-radius:6px;background:#fff;position:relative;}
+    .facetimeCam:after{content:"";position:absolute;right:-8px;top:4px;border-left:10px solid #fff;border-top:5px solid transparent;border-bottom:5px solid transparent;}
+    .calendarMini .day{color:#df715c;font-size:10px;font-weight:700;letter-spacing:.2px;}
+    .calendarMini .date{font-size:25px;line-height:1;font-weight:200;color:#111;}
+    .mailEnvelope{width:30px;height:20px;border-radius:4px;background:rgba(255,255,255,.22);position:relative;}
+    .mailEnvelope:before,.mailEnvelope:after{content:"";position:absolute;left:0;right:0;margin:auto;width:22px;height:2px;background:rgba(255,255,255,.85);top:9px;transform:rotate(26deg);}
+    .mailEnvelope:after{transform:rotate(-26deg);}
+    .notesGlyph{width:24px;height:20px;}
+    .notesGlyph span{display:block;height:3px;border-radius:2px;background:#3c3c3c;margin-bottom:5px;}
+    .remindersDots{display:flex;gap:6px;}
+    .remindersDots span{width:6px;height:6px;border-radius:50%;background:#4b4b4b;}
+    .clockFace{width:34px;height:34px;border-radius:50%;border:2px solid #474747;position:relative;background:#fff;}
+    .clockFace:before,.clockFace:after{content:"";position:absolute;left:50%;top:50%;transform-origin:bottom center;background:#333;border-radius:2px;}
+    .clockFace:before{width:2px;height:10px;transform:translate(-50%,-100%) rotate(0deg);}
+    .clockFace:after{width:2px;height:13px;transform:translate(-50%,-100%) rotate(52deg);}
+    .cameraLens{width:36px;height:36px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#9ec7ff 0%,#354761 22%,#0d1116 52%,#000 100%);box-shadow:0 0 0 4px rgba(255,255,255,.12);}
+    .newspaper{width:26px;height:22px;border-radius:4px;background:#eceaf1;position:relative;border:1px solid rgba(0,0,0,.08);}
+    .newspaper:before{content:"";position:absolute;left:5px;top:5px;width:8px;height:7px;background:#beb8ca;}
+    .newspaper:after{content:"";position:absolute;right:4px;top:5px;width:8px;height:2px;background:#b1acba;box-shadow:0 4px 0 #b1acba,0 8px 0 #b1acba;}
+    .mapsGlyph,.healthGlyph,.walletGlyph,.settingsGlyph,.gamesGlyph{font-size:24px;}
+    .tvGlyph{font-size:20px;font-weight:700;}
+    .storeGlyph{font-size:18px;font-weight:700;}
+    .healthGlyph{color:#ff5c87;}
+    .settingsGlyph{color:#8f7ea1;}
 
-    .searchPill{ align-self:center; width:168px; height:24px; border-radius:999px; background:rgba(255,255,255,.16); backdrop-filter:blur(20px); display:flex; align-items:center; justify-content:center; gap:6px; color:rgba(255,255,255,.88); font-size:12px; font-weight:500; }
+    .searchPill{
+      align-self:center;width:100%;height:36px;border-radius:999px;
+      background:rgba(255,255,255,.18);backdrop-filter:blur(24px);
+      display:flex;align-items:center;justify-content:center;gap:7px;
+      color:rgba(255,255,255,.88);font-size:13px;font-weight:500;
+      border:1px solid rgba(255,255,255,.24);
+    }
+    .dock{
+      position:absolute;left:14px;right:14px;bottom:14px;padding:13px 18px;
+      border-radius:34px;background:rgba(255,255,255,.26);backdrop-filter:blur(28px);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.42),0 4px 18px rgba(0,0,0,.14);
+      display:grid;grid-template-columns:repeat(4,1fr);gap:12px;z-index:3;
+    }
+    .dock .appIcon{width:60px;height:60px;justify-self:center;}
+    .icon-phone{background:linear-gradient(180deg,#62dd67,#42ca4f);}
+    .icon-safari{background:linear-gradient(180deg,#5fc0ff,#2b7dff);}
+    .icon-messages{background:linear-gradient(180deg,#63ea6b,#35d14a);}
+    .icon-music{background:linear-gradient(180deg,#ff7384,#ed445f);}
 
-    .dock{ position:absolute; left:14px; right:14px; bottom:10px; padding:12px; border-radius:32px; background:rgba(255,255,255,.24); backdrop-filter:blur(22px); box-shadow:inset 0 1px 0 rgba(255,255,255,.36); display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; z-index:3; }
-    .dock .appIcon{ width:60px; height:60px; justify-self:center; }
-    .icon-phone{ background:linear-gradient(180deg,#62dd67,#42ca4f); }
-    .icon-safari{ background:linear-gradient(180deg,#5fc0ff,#2b7dff); }
-    .icon-messages{ background:linear-gradient(180deg,#63ea6b,#35d14a); }
-    .icon-music{ background:linear-gradient(180deg,#ff7384,#ed445f); }
+    /* ── PUSH ── */
+    .pushOverlay{
+      position:absolute;inset:0;
+      display:none;align-items:flex-start;justify-content:center;
+      padding:78px 14px 0;z-index:20;pointer-events:none;
+    }
+    .pushOverlay.show{display:flex;}
+    .pushOverlay.show .pushCard{animation:slideDownBounce .48s cubic-bezier(.34,1.5,.64,1) forwards;}
+    @keyframes slideDownBounce{from{opacity:0;transform:translateY(-36px) scale(.94);}to{opacity:1;transform:translateY(0) scale(1);}}
+    .pushCard{
+      width:100%;background:rgba(248,248,252,.90);color:#111;
+      backdrop-filter:blur(34px) saturate(1.8);-webkit-backdrop-filter:blur(34px) saturate(1.8);
+      border-radius:22px;
+      box-shadow:0 18px 56px rgba(0,0,0,.20),0 2px 8px rgba(0,0,0,.10),inset 0 1px 0 rgba(255,255,255,.72);
+      border:1px solid rgba(255,255,255,.62);
+      padding:14px 16px;pointer-events:auto;
+    }
+    .pushHead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;}
+    .pushLeft{display:flex;align-items:center;gap:11px;}
+    .pushIcon{
+      width:40px;height:40px;border-radius:11px;
+      background:linear-gradient(160deg,#6F2DA8,#44205F);
+      display:grid;place-items:center;
+      box-shadow:0 6px 16px rgba(68,32,95,.28);flex:0 0 auto;
+    }
+    .pushIcon img{width:26px;height:26px;object-fit:contain;display:block;filter:brightness(0) invert(1);}
+    .pushAppName{font-size:13px;font-weight:700;color:#1a1a2e;letter-spacing:-.1px;}
+    .pushTime{font-size:12px;color:#8a929d;font-weight:500;}
+    .pushText{font-size:14.5px;line-height:1.44;color:#2a3340;font-weight:450;}
+    .pushActions{display:flex;gap:8px;margin-top:12px;}
+    .pushBtn{
+      flex:1;appearance:none;border:none;cursor:pointer;border-radius:13px;
+      padding:11px 12px;font-weight:650;font-size:13px;
+      display:inline-flex;align-items:center;justify-content:center;gap:7px;
+      transition:transform .1s,opacity .1s;
+    }
+    .pushBtn:active{transform:scale(.96);}
+    .pushBtn.primary{color:#fff;background:linear-gradient(180deg,#2ecc84,#10b76a);box-shadow:0 8px 18px rgba(16,183,106,.26);}
+    .pushBtn.secondary{color:#4a5568;background:rgba(0,0,0,.07);border:1px solid rgba(0,0,0,.08);}
 
-    .pushOverlay{ position:absolute; inset:0; display:none; align-items:flex-start; justify-content:center; padding:72px 12px 16px; z-index:20; pointer-events:none; }
-    .pushOverlay.show{ display:flex; }
-    .pushCard{ width:100%; max-width:388px; background:rgba(255,255,255,.84); color:#111; backdrop-filter:blur(24px); border-radius:30px; box-shadow:0 24px 70px rgba(0,0,0,.18); border:1px solid rgba(255,255,255,.58); padding:18px; pointer-events:auto; }
-    .pushHead{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px; }
-    .pushLeft{ display:flex; align-items:center; gap:14px; }
-    .pushIcon{ width:54px; height:54px; border-radius:17px; background:linear-gradient(180deg,#5A287D,#44205F); display:grid; place-items:center; box-shadow:0 10px 24px rgba(68,32,95,.18); flex:0 0 auto; }
-    .pushIcon img{ width:36px; height:36px; object-fit:contain; display:block; }
-    .pushTitle{ font-size:18px; font-weight:650; color:#18232d; }
-    .pushSub,.pushTime{ font-size:12px; color:#7f8790; font-weight:650; }
-    .pushText{ font-size:16px; line-height:1.42; color:#35424d; font-weight:560; }
-    .btnRow{ display:flex; gap:10px; flex-wrap:wrap; margin-top:16px; }
-    .btn{ appearance:none; border:none; cursor:pointer; border-radius:16px; padding:12px 16px; font-weight:650; font-size:13px; display:inline-flex; align-items:center; justify-content:center; gap:10px; }
-    .btn.primary{ color:#fff; background:linear-gradient(180deg, var(--green), var(--green2)); box-shadow:0 14px 28px rgba(0,0,0,.12); }
-    .btn.secondary{ color:#30414d; background:rgba(255,255,255,.7); border:1px solid rgba(0,0,0,.10); }
+    /* ── APP ── */
+    .appScene{position:absolute;inset:0;display:none;z-index:30;background:#EEF1F5;flex-direction:column;}
+    .appScene.show{display:flex;animation:fadeInUp .32s ease forwards;}
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 
-    .appScene{ position:absolute; inset:0; display:none; z-index:30; background:#EEF1F5; flex-direction:column; }
-    .appScene.show{ display:flex; }
+    .header{
+      padding:20px 18px 16px;color:#fff;
+      background:radial-gradient(900px 240px at 15% 0%,rgba(255,255,255,.18),rgba(255,255,255,0) 56%),
+                 linear-gradient(175deg,#6F2DA8 0%,#5A287D 55%,#44205F 100%);
+      box-shadow:0 8px 28px rgba(0,0,0,.22);position:relative;overflow:hidden;
+    }
+    .header::after{
+      content:"";position:absolute;right:-60px;top:-60px;
+      width:200px;height:200px;border-radius:50%;
+      background:radial-gradient(circle,rgba(255,255,255,.07),transparent 70%);pointer-events:none;
+    }
+    .topRow{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;font-size:13px;}
+    .topTime{justify-self:start;font-weight:600;font-size:15px;letter-spacing:-.2px;}
+    .rightIcons{justify-self:end;display:flex;gap:8px;align-items:center;}
+    .badge{
+      width:32px;height:32px;border-radius:12px;
+      border:1px solid rgba(255,255,255,.20);
+      background:rgba(255,255,255,.12);
+      display:grid;place-items:center;
+      position:relative;cursor:pointer;user-select:none;font-size:15px;
+      transition:background .14s;
+    }
+    .badge:active{background:rgba(255,255,255,.22);}
+    .badgeDot{
+      position:absolute;top:-5px;right:-5px;
+      width:17px;height:17px;border-radius:999px;
+      background:var(--red);color:#fff;
+      font-size:10px;display:grid;place-items:center;font-weight:700;
+      border:2px solid #44205F;
+    }
+    .logoCenter{justify-self:center;display:flex;align-items:center;justify-content:center;min-width:130px;}
+    .nwLogo{height:38px;object-fit:contain;display:block;filter:brightness(0) invert(1) drop-shadow(0 3px 8px rgba(0,0,0,.18));}
+    .headline{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-top:12px;}
+    .h1{font-size:25px;font-weight:500;margin:0;letter-spacing:-.5px;}
+    .sub{margin-top:3px;font-size:12px;opacity:.86;font-weight:500;}
+    .pillStatus{
+      display:inline-flex;align-items:center;gap:7px;
+      background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.20);
+      border-radius:999px;padding:7px 12px;font-weight:600;font-size:12px;
+      backdrop-filter:blur(10px);white-space:nowrap;
+    }
+    .dot{
+      width:8px;height:8px;border-radius:999px;background:#43d17b;
+      animation:pulse 2s ease infinite;
+    }
+    @keyframes pulse{
+      0%,100%{box-shadow:0 0 0 3px rgba(67,209,123,.22),0 0 6px rgba(67,209,123,.4);}
+      50%{box-shadow:0 0 0 5px rgba(67,209,123,.14),0 0 12px rgba(67,209,123,.6);}
+    }
+    .summaryWrap{
+      margin-top:14px;background:rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.18);border-radius:22px;
+      padding:14px 16px;backdrop-filter:blur(12px);
+    }
+    .sumTop{display:flex;align-items:baseline;justify-content:space-between;gap:12px;}
+    .sumLabel{font-weight:600;font-size:11px;opacity:.82;letter-spacing:.3px;}
+    .sumValue{font-size:34px;font-weight:300;letter-spacing:-1px;}
+    .sumGrid{display:grid;grid-template-columns:1fr 108px;gap:12px;margin-top:10px;align-items:center;}
+    .legend{display:flex;flex-direction:column;gap:9px;}
+    .legRow{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12.5px;font-weight:550;color:rgba(255,255,255,.94);}
+    .legLeft{display:flex;align-items:center;gap:9px;}
+    .swatch{width:9px;height:9px;border-radius:999px;background:#B162FF;box-shadow:0 0 0 3px rgba(177,98,255,.20);}
+    .swatch.pink{background:#FF8FD8;box-shadow:0 0 0 3px rgba(255,143,216,.20);}
+    .legSmall{font-size:11.5px;opacity:.82;font-weight:500;}
+    .donut{
+      width:108px;height:108px;border-radius:999px;
+      background:conic-gradient(#B162FF 0 290deg,#FF8FD8 290deg 336deg,rgba(255,255,255,.18) 336deg 360deg);
+      display:grid;place-items:center;position:relative;
+      box-shadow:0 12px 32px rgba(0,0,0,.20);
+    }
+    .donut::after{
+      content:"";width:76px;height:76px;border-radius:999px;
+      background:linear-gradient(160deg,rgba(68,32,95,.94),rgba(44,18,72,.88));
+      border:1px solid rgba(255,255,255,.16);position:absolute;
+    }
+    .donut span{position:relative;z-index:1;font-weight:500;font-size:22px;opacity:.96;}
 
-    .header{ padding:18px 18px 14px; color:#fff; background:radial-gradient(920px 260px at 20% 0%, rgba(255,255,255,.16), rgba(255,255,255,0) 60%), linear-gradient(180deg, var(--purple), var(--purple2)); box-shadow:0 10px 30px rgba(0,0,0,.22); }
-    .topRow{ display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:10px; font-size:12px; opacity:.96; }
-    .topTime{ justify-self:start; font-weight:600; }
-    .rightIcons{ justify-self:end; display:flex; gap:10px; align-items:center; }
-    .badge{ width:28px; height:28px; border-radius:12px; border:1px solid rgba(255,255,255,.22); background:rgba(255,255,255,.10); display:grid; place-items:center; position:relative; cursor:pointer; user-select:none; font-size:14px; }
-    .badgeDot{ position:absolute; top:-6px; right:-6px; width:18px; height:18px; border-radius:999px; background:var(--red); color:#fff; font-size:11px; display:grid; place-items:center; font-weight:700; border:2px solid var(--purple2); }
-    .logoCenter{ justify-self:center; display:flex; align-items:center; justify-content:center; min-width:140px; }
-    .nwLogo{ height:46px; object-fit:contain; display:block; filter:drop-shadow(0 4px 10px rgba(0,0,0,.20)); }
-    .headline{ display:flex; align-items:flex-end; justify-content:space-between; gap:10px; margin-top:10px; }
-    .h1{ font-size:26px; font-weight:560; margin:0; letter-spacing:-.4px; }
-    .sub{ margin-top:4px; font-size:12.5px; opacity:.92; font-weight:560; }
-    .pillStatus{ display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.18); border-radius:999px; padding:8px 12px; font-weight:600; font-size:12px; backdrop-filter:blur(10px); white-space:nowrap; }
-    .dot{ width:10px; height:10px; border-radius:999px; background:#43d17b; box-shadow:0 0 0 3px rgba(67,209,123,.18); }
-    .summaryWrap{ margin-top:14px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.16); border-radius:22px; padding:14px; backdrop-filter:blur(10px); }
-    .sumTop{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; }
-    .sumLabel{ font-weight:600; font-size:12px; opacity:.85; }
-    .sumValue{ font-size:34px; font-weight:360; letter-spacing:-.8px; }
-    .sumGrid{ display:grid; grid-template-columns:1fr 120px; gap:14px; margin-top:10px; align-items:center; }
-    .legend{ display:flex; flex-direction:column; gap:10px; }
-    .legRow{ display:flex; align-items:center; justify-content:space-between; gap:10px; font-size:13px; font-weight:560; color:rgba(255,255,255,.92); }
-    .legLeft{ display:flex; align-items:center; gap:10px; }
-    .swatch{ width:10px; height:10px; border-radius:999px; background:#B162FF; box-shadow:0 0 0 3px rgba(177,98,255,.18); }
-    .swatch.pink{ background:#FF8FD8; box-shadow:0 0 0 3px rgba(255,143,216,.18); }
-    .legSmall{ font-size:12px; opacity:.86; font-weight:520; }
-    .donut{ width:120px; height:120px; border-radius:999px; background:conic-gradient(#B162FF 0 290deg, #FF8FD8 290deg 336deg, rgba(255,255,255,.22) 336deg 360deg); display:grid; place-items:center; position:relative; box-shadow:0 18px 40px rgba(0,0,0,.18); }
-    .donut::after{ content:""; width:88px; height:88px; border-radius:999px; background:linear-gradient(180deg, rgba(68,32,95,.92), rgba(68,32,95,.84)); border:1px solid rgba(255,255,255,.18); position:absolute; }
-    .donut span{ position:relative; z-index:1; font-weight:560; font-size:26px; opacity:.95; }
-    .content{ flex:1; overflow:auto; padding:16px 16px 104px; }
-    .tabs{ display:flex; gap:10px; margin:2px 2px 12px; }
-    .tab{ flex:1; border-radius:16px; padding:10px 12px; font-weight:600; font-size:13px; border:1px solid var(--line); background:#fff; color:rgba(11,31,38,.70); cursor:pointer; user-select:none; box-shadow:0 10px 22px rgba(0,0,0,.06); }
-    .tab.active{ background:rgba(90,40,125,.10); border:1px solid rgba(90,40,125,.18); color:rgba(68,32,95,.95); box-shadow:none; }
-    .card{ background:var(--card); border:1px solid var(--line); border-radius:22px; box-shadow:0 14px 34px rgba(68,32,95,.12); }
-    .rowCard{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px; cursor:pointer; user-select:none; }
-    .pillCount{ width:30px; height:30px; border-radius:999px; background:rgba(90,40,125,.12); border:1px solid rgba(90,40,125,.20); display:grid; place-items:center; font-weight:650; color:var(--purple); }
-    .chev{ font-weight:650; color:rgba(11,31,38,.45); font-size:18px; }
-    .sectionTitle{ font-weight:650; color:rgba(11,31,38,.55); font-size:13px; margin:18px 2px 10px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
-    .accountList{ display:grid; gap:12px; }
-    .accountCard{ padding:14px; display:grid; grid-template-columns:4px 1fr auto; gap:12px; align-items:center; cursor:pointer; user-select:none; }
-    .bar{ width:4px; height:44px; border-radius:99px; background:#A43BE2; }
-    .bar.pink{ background:#FF8FD8; }
-    .acctName{ font-weight:620; color:rgba(11,31,38,.92); }
-    .acctNum{ font-weight:520; font-size:12px; color:rgba(11,31,38,.55); margin-top:2px; }
-    .acctRight{ text-align:right; display:flex; flex-direction:column; gap:2px; min-width:120px; }
-    .bal{ font-weight:620; color:rgba(11,31,38,.92); font-size:16px; }
-    .avail{ font-weight:520; color:rgba(11,31,38,.55); font-size:12px; }
-    .mortgageHero{ padding:16px; background:linear-gradient(135deg, rgba(90,40,125,.96), rgba(111,45,168,.92)); color:#fff; border-radius:22px; box-shadow:0 14px 34px rgba(68,32,95,.12); }
-    .mortgageHero h3{ margin:0 0 8px; font-size:20px; font-weight:620; }
-    .mortgageHero p{ margin:0; line-height:1.45; font-size:13px; font-weight:520; opacity:.95; }
-    .offerGrid{ display:grid; gap:12px; margin-top:14px; }
-    .offerCard{ padding:14px; }
-    .offerTag{ display:inline-flex; align-items:center; gap:8px; border-radius:999px; padding:6px 10px; background:rgba(90,40,125,.08); border:1px solid rgba(90,40,125,.14); color:var(--purple); font-size:11px; font-weight:650; margin-bottom:10px; }
-    .offerTitle{ font-weight:620; color:rgba(11,31,38,.92); font-size:15px; }
-    .offerDesc{ margin-top:6px; font-size:12.5px; line-height:1.45; font-weight:520; color:rgba(11,31,38,.62); }
-    .nav{ position:absolute; left:0; right:0; bottom:0; background:rgba(255,255,255,.92); border-top:1px solid rgba(0,0,0,.06); padding:10px 10px 14px; display:flex; justify-content:space-around; z-index:10; backdrop-filter:blur(10px); }
-    .navItem{ display:flex; flex-direction:column; align-items:center; gap:6px; font-size:11px; font-weight:560; color:rgba(11,31,38,.45); min-width:64px; cursor:pointer; user-select:none; }
-    .navItem .ico{ width:28px; height:28px; display:grid; place-items:center; border-radius:12px; }
-    .navItem.active{ color:var(--purple); }
-    .navItem.active .ico{ background:rgba(90,40,125,.12); border:1px solid rgba(90,40,125,.16); color:var(--purple); }
+    .content{flex:1;overflow:auto;padding:14px 14px 96px;-webkit-overflow-scrolling:touch;}
+    .content::-webkit-scrollbar{display:none;}
+    .tabs{
+      display:flex;gap:6px;margin:0 2px 12px;
+      background:#fff;border-radius:17px;padding:5px;
+      box-shadow:0 2px 10px rgba(0,0,0,.06);border:1px solid var(--line);
+    }
+    .tab{
+      flex:1;border-radius:12px;padding:9px 6px;
+      font-weight:600;font-size:12px;border:none;
+      background:transparent;color:rgba(11,31,38,.50);
+      cursor:pointer;user-select:none;transition:all .16s;
+    }
+    .tab.active{background:linear-gradient(160deg,#6F2DA8,#5A287D);color:#fff;box-shadow:0 4px 12px rgba(90,40,125,.26);}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:0 4px 16px rgba(68,32,95,.07);}
+    .rowCard{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px;cursor:pointer;user-select:none;}
+    .pillCount{width:28px;height:28px;border-radius:999px;background:rgba(90,40,125,.10);border:1px solid rgba(90,40,125,.16);display:grid;place-items:center;font-weight:650;color:var(--purple);font-size:13px;}
+    .chev{font-weight:650;color:rgba(11,31,38,.38);font-size:17px;}
+    .sectionTitle{font-weight:650;color:rgba(11,31,38,.48);font-size:11px;letter-spacing:.6px;text-transform:uppercase;margin:16px 2px 8px;display:flex;align-items:center;justify-content:space-between;}
+    .accountList{display:grid;gap:8px;}
+    .accountCard{padding:13px;display:grid;grid-template-columns:4px 1fr auto;gap:11px;align-items:center;cursor:pointer;user-select:none;transition:transform .1s;}
+    .accountCard:active{transform:scale(.99);}
+    .bar{width:4px;height:42px;border-radius:99px;background:linear-gradient(180deg,#A43BE2,#7828C8);}
+    .bar.pink{background:linear-gradient(180deg,#FF8FD8,#e86cc8);}
+    .acctName{font-weight:620;color:rgba(11,31,38,.92);font-size:13.5px;}
+    .acctNum{font-weight:500;font-size:11.5px;color:rgba(11,31,38,.48);margin-top:2px;}
+    .acctRight{text-align:right;display:flex;flex-direction:column;gap:2px;min-width:105px;}
+    .bal{font-weight:650;color:rgba(11,31,38,.92);font-size:15px;}
+    .avail{font-weight:500;color:rgba(11,31,38,.48);font-size:11px;}
+    .mortgageHero{padding:16px;background:linear-gradient(135deg,rgba(90,40,125,.96),rgba(111,45,168,.92));color:#fff;border-radius:20px;box-shadow:0 12px 30px rgba(68,32,95,.14);}
+    .mortgageHero h3{margin:0 0 8px;font-size:19px;font-weight:620;}
+    .mortgageHero p{margin:0;line-height:1.5;font-size:13px;font-weight:430;opacity:.95;}
+    .offerGrid{display:grid;gap:8px;margin-top:12px;}
+    .offerCard{padding:13px;}
+    .offerTag{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:5px 10px;background:rgba(90,40,125,.08);border:1px solid rgba(90,40,125,.14);color:var(--purple);font-size:11px;font-weight:650;margin-bottom:8px;}
+    .offerTitle{font-weight:620;color:rgba(11,31,38,.92);font-size:14px;}
+    .offerDesc{margin-top:5px;font-size:12px;line-height:1.45;font-weight:430;color:rgba(11,31,38,.56);}
+    .btnRow{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+    .btn{appearance:none;border:none;cursor:pointer;border-radius:15px;padding:12px 16px;font-weight:650;font-size:13px;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .1s,opacity .1s;}
+    .btn:active{transform:scale(.97);}
+    .btn.primary{color:#fff;background:linear-gradient(180deg,var(--green),var(--green2));box-shadow:0 8px 20px rgba(16,183,106,.22);}
+    .btn.secondary{color:#30414d;background:rgba(255,255,255,.7);border:1px solid rgba(0,0,0,.10);}
 
-    .authOverlay{ position:absolute; inset:0; display:none; align-items:center; justify-content:center; z-index:40; background:rgba(10,12,18,.28); backdrop-filter:blur(16px); padding:18px; }
-    .authOverlay.show{ display:flex; }
-    .authCard{ width:100%; max-width:372px; background:rgba(255,255,255,.88); backdrop-filter:blur(22px); border-radius:30px; padding:24px; box-shadow:0 26px 80px rgba(0,0,0,.24); border:1px solid rgba(255,255,255,.56); }
-    .authLogoWrap{ width:62px; height:62px; border-radius:20px; margin-bottom:16px; background:linear-gradient(180deg,#5A287D,#44205F); display:grid; place-items:center; box-shadow:0 14px 28px rgba(68,32,95,.18); }
-    .authLogoWrap img{ width:40px; height:40px; object-fit:contain; display:block; }
-    .authTitle{ font-size:22px; font-weight:650; color:#27313d; margin:0 0 6px; letter-spacing:-.2px; }
-    .authSub{ font-size:13px; line-height:1.45; color:#687281; font-weight:540; margin-bottom:16px; }
-    .codeInput{ width:100%; border:1px solid rgba(0,0,0,.10); border-radius:20px; padding:18px; font-size:26px; letter-spacing:8px; text-align:center; font-weight:560; outline:none; color:#1d2932; margin-bottom:12px; background:#fff; }
-    .authError{ min-height:18px; font-size:12px; color:#D62D2D; font-weight:600; }
+    .nav{
+      position:absolute;left:0;right:0;bottom:0;
+      background:rgba(252,252,254,.92);border-top:1px solid rgba(0,0,0,.07);
+      padding:10px 10px 18px;display:flex;justify-content:space-around;
+      z-index:10;backdrop-filter:blur(18px);
+    }
+    .navItem{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10.5px;font-weight:550;color:rgba(11,31,38,.38);min-width:56px;cursor:pointer;user-select:none;transition:color .14s;}
+    .navItem .ico{width:26px;height:26px;display:grid;place-items:center;border-radius:11px;transition:all .14s;font-size:17px;}
+    .navItem.active{color:var(--purple);}
+    .navItem.active .ico{background:rgba(90,40,125,.10);border:1px solid rgba(90,40,125,.14);}
 
-    .chatOverlay{ position:absolute; inset:0; display:none; align-items:center; justify-content:center; background:rgba(68,32,95,.42); padding:10px; z-index:50; }
-    .chatOverlay.show{ display:flex; }
-    .chatSheet{ position:relative; width:100%; height:100%; border-radius:28px; background:#fff; border:1px solid rgba(255,255,255,.68); box-shadow:0 30px 90px rgba(0,0,0,.32); overflow:hidden; display:flex; flex-direction:column; }
-    .chatMount{ flex:1; min-height:0; position:relative; overflow:hidden; background:#fff; }
-    #chatFrame{ position:absolute; inset:0; width:100%; height:100%; border:0; display:block; background:#fff; }
-    .chatCloseFab{ position:absolute; top:14px; left:14px; width:44px; height:44px; border-radius:16px; border:1px solid rgba(0,0,0,.08); background:#fff; font-weight:500; cursor:pointer; box-shadow:0 12px 28px rgba(0,0,0,.10); z-index:5; display:grid; place-items:center; font-size:26px; line-height:1; }
+    /* ── AUTH ── */
+    .authOverlay{
+      position:absolute;inset:0;display:none;
+      align-items:center;justify-content:center;
+      z-index:40;background:rgba(8,10,18,.38);
+      backdrop-filter:blur(22px);padding:20px;
+    }
+    .authOverlay.show{display:flex;animation:fadeIn .22s ease;}
+    @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+    .authCard{
+      width:100%;max-width:330px;
+      background:rgba(255,255,255,.93);backdrop-filter:blur(28px);
+      border-radius:28px;padding:24px;
+      box-shadow:0 28px 76px rgba(0,0,0,.26),inset 0 1px 0 rgba(255,255,255,.72);
+      border:1px solid rgba(255,255,255,.62);
+      animation:scaleUp .28s cubic-bezier(.34,1.4,.64,1);
+    }
+    @keyframes scaleUp{from{transform:scale(.92);}to{transform:scale(1);}}
+    .authLogoWrap{
+      width:62px;height:62px;border-radius:20px;margin-bottom:16px;
+      background:linear-gradient(160deg,#6F2DA8,#44205F);
+      display:grid;place-items:center;
+      box-shadow:0 10px 24px rgba(68,32,95,.24);
+    }
+    .authLogoWrap img{width:40px;height:40px;object-fit:contain;display:block;filter:brightness(0) invert(1);}
+    .authTitle{font-size:21px;font-weight:700;color:#1a2030;margin:0 0 5px;letter-spacing:-.3px;}
+    .authSub{font-size:13px;line-height:1.5;color:#607080;font-weight:430;margin-bottom:16px;}
+
+    /* PIN dots */
+    .pinDots{display:flex;gap:15px;justify-content:center;margin-bottom:14px;}
+    .pinDot{
+      width:13px;height:13px;border-radius:50%;
+      border:2px solid rgba(90,40,125,.28);background:transparent;
+      transition:all .14s;
+    }
+    .pinDot.filled{background:var(--purple);border-color:var(--purple);transform:scale(1.12);}
+
+    .codeInput{
+      width:100%;border:1.5px solid rgba(0,0,0,.12);border-radius:18px;
+      padding:15px;font-size:26px;letter-spacing:12px;text-align:center;
+      font-weight:500;outline:none;color:#1d2932;margin-bottom:4px;
+      background:#f7f8fa;transition:border-color .16s,box-shadow .16s;
+    }
+    .codeInput:focus{border-color:rgba(90,40,125,.4);box-shadow:0 0 0 3px rgba(90,40,125,.10);background:#fff;}
+    .authError{min-height:18px;font-size:12px;color:#D62D2D;font-weight:600;margin-bottom:8px;}
+
+    /* ── CHAT ── */
+    .chatOverlay{
+      position:absolute;inset:0;display:none;
+      align-items:flex-end;
+      background:rgba(68,32,95,.44);padding:0;z-index:50;
+    }
+    .chatOverlay.show{display:flex;animation:fadeIn .2s ease;}
+    .chatSheet{
+      position:relative;width:100%;height:94%;
+      border-radius:28px 28px 0 0;background:#fff;
+      box-shadow:0 -6px 36px rgba(0,0,0,.26);
+      overflow:hidden;display:flex;flex-direction:column;
+      animation:slideUp .36s cubic-bezier(.34,1.2,.64,1);
+    }
+    @keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+    .chatHandleBar{
+      position:absolute;top:10px;left:50%;transform:translateX(-50%);
+      width:42px;height:4px;border-radius:99px;
+      background:rgba(0,0,0,.13);z-index:6;
+    }
+    .chatMount{flex:1;min-height:0;position:relative;overflow:hidden;background:#fff;}
+    #chatFrame{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;background:#fff;}
+    .chatCloseFab{
+      position:absolute;top:12px;right:12px;
+      width:32px;height:32px;border-radius:50%;
+      border:none;background:rgba(0,0,0,.08);
+      cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.10);
+      z-index:5;display:grid;place-items:center;
+      font-size:17px;line-height:1;color:#666;
+      transition:background .14s;
+    }
+    .chatCloseFab:active{background:rgba(0,0,0,.16);}
   </style>
 </head>
 <body>
-  <div class="device">
-    <div class="screen">
-      <div class="homeScreen" id="homeScreen">
-        <div class="statusBar">
-          <div class="statusLeft">12:00</div>
-          <div class="dynamicIsland"></div>
-          <div class="statusRight"><span style="font-size:12px;">⋮</span><div class="signalBars"><span></span><span></span><span></span><span></span></div><div class="battery"><div class="batteryFill"></div></div></div>
-        </div>
-        <div class="iconsArea">
-          <div class="widgetRow">
-            <div class="widget weatherWidget"><div style="height:60px;"></div><div class="widgetSmallLabel">Weather</div></div>
-            <div class="widget"><div class="calendarWidgetTop">WEDNESDAY</div><div class="calendarWidgetDate">1</div><div class="widgetSmallLabel" style="color:#8a9097;">Calendar</div></div>
-          </div>
-          <div class="iconGrid">
-            <div class="iconItem"><div class="appIcon icon-facetime"><div class="facetimeCam"></div></div><div class="label">FaceTime</div></div>
-            <div class="iconItem calendarMini"><div class="appIcon icon-calendar"><div style="text-align:center;"><div class="day">Wed</div><div class="date">1</div></div></div><div class="label">Calendar</div></div>
-            <div class="iconItem"><div class="appIcon icon-photos"></div><div class="label">Photos</div></div>
-            <div class="iconItem"><div class="appIcon icon-camera"><div class="cameraLens"></div></div><div class="label">Camera</div></div>
-            <div class="iconItem"><div class="appIcon icon-mail"><div class="mailEnvelope"></div></div><div class="label">Mail</div></div>
-            <div class="iconItem"><div class="appIcon icon-notes"><div class="notesGlyph"><span></span><span></span><span></span></div></div><div class="label">Notes</div></div>
-            <div class="iconItem"><div class="appIcon icon-reminders"><div class="remindersDots"><span></span><span></span><span></span></div></div><div class="label">Reminders</div></div>
-            <div class="iconItem"><div class="appIcon icon-clock"><div class="clockFace"></div></div><div class="label">Clock</div></div>
-            <div class="iconItem"><div class="appIcon icon-news"><div class="newspaper"></div></div><div class="label">News</div></div>
-            <div class="iconItem"><div class="appIcon icon-tv"><div class="tvGlyph">tv</div></div><div class="label">TV</div></div>
-            <div class="iconItem"><div class="appIcon icon-games"><div class="gamesGlyph">🚀</div></div><div class="label">Games</div></div>
-            <div class="iconItem"><div class="appIcon icon-store"><div class="storeGlyph">A</div></div><div class="label">App Store</div></div>
-            <div class="iconItem"><div class="appIcon icon-maps"><div class="mapsGlyph">🗺️</div></div><div class="label">Maps</div></div>
-            <div class="iconItem"><div class="appIcon icon-health"><div class="healthGlyph">♥</div></div><div class="label">Health</div></div>
-            <div class="iconItem"><div class="appIcon icon-wallet"><div class="walletGlyph">💳</div></div><div class="label">Wallet</div></div>
-            <div class="iconItem"><div class="appIcon icon-settings"><div class="settingsGlyph">⚙︎</div></div><div class="label">Settings</div></div>
-          </div>
-          <div class="searchPill">⌕ Search</div>
-        </div>
-        <div class="dock">
-          <div class="iconItem" style="gap:0;"><div class="appIcon icon-phone">📞</div></div>
-          <div class="iconItem" style="gap:0;"><div class="appIcon icon-safari">🧭</div></div>
-          <div class="iconItem" style="gap:0;"><div class="appIcon icon-messages">💬</div></div>
-          <div class="iconItem" style="gap:0;"><div class="appIcon icon-music">🎵</div></div>
-        </div>
-      </div>
+  <div class="deviceWrap">
+    <div class="btnSilent"></div>
+    <div class="btnVolUp"></div>
+    <div class="btnVolDn"></div>
+    <div class="btnPower"></div>
 
-      <div class="pushOverlay" id="pushOverlay">
-        <div class="pushCard">
-          <div class="pushHead">
-            <div class="pushLeft"><div class="pushIcon"><img src="https://www.onlinebanking.natwest.com/assets/images/brandImages/logo.svg" alt="NatWest logo"></div><div><div class="pushTitle">Cora</div><div class="pushSub">New in-app message</div></div></div>
-            <div class="pushTime">Just now</div>
+    <div class="device">
+      <div class="screen">
+
+        <!-- HOME SCREEN -->
+        <div class="homeScreen" id="homeScreen">
+          <div class="statusBar">
+            <div class="statusLeft" id="liveClock">9:41</div>
+            <div class="dynamicIsland"></div>
+            <div class="statusRight">
+              <div class="signalBars"><span></span><span></span><span></span><span></span></div>
+              <div class="wifiIcon"><span></span><span></span><span></span></div>
+              <div class="battery"><div class="batteryFill"></div></div>
+            </div>
           </div>
-          <div class="pushText" id="pushText">Hi Sarah. We noticed you’ve been exploring properties recently. Thinking about buying? I can help you work out what’s possible, no commitment, just a conversation</div>
-          <div class="btnRow"><button class="btn primary" id="btnEngagePush">💬 Tap to open</button><button class="btn secondary" id="btnDismissPush">Dismiss</button></div>
-        </div>
-      </div>
 
-      <div class="appScene" id="appScene">
-        <div class="header">
-          <div class="topRow">
-            <div class="topTime">9:41</div>
-            <div class="logoCenter"><img class="nwLogo" src="https://www.onlinebanking.natwest.com/assets/images/brandImages/logo.svg" alt="NatWest logo" /></div>
-            <div class="rightIcons"><div class="badge" id="btnHeaderChat" title="Support chat">💬</div><div class="badge" title="Alerts">🔔<div class="badgeDot">3</div></div></div>
+          <div class="iconsArea">
+            <div class="widgetRow">
+              <div class="widget weatherWidget">
+                <div class="weatherTemp">18°</div>
+                <div class="weatherDesc">Partly Cloudy</div>
+                <div class="widgetSmallLabel" style="color:rgba(255,255,255,.9);">St Albans</div>
+              </div>
+              <div class="widget">
+                <div class="calendarWidgetTop" id="calDay">TUESDAY</div>
+                <div class="calendarWidgetDate" id="calDate">24</div>
+                <div class="widgetSmallLabel" style="color:#8a9097;">Calendar</div>
+              </div>
+            </div>
+            <div class="iconGrid">
+              <div class="iconItem"><div class="appIcon icon-facetime"><div class="facetimeCam"></div></div><div class="label">FaceTime</div></div>
+              <div class="iconItem calendarMini"><div class="appIcon icon-calendar"><div style="text-align:center;"><div class="day" id="calDayMini">Tue</div><div class="date" id="calDateMini">24</div></div></div><div class="label">Calendar</div></div>
+              <div class="iconItem"><div class="appIcon icon-photos"></div><div class="label">Photos</div></div>
+              <div class="iconItem"><div class="appIcon icon-camera"><div class="cameraLens"></div></div><div class="label">Camera</div></div>
+              <div class="iconItem"><div class="appIcon icon-mail"><div class="mailEnvelope"></div></div><div class="label">Mail</div></div>
+              <div class="iconItem"><div class="appIcon icon-notes"><div class="notesGlyph"><span></span><span></span><span></span></div></div><div class="label">Notes</div></div>
+              <div class="iconItem"><div class="appIcon icon-reminders"><div class="remindersDots"><span></span><span></span><span></span></div></div><div class="label">Reminders</div></div>
+              <div class="iconItem"><div class="appIcon icon-clock"><div class="clockFace"></div></div><div class="label">Clock</div></div>
+              <div class="iconItem"><div class="appIcon icon-news"><div class="newspaper"></div></div><div class="label">News</div></div>
+              <div class="iconItem"><div class="appIcon icon-tv"><div class="tvGlyph">tv</div></div><div class="label">TV</div></div>
+              <div class="iconItem"><div class="appIcon icon-games"><div class="gamesGlyph">🚀</div></div><div class="label">Games</div></div>
+              <div class="iconItem"><div class="appIcon icon-store"><div class="storeGlyph">A</div></div><div class="label">App Store</div></div>
+              <div class="iconItem"><div class="appIcon icon-maps"><div class="mapsGlyph">🗺️</div></div><div class="label">Maps</div></div>
+              <div class="iconItem"><div class="appIcon icon-health"><div class="healthGlyph">♥</div></div><div class="label">Health</div></div>
+              <div class="iconItem"><div class="appIcon icon-wallet"><div class="walletGlyph">💳</div></div><div class="label">Wallet</div></div>
+              <div class="iconItem"><div class="appIcon icon-settings"><div class="settingsGlyph">⚙︎</div></div><div class="label">Settings</div></div>
+            </div>
+            <div class="searchPill">⌕  Search</div>
           </div>
-          <div class="headline"><div><div class="h1">Hello Sarah</div><div class="sub"><b>Sarah Johnson</b> • Customer number <b>45719382</b></div></div><div class="pillStatus"><span class="dot"></span> Cora available</div></div>
-          <div class="summaryWrap"><div class="sumTop"><div class="sumLabel">Total balance</div><div class="sumValue">£18,742.61</div></div><div class="sumGrid"><div class="legend"><div class="legRow"><div class="legLeft"><span class="swatch"></span> Current</div><div>£4,286.14</div></div><div class="legRow"><div class="legLeft"><span class="swatch pink"></span> Savings</div><div>£14,456.47</div></div><div class="legSmall">Spending insights • Everyday banking</div></div><div class="donut"><span>£</span></div></div></div>
-        </div>
-        <div class="content">
-          <div class="tabs"><button class="tab active" id="tabAccounts">Accounts</button><button class="tab" id="tabPayments">Payments</button><button class="tab" id="tabMortgages">Mortgages</button></div>
-          <div id="viewAccounts"><div class="card rowCard"><div style="display:flex; align-items:center; gap:12px;"><div class="pillCount">3</div><div style="font-weight:620; color:rgba(11,31,38,.92);">Money tools & insights</div></div><div class="chev">›</div></div><div class="sectionTitle"><span>CURRENT</span><span></span></div><div class="accountList"><div class="card accountCard"><div class="bar"></div><div><div class="acctName">Select Account</div><div class="acctNum">•••• 2094 • Sort code 60-21-17</div></div><div class="acctRight"><div class="bal">£4,286.14</div><div class="avail">Available: £4,286.14</div></div></div></div><div class="sectionTitle"><span>SAVINGS</span><span></span></div><div class="accountList"><div class="card accountCard"><div class="bar pink"></div><div><div class="acctName">Digital Regular Saver</div><div class="acctNum">Easy access • Goal based</div></div><div class="acctRight"><div class="bal">£14,456.47</div><div class="avail">Available: £14,456.47</div></div></div></div></div>
-          <div id="viewPayments" style="display:none;"><div class="card" style="padding:14px;"><div style="font-weight:620; color:rgba(11,31,38,.92);">Payments</div><div style="margin-top:6px; font-weight:520; color:rgba(11,31,38,.55); font-size:12px; line-height:1.35;">Manage transfers, standing orders and upcoming bills from one place.</div></div></div>
-          <div id="viewMortgages" style="display:none;"><div class="mortgageHero"><h3>Thinking about your next move?</h3><p>Explore NatWest mortgage options, compare routes into home ownership and chat with Cora to understand what could work for you.</p></div><div class="sectionTitle"><span>Mortgage options</span><span></span></div><div class="offerGrid"><div class="card offerCard"><div class="offerTag">First-time buyers</div><div class="offerTitle">Start with practical tools and guidance</div><div class="offerDesc">Discover ways to estimate borrowing, understand deposits and get ready for a smoother first step onto the property ladder.</div></div><div class="card offerCard"><div class="offerTag">Moving home</div><div class="offerTitle">Explore options for your next property</div><div class="offerDesc">If you are planning your next move, NatWest can help you look at fresh borrowing options, switching deals and keeping things simple.</div></div><div class="btnRow"><button class="btn primary" id="btnShowPushAgain">🔔 Show push again</button></div></div></div>
-        </div>
-        <div class="nav"><div class="navItem active" id="navAccounts"><div class="ico">🏠</div><div>Home</div></div><div class="navItem" id="navPayments"><div class="ico">⇄</div><div>Payments</div></div><div class="navItem" id="navMortgages"><div class="ico">🏡</div><div>Mortgages</div></div><div class="navItem" id="navChat"><div class="ico">💬</div><div>Chat</div></div></div>
-      </div>
 
-      <div class="authOverlay" id="authOverlay"><div class="authCard"><div class="authLogoWrap"><img src="https://www.onlinebanking.natwest.com/assets/images/brandImages/logo.svg" alt="NatWest logo"></div><h2 class="authTitle">Confirm it’s you</h2><div class="authSub">Before entering your NatWest app, enter your 6 digit passcode.</div><input class="codeInput" id="authCode" type="password" inputmode="numeric" maxlength="6" placeholder="••••••" /><div class="authError" id="authError"></div><div class="btnRow"><button class="btn primary" id="btnAuthContinue">Continue</button><button class="btn secondary" id="btnAuthCancel">Cancel</button></div></div></div>
+          <div class="dock">
+            <div class="iconItem" style="gap:0;"><div class="appIcon icon-phone" style="font-size:22px;">📞</div></div>
+            <div class="iconItem" style="gap:0;"><div class="appIcon icon-safari" style="font-size:22px;">🧭</div></div>
+            <div class="iconItem" style="gap:0;"><div class="appIcon icon-messages" style="font-size:22px;">💬</div></div>
+            <div class="iconItem" style="gap:0;"><div class="appIcon icon-music" style="font-size:22px;">🎵</div></div>
+          </div>
+        </div>
 
-      <div class="chatOverlay" id="chatOverlay"><div class="chatSheet"><button class="chatCloseFab" id="btnCloseChat" aria-label="Close chat">×</button><div class="chatMount"><iframe id="chatFrame" title="NatWest Support Chat" src="chat.html"></iframe></div></div></div>
-    </div>
-  </div>
+        <!-- PUSH NOTIFICATION -->
+        <div class="pushOverlay" id="pushOverlay">
+          <div class="pushCard">
+            <div class="pushHead">
+              <div class="pushLeft">
+                <div class="pushIcon"><img src="https://www.onlinebanking.natwest.com/assets/images/brandImages/logo.svg" alt="NatWest"></div>
+                <div>
+                  <div class="pushAppName">NatWest</div>
+                  <div class="pushTime">Just now</div>
+                </div>
+              </div>
+            </div>
+            <div class="pushText" id="pushText">Hi Sarah. We noticed you've been exploring properties recently. Thinking about buying? I can help you work out what's possible, no commitment, just a conversation</div>
+            <div class="pushActions">
+              <button class="pushBtn primary" id="btnEngagePush">💬 Open in app</button>
+              <button class="pushBtn secondary" id="btnDismissPush">Dismiss</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- APP SCENE -->
+        <div class="appScene" id="appScene">
+          <div class="header">
+            <div class="topRow">
+              <div class="topTime" id="appClock">9:41</div>
+              <div class="logoCenter"><img class="nwLogo" src="https://www.onlinebanking.natwest.com/assets/images/brandImages/logo.svg" alt="NatWest" /></div>
+              <div class="rightIcons">
+                <div class="badge" id="btnHeaderChat" title="Support chat">💬</div>
+                <div class="badge" title="Alerts">🔔<div class="badgeDot">3</div></div>
+              </div>
+            </div>
+            <div class="headline">
+              <div>
+                <div class="h1">Hello, Sarah</div>
+                <div class="sub">Customer no. 45719382</div>
+              </div>
+              <div class="pillStatus"><span class="dot"></span> Cora available</div>
+            </div>
+            <div class="summaryWrap">
+              <div class="sumTop"><div class="sumLabel">TOTAL BALANCE</div><div class="sumValue">£18,742.61</div></div>
+              <div class="sumGrid">
+                <div class="legend">
+                  <div class="legRow"><div class="legLeft"><span class="swatch"></span> Current</div><div>£4,286.14</div></div>
+                  <div class="legRow"><div class="legLeft"><span class="swatch pink"></span> Savings</div><div>£14,456.47</div></div>
+                  <div class="legSmall">Spending insights • Everyday banking</div>
+                </div>
+                <div class="donut"><span>£</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="content">
+            <div class="tabs">
+              <button class="tab active" id="tabAccounts">Accounts</button>
+              <button class="tab" id="tabPayments">Payments</button>
+              <button class="tab" id="tabMortgages">Mortgages</button>
+            </div>
+
+            <div id="viewAccounts">
+              <div class="card rowCard"><div style="display:flex;align-items:center;gap:11px;"><div class="pillCount">3</div><div style="font-weight:620;color:rgba(11,31,38,.92);font-size:13.5px;">Money tools & insights</div></div><div class="chev">›</div></div>
+              <div class="sectionTitle"><span>CURRENT</span></div>
+              <div class="accountList">
+                <div class="card accountCard"><div class="bar"></div><div><div class="acctName">Select Account</div><div class="acctNum">•••• 2094 · Sort code 60-21-17</div></div><div class="acctRight"><div class="bal">£4,286.14</div><div class="avail">Available: £4,286.14</div></div></div>
+              </div>
+              <div class="sectionTitle"><span>SAVINGS</span></div>
+              <div class="accountList">
+                <div class="card accountCard"><div class="bar pink"></div><div><div class="acctName">Digital Regular Saver</div><div class="acctNum">Easy access · Goal based</div></div><div class="acctRight"><div class="bal">£14,456.47</div><div class="avail">Available: £14,456.47</div></div></div>
+              </div>
+            </div>
+
+            <div id="viewPayments" style="display:none;">
+              <div class="card" style="padding:15px;">
+                <div style="font-weight:620;color:rgba(11,31,38,.92);font-size:14px;">Payments</div>
+                <div style="margin-top:6px;font-weight:430;color:rgba(11,31,38,.52);font-size:13px;line-height:1.5;">Manage transfers, standing orders and upcoming bills from one place.</div>
+              </div>
+            </div>
+
+            <div id="viewMortgages" style="display:none;">
+              <div class="mortgageHero"><h3>Thinking about your next move?</h3><p>Explore NatWest mortgage options, compare routes into home ownership and chat with Cora to understand what could work for you.</p></div>
+              <div class="sectionTitle"><span>Mortgage options</span></div>
+              <div class="offerGrid">
+                <div class="card offerCard"><div class="offerTag">First-time buyers</div><div class="offerTitle">Start with practical tools and guidance</div><div class="offerDesc">Discover ways to estimate borrowing, understand deposits and get ready for a smoother first step onto the property ladder.</div></div>
+                <div class="card offerCard"><div class="offerTag">Moving home</div><div class="offerTitle">Explore options for your next property</div><div class="offerDesc">If you are planning your next move, NatWest can help you look at fresh borrowing options, switching deals and keeping things simple.</div></div>
+                <div class="btnRow"><button class="btn primary" id="btnShowPushAgain">🔔 Show push notification</button></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="nav">
+            <div class="navItem active" id="navAccounts"><div class="ico">🏠</div><div>Home</div></div>
+            <div class="navItem" id="navPayments"><div class="ico">⇄</div><div>Payments</div></div>
+            <div class="navItem" id="navMortgages"><div class="ico">🏡</div><div>Mortgages</div></div>
+            <div class="navItem" id="navChat"><div class="ico">💬</div><div>Chat</div></div>
+          </div>
+        </div>
+
+        <!-- AUTH OVERLAY -->
+        <div class="authOverlay" id="authOverlay">
+          <div class="authCard">
+            <div class="authLogoWrap"><img src="https://www.onlinebanking.natwest.com/assets/images/brandImages/logo.svg" alt="NatWest"></div>
+            <h2 class="authTitle">Confirm it's you</h2>
+            <div class="authSub">Enter your 6-digit NatWest passcode to continue securely.</div>
+            <div class="pinDots" id="pinDots">
+              <div class="pinDot" id="pd0"></div><div class="pinDot" id="pd1"></div>
+              <div class="pinDot" id="pd2"></div><div class="pinDot" id="pd3"></div>
+              <div class="pinDot" id="pd4"></div><div class="pinDot" id="pd5"></div>
+            </div>
+            <input class="codeInput" id="authCode" type="password" inputmode="numeric" maxlength="6" placeholder="••••••" autocomplete="one-time-code" />
+            <div class="authError" id="authError"></div>
+            <div class="btnRow">
+              <button class="btn primary" id="btnAuthContinue" style="flex:1;">Continue</button>
+              <button class="btn secondary" id="btnAuthCancel">Cancel</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CHAT OVERLAY -->
+        <div class="chatOverlay" id="chatOverlay">
+          <div class="chatSheet">
+            <div class="chatHandleBar"></div>
+            <button class="chatCloseFab" id="btnCloseChat" aria-label="Close">✕</button>
+            <div class="chatMount">
+              <iframe id="chatFrame" title="NatWest Support Chat" src="chat.html"></iframe>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /screen -->
+    </div><!-- /device -->
+  </div><!-- /deviceWrap -->
 
   <script>
     const DEMO_CODE = "360948";
     const NTFY_TOPIC = "natwest-cora-proactive-demo-4f8e2b91";
-    const DEFAULT_PUSH = "Hi Sarah. We noticed you’ve been exploring properties recently. Thinking about buying? I can help you work out what’s possible, no commitment, just a conversation";
-    const byId = (id) => document.getElementById(id);
-    const show = (el) => el.classList.add("show");
-    const hide = (el) => el.classList.remove("show");
+    const DEFAULT_PUSH = "Hi Sarah. We noticed you've been exploring properties recently. Thinking about buying? I can help you work out what's possible, no commitment, just a conversation";
+
+    const byId = id => document.getElementById(id);
+    const show = el => el.classList.add("show");
+    const hide = el => el.classList.remove("show");
+
     const pushOverlay = byId("pushOverlay");
-    const appScene = byId("appScene");
+    const appScene    = byId("appScene");
     const authOverlay = byId("authOverlay");
     const chatOverlay = byId("chatOverlay");
-    const authCode = byId("authCode");
-    const authError = byId("authError");
+    const authCode    = byId("authCode");
+    const authError   = byId("authError");
 
+    // Live clock
+    function updateClock(){
+      const now = new Date();
+      const t = now.getHours().toString().padStart(2,"0") + ":" + now.getMinutes().toString().padStart(2,"0");
+      ["liveClock","appClock"].forEach(id => { const el=byId(id); if(el) el.textContent=t; });
+    }
+    updateClock(); setInterval(updateClock, 10000);
+
+    // Live calendar
+    (function(){
+      const now = new Date();
+      const days  = ["SUNDAY","MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY"];
+      const daysS = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+      const d = now.getDate().toString();
+      const set = (id,v) => { const el=byId(id); if(el) el.textContent=v; };
+      set("calDay",days[now.getDay()]); set("calDate",d);
+      set("calDayMini",daysS[now.getDay()]); set("calDateMini",d);
+    })();
+
+    // PIN dot feedback
+    authCode.addEventListener("input", () => {
+      const len = authCode.value.length;
+      for(let i=0;i<6;i++){
+        const d = byId("pd"+i);
+        if(d) d.classList.toggle("filled", i<len);
+      }
+    });
+
+    // Tab / nav
     function setActiveTab(which){
-      byId("tabAccounts").classList.toggle("active", which === "accounts");
-      byId("tabPayments").classList.toggle("active", which === "payments");
-      byId("tabMortgages").classList.toggle("active", which === "mortgages");
-      byId("viewAccounts").style.display = which === "accounts" ? "block" : "none";
-      byId("viewPayments").style.display = which === "payments" ? "block" : "none";
-      byId("viewMortgages").style.display = which === "mortgages" ? "block" : "none";
-      byId("navAccounts").classList.toggle("active", which === "accounts");
-      byId("navPayments").classList.toggle("active", which === "payments");
-      byId("navMortgages").classList.toggle("active", which === "mortgages");
+      ["accounts","payments","mortgages"].forEach(k => {
+        const K = k.charAt(0).toUpperCase()+k.slice(1);
+        byId("tab"+K).classList.toggle("active",k===which);
+        byId("view"+K).style.display = k===which ? "block" : "none";
+        byId("nav"+K).classList.toggle("active",k===which);
+      });
     }
 
-    function showPush(text = DEFAULT_PUSH){ byId("pushText").textContent = text; show(pushOverlay); }
+    function resetPinDots(){ for(let i=0;i<6;i++){const d=byId("pd"+i);if(d)d.classList.remove("filled");} }
+    function showPush(text=DEFAULT_PUSH){ byId("pushText").textContent=text; show(pushOverlay); }
     function hidePush(){ hide(pushOverlay); }
-    function openAuth(){ hidePush(); show(authOverlay); authError.textContent = ""; authCode.value = ""; setTimeout(() => authCode.focus(), 80); }
+    function openAuth(){ hidePush(); show(authOverlay); authError.textContent=""; authCode.value=""; resetPinDots(); setTimeout(()=>authCode.focus(),120); }
     function enterApp(){ hide(authOverlay); show(appScene); }
     function openChat(){ show(chatOverlay); }
     function closeChat(){ hide(chatOverlay); }
-    function validateCode(){ ((authCode.value || "").trim() === DEMO_CODE) ? (enterApp(), openChat()) : authError.textContent = "Please enter the correct passcode."; }
-
-    function parseIncomingNtfyMessage(message){
-      if (!message) return DEFAULT_PUSH;
-      if (typeof message === "object") return DEFAULT_PUSH;
-      const raw = String(message).trim();
-      if (!raw) return DEFAULT_PUSH;
-      try { const parsed = JSON.parse(raw); return parsed?.text || DEFAULT_PUSH; } catch {}
-      try {
-        const decoded = decodeURIComponent(raw.replace(/\+/g, " "));
-        try { const parsedDecoded = JSON.parse(decoded); return parsedDecoded?.text || DEFAULT_PUSH; } catch {}
-        if (decoded.startsWith("{") || decoded.includes('"type"')) return DEFAULT_PUSH;
-        if (decoded) return decoded;
-      } catch {}
-      return raw.includes("%7B") || raw.includes("%22type%22") ? DEFAULT_PUSH : raw;
+    function validateCode(){
+      if((authCode.value||"").trim()===DEMO_CODE){ enterApp(); openChat(); }
+      else { authError.textContent="Incorrect passcode. Please try again."; authCode.value=""; resetPinDots(); authCode.focus(); }
     }
 
+    // ntfy
+    function parseMsg(message){
+      if(!message) return DEFAULT_PUSH;
+      if(typeof message==="object") return DEFAULT_PUSH;
+      const raw=String(message).trim();
+      if(!raw) return DEFAULT_PUSH;
+      try{const p=JSON.parse(raw);return p?.text||DEFAULT_PUSH;}catch{}
+      try{
+        const dec=decodeURIComponent(raw.replace(/\+/g," "));
+        try{const p=JSON.parse(dec);return p?.text||DEFAULT_PUSH;}catch{}
+        if(dec.startsWith("{")||dec.includes('"type"')) return DEFAULT_PUSH;
+        if(dec) return dec;
+      }catch{}
+      return raw.includes("%7B")||raw.includes("%22type%22")?DEFAULT_PUSH:raw;
+    }
     function subscribeToNtfy(){
-      const es = new EventSource(`https://ntfy.sh/${NTFY_TOPIC}/sse`);
-      es.onmessage = (event) => {
-        try {
-          const envelope = JSON.parse(event.data);
-          showPush(parseIncomingNtfyMessage(envelope.message) || DEFAULT_PUSH);
-        } catch (e) {
-          console.warn("ntfy parse issue", e);
-          showPush(DEFAULT_PUSH);
-        }
+      const es=new EventSource(`https://ntfy.sh/${NTFY_TOPIC}/sse`);
+      es.onmessage=ev=>{
+        try{ const env=JSON.parse(ev.data); showPush(parseMsg(env.message)||DEFAULT_PUSH); }
+        catch(e){ console.warn("ntfy parse",e); showPush(DEFAULT_PUSH); }
       };
-      es.onerror = () => console.warn("ntfy subscription disconnected; browser will retry automatically.");
+      es.onerror=()=>console.warn("ntfy disconnected; retrying.");
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("DOMContentLoaded",()=>{
       subscribeToNtfy();
-      byId("btnEngagePush").onclick = openAuth;
+      byId("btnEngagePush").onclick  = openAuth;
       byId("btnDismissPush").onclick = hidePush;
       byId("btnAuthContinue").onclick = validateCode;
-      byId("btnAuthCancel").onclick = () => hide(authOverlay);
-      authCode.addEventListener("keydown", (e) => { if (e.key === "Enter") validateCode(); });
-      byId("btnHeaderChat").onclick = openChat;
-      byId("navChat").onclick = openChat;
-      byId("btnCloseChat").onclick = closeChat;
-      byId("btnShowPushAgain").onclick = () => showPush(DEFAULT_PUSH);
-      byId("tabAccounts").onclick = () => setActiveTab("accounts");
-      byId("tabPayments").onclick = () => setActiveTab("payments");
-      byId("tabMortgages").onclick = () => setActiveTab("mortgages");
-      byId("navAccounts").onclick = () => setActiveTab("accounts");
-      byId("navPayments").onclick = () => setActiveTab("payments");
-      byId("navMortgages").onclick = () => setActiveTab("mortgages");
+      byId("btnAuthCancel").onclick  = ()=>hide(authOverlay);
+      authCode.addEventListener("keydown",e=>{ if(e.key==="Enter") validateCode(); });
+      byId("btnHeaderChat").onclick  = openChat;
+      byId("navChat").onclick        = openChat;
+      byId("btnCloseChat").onclick   = closeChat;
+      byId("btnShowPushAgain").onclick = ()=>showPush(DEFAULT_PUSH);
+      byId("tabAccounts").onclick  = ()=>setActiveTab("accounts");
+      byId("tabPayments").onclick  = ()=>setActiveTab("payments");
+      byId("tabMortgages").onclick = ()=>setActiveTab("mortgages");
+      byId("navAccounts").onclick  = ()=>setActiveTab("accounts");
+      byId("navPayments").onclick  = ()=>setActiveTab("payments");
+      byId("navMortgages").onclick = ()=>setActiveTab("mortgages");
     });
   </script>
 </body>
