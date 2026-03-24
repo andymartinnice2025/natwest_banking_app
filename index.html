@@ -2,57 +2,333 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>NatWest • Personal Banking Mock App</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>NatWest Mobile Journey Mock</title>
   <style>
     :root{
-      --bg:#EEF1F5;
-      --card:#fff;
       --purple:#5A287D;
       --purple2:#44205F;
       --purple3:#6F2DA8;
-      --text:#0B1F26;
-      --muted:#667383;
-      --line:rgba(0,0,0,.08);
-      --shadow:0 14px 34px rgba(68,32,95,.12);
       --green:#29D48C;
       --green2:#0FAE6A;
-      --amber:#FFC857;
       --red:#FF4D5A;
-      --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial;
+      --text:#0B1F26;
+      --muted:#6B7381;
+      --line:rgba(0,0,0,.08);
+      --card:#fff;
+      --font: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
-    *{ box-sizing:border-box; }
-
+    *{ box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+    html, body{ margin:0; background:#d9dde5; font-family:var(--font); }
     body{
-      margin:0;
-      font-family:var(--font);
-      background:#e9edf4;
       min-height:100vh;
       display:grid;
       place-items:center;
-      padding:22px;
+      padding:20px;
     }
 
-    .phone{
-      width:min(430px, 94vw);
-      height:min(900px, 94vh);
-      background:#0f1115;
-      border-radius:40px;
+    .device{
+      width:min(420px, 96vw);
+      height:min(900px, 96vh);
+      border-radius:44px;
+      background:#111318;
       padding:14px;
-      box-shadow:0 34px 90px rgba(0,0,0,.35);
+      box-shadow:
+        0 30px 90px rgba(0,0,0,.35),
+        inset 0 0 0 1px rgba(255,255,255,.06);
       position:relative;
     }
 
     .screen{
-      height:100%;
-      border-radius:30px;
-      overflow:hidden;
-      background:var(--bg);
       position:relative;
+      height:100%;
+      border-radius:34px;
+      overflow:hidden;
+      background:#dce6ef;
+    }
+
+    .homeScreen{
+      position:absolute;
+      inset:0;
+      color:#fff;
+      background:
+        radial-gradient(120% 90% at 18% 15%, rgba(169,233,230,.95) 0%, rgba(169,233,230,.45) 18%, rgba(169,233,230,0) 34%),
+        radial-gradient(82% 100% at 86% 18%, rgba(57,84,185,.98) 0%, rgba(57,84,185,.52) 24%, rgba(57,84,185,0) 44%),
+        radial-gradient(66% 80% at 58% 84%, rgba(44,68,195,.82) 0%, rgba(44,68,195,.28) 24%, rgba(44,68,195,0) 46%),
+        linear-gradient(180deg, #d7e4ef 0%, #b7d7dc 46%, #9acdd3 100%);
+      transition:transform .34s ease, opacity .34s ease;
+      overflow:hidden;
+    }
+
+    .homeBlur{
+      position:absolute;
+      inset:0;
+      backdrop-filter:saturate(1.08);
+      pointer-events:none;
+    }
+
+    .statusBar{
+      position:absolute;
+      top:0; left:0; right:0;
+      display:grid;
+      grid-template-columns:1fr auto 1fr;
+      align-items:center;
+      padding:12px 18px 0;
+      z-index:4;
+      font-size:12px;
+      font-weight:800;
+      color:#fff;
+      text-shadow:0 1px 3px rgba(0,0,0,.18);
+    }
+    .statusLeft{ justify-self:start; }
+    .dynamicIsland{
+      width:120px;
+      height:28px;
+      background:#0b0b0d;
+      border-radius:999px;
+      justify-self:center;
+      box-shadow:0 1px 0 rgba(255,255,255,.06) inset;
+    }
+    .statusRight{
+      justify-self:end;
+      display:flex;
+      gap:6px;
+      align-items:center;
+      font-size:12px;
+    }
+
+    .iconsArea{
+      position:absolute;
+      inset:56px 18px 102px;
       display:flex;
       flex-direction:column;
+      gap:14px;
+      z-index:2;
     }
+
+    .widgetRow{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+    .widget{
+      border-radius:24px;
+      padding:14px;
+      color:#111;
+      background:rgba(255,255,255,.74);
+      backdrop-filter:blur(18px);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.55),
+        0 8px 24px rgba(0,0,0,.08);
+      min-height:96px;
+    }
+    .weatherWidget{
+      background:linear-gradient(180deg, rgba(89,140,214,.9), rgba(104,153,226,.72));
+      color:#fff;
+    }
+    .widgetSmallLabel{
+      font-size:11px;
+      font-weight:700;
+      opacity:.82;
+      margin-top:auto;
+    }
+    .calendarWidgetTop{
+      color:#d16c56;
+      font-size:10px;
+      font-weight:900;
+      letter-spacing:.4px;
+    }
+    .calendarWidgetDate{
+      font-size:42px;
+      line-height:1;
+      margin-top:4px;
+      color:#111;
+      font-weight:300;
+    }
+
+    .iconGrid{
+      display:grid;
+      grid-template-columns:repeat(4, 1fr);
+      gap:14px 12px;
+    }
+    .iconItem{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:6px;
+      user-select:none;
+    }
+    .appIcon{
+      width:58px;
+      height:58px;
+      border-radius:16px;
+      position:relative;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.32),
+        0 8px 18px rgba(0,0,0,.12);
+      overflow:hidden;
+      display:grid;
+      place-items:center;
+      color:#fff;
+      font-weight:900;
+      font-size:20px;
+    }
+    .label{
+      font-size:11px;
+      color:#fff;
+      text-shadow:0 1px 4px rgba(0,0,0,.2);
+      font-weight:500;
+    }
+
+    .icon-facetime{ background:linear-gradient(180deg, #8EEF77, #59D85B); }
+    .icon-calendar{ background:linear-gradient(180deg, #f8f8f8, #ebebeb); color:#111; }
+    .icon-photos{ background:radial-gradient(circle at 50% 50%, #fff 0 16%, #f1c32f 18% 28%, #ff7b5c 30% 40%, #f3478d 42% 52%, #6c75ff 54% 64%, #49c96c 66% 76%, #fff 78% 100%); }
+    .icon-camera{ background:linear-gradient(180deg, #70757d, #2e3338); }
+    .icon-mail{ background:linear-gradient(180deg, #69c4ff, #4f8df4); }
+    .icon-notes{ background:linear-gradient(180deg, #fff9d2 0 24%, #ffffff 24% 100%); color:#444; }
+    .icon-reminders{ background:linear-gradient(180deg, #ffffff, #f3f4f7); color:#444; }
+    .icon-clock{ background:linear-gradient(180deg, #ffffff, #eceef2); color:#222; }
+    .icon-news{ background:linear-gradient(180deg, #fff, #f2f2f3); color:#d53d3d; }
+    .icon-tv{ background:linear-gradient(180deg, #2c2d34, #101115); }
+    .icon-games{ background:linear-gradient(180deg, #ff8a59, #ff5377); }
+    .icon-store{ background:linear-gradient(180deg, #86b7ff, #5887ff); }
+    .icon-maps{ background:linear-gradient(180deg, #bff1ff, #92d2a1); color:#0b4f98; }
+    .icon-health{ background:linear-gradient(180deg, #fff, #f4f6f7); color:#ff5681; }
+    .icon-wallet{ background:linear-gradient(180deg, #2f3237, #13161c); }
+    .icon-settings{ background:linear-gradient(180deg, #d2d6dd, #9ea6b3); color:#515765; }
+
+    .calendarMini .appIcon{ color:#111; font-size:11px; font-weight:900; }
+    .calendarMini .day{ color:#dd725d; font-size:10px; margin-top:6px; font-weight:900; }
+    .calendarMini .date{ font-size:28px; line-height:1; margin-top:2px; font-weight:300; }
+
+    .clockFace{
+      width:40px; height:40px; border-radius:50%;
+      border:2px solid #555; position:relative; background:#fff;
+    }
+    .clockFace:before, .clockFace:after{
+      content:""; position:absolute; left:50%; top:50%; transform-origin:bottom center; background:#333;
+      border-radius:2px;
+    }
+    .clockFace:before{ width:2px; height:12px; transform:translate(-50%,-100%) rotate(0deg); }
+    .clockFace:after{ width:2px; height:15px; transform:translate(-50%,-100%) rotate(55deg); }
+
+    .cameraLens{
+      width:38px; height:38px; border-radius:50%;
+      background:radial-gradient(circle at 35% 35%, #9ec7ff 0%, #354761 22%, #0d1116 52%, #000 100%);
+      box-shadow:0 0 0 4px rgba(255,255,255,.12);
+    }
+
+    .searchPill{
+      align-self:center;
+      width:140px;
+      height:20px;
+      border-radius:999px;
+      background:rgba(255,255,255,.20);
+      backdrop-filter:blur(20px);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      color:rgba(255,255,255,.82);
+      font-size:11px;
+      font-weight:600;
+      margin-top:2px;
+    }
+
+    .dock{
+      position:absolute;
+      left:14px; right:14px; bottom:10px;
+      padding:10px 12px 14px;
+      border-radius:30px;
+      background:rgba(255,255,255,.24);
+      backdrop-filter:blur(20px);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.36);
+      display:grid;
+      grid-template-columns:repeat(4, 1fr);
+      gap:12px;
+      z-index:3;
+    }
+    .dock .appIcon{
+      width:60px; height:60px; justify-self:center;
+    }
+    .icon-phone{ background:linear-gradient(180deg, #62db69, #3fc74f); }
+    .icon-safari{ background:linear-gradient(180deg, #5bbcff, #2a79ff); }
+    .icon-messages{ background:linear-gradient(180deg, #63ec6f, #32d14d); }
+    .icon-music{ background:linear-gradient(180deg, #ff6d79, #ed3f57); }
+
+    .pushOverlay{
+      position:absolute;
+      inset:0;
+      display:none;
+      align-items:flex-start;
+      justify-content:center;
+      padding:76px 16px 16px;
+      z-index:20;
+      pointer-events:none;
+    }
+    .pushOverlay.show{ display:flex; }
+    .pushCard{
+      width:100%;
+      max-width:372px;
+      background:rgba(255,255,255,.78);
+      color:#111;
+      backdrop-filter:blur(22px);
+      border-radius:28px;
+      box-shadow:0 24px 70px rgba(0,0,0,.20);
+      border:1px solid rgba(255,255,255,.50);
+      padding:16px;
+      pointer-events:auto;
+      animation:pushIn .24s ease;
+    }
+    @keyframes pushIn{
+      from{ transform:translateY(-12px) scale(.98); opacity:0; }
+      to{ transform:translateY(0) scale(1); opacity:1; }
+    }
+    .pushHead{
+      display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px;
+    }
+    .pushLeft{
+      display:flex; align-items:center; gap:12px;
+    }
+    .pushIcon{
+      width:56px; height:56px; border-radius:18px;
+      background:linear-gradient(180deg, #5A287D, #44205F);
+      display:grid; place-items:center; box-shadow:0 10px 24px rgba(68,32,95,.22);
+    }
+    .pushIcon img{
+      width:38px; height:38px; object-fit:contain; display:block;
+    }
+    .pushTitle{ font-size:18px; font-weight:700; }
+    .pushSub, .pushTime{
+      font-size:12px; color:#7f8790; font-weight:800;
+    }
+    .pushText{
+      font-size:13px; line-height:1.5; color:#37444e; font-weight:800;
+    }
+    .btnRow{ display:flex; gap:10px; flex-wrap:wrap; margin-top:16px; }
+    .btn{
+      appearance:none; border:none; cursor:pointer;
+      border-radius:16px; padding:12px 16px; font-weight:1000; font-size:13px;
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+    }
+    .btn.primary{
+      color:#fff; background:linear-gradient(180deg, var(--green), var(--green2));
+      box-shadow:0 14px 28px rgba(0,0,0,.12);
+    }
+    .btn.secondary{
+      color:#30414d; background:rgba(255,255,255,.7); border:1px solid rgba(0,0,0,.10);
+    }
+
+    .appScene{
+      position:absolute;
+      inset:0;
+      display:none;
+      z-index:30;
+      background:#EEF1F5;
+      flex-direction:column;
+    }
+    .appScene.show{ display:flex; }
 
     .header{
       padding:18px 18px 14px;
@@ -62,1216 +338,545 @@
         linear-gradient(180deg, var(--purple), var(--purple2));
       box-shadow:0 10px 30px rgba(0,0,0,.22);
     }
-
     .topRow{
-      display:grid;
-      grid-template-columns: 1fr auto 1fr;
-      align-items:center;
-      gap:10px;
-      font-size:12px;
-      opacity:.96;
+      display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:10px;
+      font-size:12px; opacity:.96;
     }
-
-    .time{
-      justify-self:start;
-      font-weight:900;
-    }
-
-    .rightIcons{
-      justify-self:end;
-      display:flex;
-      gap:10px;
-      align-items:center;
-    }
-
+    .topTime{ justify-self:start; font-weight:900; }
+    .rightIcons{ justify-self:end; display:flex; gap:10px; align-items:center; }
     .badge{
-      width:28px;
-      height:28px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.22);
-      background:rgba(255,255,255,.10);
-      display:grid;
-      place-items:center;
-      position:relative;
-      cursor:pointer;
-      user-select:none;
+      width:28px; height:28px; border-radius:12px; border:1px solid rgba(255,255,255,.22);
+      background:rgba(255,255,255,.10); display:grid; place-items:center; position:relative; cursor:pointer; user-select:none;
     }
-
     .badgeDot{
-      position:absolute;
-      top:-6px;
-      right:-6px;
-      width:18px;
-      height:18px;
-      border-radius:999px;
-      background:var(--red);
-      color:#fff;
-      font-size:11px;
-      display:grid;
-      place-items:center;
-      font-weight:1000;
-      border:2px solid var(--purple2);
+      position:absolute; top:-6px; right:-6px; width:18px; height:18px; border-radius:999px; background:var(--red); color:#fff;
+      font-size:11px; display:grid; place-items:center; font-weight:1000; border:2px solid var(--purple2);
     }
-
     .logoCenter{
-      justify-self:center;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      min-width:140px;
+      justify-self:center; display:flex; align-items:center; justify-content:center; min-width:140px;
     }
-
     .nwLogo{
-      height:46px;
-      object-fit:contain;
-      display:block;
-      filter:drop-shadow(0 4px 10px rgba(0,0,0,.20));
+      height:46px; object-fit:contain; display:block; filter:drop-shadow(0 4px 10px rgba(0,0,0,.20));
     }
-
     .headline{
-      display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
-      gap:10px;
-      margin-top:10px;
+      display:flex; align-items:flex-end; justify-content:space-between; gap:10px; margin-top:10px;
     }
-
-    .h1{
-      font-size:26px;
-      font-weight:1100;
-      margin:0;
-      letter-spacing:-.3px;
-    }
-
-    .sub{
-      margin-top:4px;
-      font-size:12.5px;
-      opacity:.92;
-      font-weight:800;
-    }
-
+    .h1{ font-size:26px; font-weight:1100; margin:0; letter-spacing:-.3px; }
+    .sub{ margin-top:4px; font-size:12.5px; opacity:.92; font-weight:800; }
     .pillStatus{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      background:rgba(255,255,255,.14);
-      border:1px solid rgba(255,255,255,.18);
-      border-radius:999px;
-      padding:8px 12px;
-      font-weight:900;
-      font-size:12px;
-      backdrop-filter:blur(10px);
-      white-space:nowrap;
+      display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.18); border-radius:999px; padding:8px 12px;
+      font-weight:900; font-size:12px; backdrop-filter:blur(10px); white-space:nowrap;
     }
-
-    .dot{
-      width:10px;
-      height:10px;
-      border-radius:999px;
-      background:#43d17b;
-      box-shadow:0 0 0 3px rgba(67,209,123,.18);
-    }
-
+    .dot{ width:10px; height:10px; border-radius:999px; background:#43d17b; box-shadow:0 0 0 3px rgba(67,209,123,.18); }
     .summaryWrap{
-      margin-top:14px;
-      background:rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.16);
-      border-radius:22px;
-      padding:14px;
-      backdrop-filter:blur(10px);
+      margin-top:14px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.16);
+      border-radius:22px; padding:14px; backdrop-filter:blur(10px);
     }
-
-    .sumTop{
-      display:flex;
-      align-items:baseline;
-      justify-content:space-between;
-      gap:12px;
-    }
-
-    .sumLabel{
-      font-weight:900;
-      font-size:12px;
-      opacity:.85;
-    }
-
-    .sumValue{
-      font-size:34px;
-      font-weight:1100;
-      letter-spacing:-.6px;
-    }
-
-    .sumGrid{
-      display:grid;
-      grid-template-columns:1fr 120px;
-      gap:14px;
-      margin-top:10px;
-      align-items:center;
-    }
-
-    .legend{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-
+    .sumTop{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; }
+    .sumLabel{ font-weight:900; font-size:12px; opacity:.85; }
+    .sumValue{ font-size:34px; font-weight:1100; letter-spacing:-.6px; }
+    .sumGrid{ display:grid; grid-template-columns:1fr 120px; gap:14px; margin-top:10px; align-items:center; }
+    .legend{ display:flex; flex-direction:column; gap:10px; }
     .legRow{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      font-size:13px;
-      font-weight:900;
-      color:rgba(255,255,255,.92);
+      display:flex; align-items:center; justify-content:space-between; gap:10px; font-size:13px; font-weight:900; color:rgba(255,255,255,.92);
     }
-
-    .legLeft{
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-
-    .swatch{
-      width:10px;
-      height:10px;
-      border-radius:999px;
-      background:#B162FF;
-      box-shadow:0 0 0 3px rgba(177,98,255,.18);
-    }
-
-    .swatch.pink{
-      background:#FF8FD8;
-      box-shadow:0 0 0 3px rgba(255,143,216,.18);
-    }
-
-    .legSmall{
-      font-size:12px;
-      opacity:.86;
-      font-weight:900;
-    }
-
+    .legLeft{ display:flex; align-items:center; gap:10px; }
+    .swatch{ width:10px; height:10px; border-radius:999px; background:#B162FF; box-shadow:0 0 0 3px rgba(177,98,255,.18); }
+    .swatch.pink{ background:#FF8FD8; box-shadow:0 0 0 3px rgba(255,143,216,.18); }
+    .legSmall{ font-size:12px; opacity:.86; font-weight:900; }
     .donut{
-      width:120px;
-      height:120px;
-      border-radius:999px;
+      width:120px; height:120px; border-radius:999px;
       background:conic-gradient(#B162FF 0 290deg, #FF8FD8 290deg 336deg, rgba(255,255,255,.22) 336deg 360deg);
-      display:grid;
-      place-items:center;
-      position:relative;
-      box-shadow:0 18px 40px rgba(0,0,0,.18);
+      display:grid; place-items:center; position:relative; box-shadow:0 18px 40px rgba(0,0,0,.18);
     }
-
     .donut::after{
-      content:"";
-      width:88px;
-      height:88px;
-      border-radius:999px;
+      content:""; width:88px; height:88px; border-radius:999px;
       background:linear-gradient(180deg, rgba(68,32,95,.92), rgba(68,32,95,.84));
-      border:1px solid rgba(255,255,255,.18);
-      position:absolute;
+      border:1px solid rgba(255,255,255,.18); position:absolute;
     }
-
-    .donut span{
-      position:relative;
-      z-index:1;
-      font-weight:1100;
-      font-size:26px;
-      opacity:.95;
-    }
+    .donut span{ position:relative; z-index:1; font-weight:1100; font-size:26px; opacity:.95; }
 
     .content{
-      flex:1;
-      overflow:auto;
-      padding:16px 16px 104px;
+      flex:1; overflow:auto; padding:16px 16px 104px;
     }
-
-    .tabs{
-      display:flex;
-      gap:10px;
-      margin:2px 2px 12px;
-    }
-
+    .tabs{ display:flex; gap:10px; margin:2px 2px 12px; }
     .tab{
-      flex:1;
-      border-radius:16px;
-      padding:10px 12px;
-      font-weight:1000;
-      font-size:13px;
-      border:1px solid var(--line);
-      background:#fff;
-      color:rgba(11,31,38,.70);
-      cursor:pointer;
-      user-select:none;
-      box-shadow:0 10px 22px rgba(0,0,0,.06);
+      flex:1; border-radius:16px; padding:10px 12px; font-weight:1000; font-size:13px;
+      border:1px solid var(--line); background:#fff; color:rgba(11,31,38,.70); cursor:pointer; user-select:none; box-shadow:0 10px 22px rgba(0,0,0,.06);
     }
-
     .tab.active{
-      background:rgba(90,40,125,.10);
-      border:1px solid rgba(90,40,125,.18);
-      color:rgba(68,32,95,.95);
-      box-shadow:none;
+      background:rgba(90,40,125,.10); border:1px solid rgba(90,40,125,.18); color:rgba(68,32,95,.95); box-shadow:none;
     }
-
     .card{
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:22px;
-      box-shadow:var(--shadow);
+      background:var(--card); border:1px solid var(--line); border-radius:22px; box-shadow:0 14px 34px rgba(68,32,95,.12);
     }
-
     .rowCard{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      padding:14px;
-      cursor:pointer;
-      user-select:none;
+      display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px; cursor:pointer; user-select:none;
     }
-
     .pillCount{
-      width:30px;
-      height:30px;
-      border-radius:999px;
-      background:rgba(90,40,125,.12);
-      border:1px solid rgba(90,40,125,.20);
-      display:grid;
-      place-items:center;
-      font-weight:1100;
-      color:var(--purple);
+      width:30px; height:30px; border-radius:999px; background:rgba(90,40,125,.12);
+      border:1px solid rgba(90,40,125,.20); display:grid; place-items:center; font-weight:1100; color:var(--purple);
     }
-
-    .chev{
-      font-weight:1100;
-      color:rgba(11,31,38,.45);
-      font-size:18px;
-    }
-
+    .chev{ font-weight:1100; color:rgba(11,31,38,.45); font-size:18px; }
     .sectionTitle{
-      font-weight:1100;
-      color:rgba(11,31,38,.55);
-      font-size:13px;
-      margin:18px 2px 10px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
+      font-weight:1100; color:rgba(11,31,38,.55); font-size:13px; margin:18px 2px 10px; display:flex; align-items:center; justify-content:space-between; gap:10px;
     }
-
-    .search{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:12px 12px;
-      box-shadow:0 10px 22px rgba(0,0,0,.06);
-    }
-
-    .search input{
-      width:100%;
-      border:none;
-      outline:none;
-      font-weight:900;
-      font-size:13px;
-      color:rgba(11,31,38,.88);
-    }
-
-    .search .ico{ opacity:.65; }
-
-    .accountList{
-      display:grid;
-      gap:12px;
-    }
-
+    .accountList{ display:grid; gap:12px; }
     .accountCard{
-      padding:14px;
-      display:grid;
-      grid-template-columns:4px 1fr auto;
-      gap:12px;
-      align-items:center;
-      cursor:pointer;
-      user-select:none;
+      padding:14px; display:grid; grid-template-columns:4px 1fr auto; gap:12px; align-items:center; cursor:pointer; user-select:none;
     }
-
-    .bar{
-      width:4px;
-      height:44px;
-      border-radius:99px;
-      background:#A43BE2;
-    }
-
+    .bar{ width:4px; height:44px; border-radius:99px; background:#A43BE2; }
     .bar.pink{ background:#FF8FD8; }
-    .bar.gold{ background:#FFB84D; }
-
-    .acctName{
-      font-weight:1100;
-      color:rgba(11,31,38,.92);
-    }
-
-    .acctNum{
-      font-weight:900;
-      font-size:12px;
-      color:rgba(11,31,38,.55);
-      margin-top:2px;
-    }
-
-    .acctRight{
-      text-align:right;
-      display:flex;
-      flex-direction:column;
-      gap:2px;
-      min-width:120px;
-    }
-
-    .bal{
-      font-weight:1100;
-      color:rgba(11,31,38,.92);
-      font-size:16px;
-    }
-
-    .avail{
-      font-weight:900;
-      color:rgba(11,31,38,.55);
-      font-size:12px;
-    }
-
+    .acctName{ font-weight:1100; color:rgba(11,31,38,.92); }
+    .acctNum{ font-weight:900; font-size:12px; color:rgba(11,31,38,.55); margin-top:2px; }
+    .acctRight{ text-align:right; display:flex; flex-direction:column; gap:2px; min-width:120px; }
+    .bal{ font-weight:1100; color:rgba(11,31,38,.92); font-size:16px; }
+    .avail{ font-weight:900; color:rgba(11,31,38,.55); font-size:12px; }
     .mortgageHero{
-      padding:16px;
-      background:linear-gradient(135deg, rgba(90,40,125,.96), rgba(111,45,168,.92));
-      color:#fff;
-      border-radius:22px;
-      box-shadow:var(--shadow);
+      padding:16px; background:linear-gradient(135deg, rgba(90,40,125,.96), rgba(111,45,168,.92)); color:#fff; border-radius:22px; box-shadow:0 14px 34px rgba(68,32,95,.12);
     }
-
-    .mortgageHero h3{
-      margin:0 0 8px;
-      font-size:20px;
-    }
-
-    .mortgageHero p{
-      margin:0;
-      line-height:1.45;
-      font-size:13px;
-      font-weight:800;
-      opacity:.95;
-    }
-
-    .offerGrid{
-      display:grid;
-      gap:12px;
-      margin-top:14px;
-    }
-
+    .mortgageHero h3{ margin:0 0 8px; font-size:20px; }
+    .mortgageHero p{ margin:0; line-height:1.45; font-size:13px; font-weight:800; opacity:.95; }
+    .offerGrid{ display:grid; gap:12px; margin-top:14px; }
     .offerCard{ padding:14px; }
-
     .offerTag{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      border-radius:999px;
-      padding:6px 10px;
-      background:rgba(90,40,125,.08);
-      border:1px solid rgba(90,40,125,.14);
-      color:var(--purple);
-      font-size:11px;
-      font-weight:1000;
-      margin-bottom:10px;
+      display:inline-flex; align-items:center; gap:8px; border-radius:999px; padding:6px 10px; background:rgba(90,40,125,.08);
+      border:1px solid rgba(90,40,125,.14); color:var(--purple); font-size:11px; font-weight:1000; margin-bottom:10px;
     }
-
-    .offerTitle{
-      font-weight:1100;
-      color:rgba(11,31,38,.92);
-      font-size:15px;
-    }
-
-    .offerDesc{
-      margin-top:6px;
-      font-size:12.5px;
-      line-height:1.45;
-      font-weight:900;
-      color:rgba(11,31,38,.62);
-    }
-
-    .btnRow{
-      display:flex;
-      gap:10px;
-      margin-top:12px;
-      flex-wrap:wrap;
-    }
-
-    .btn{
-      appearance:none;
-      border:none;
-      cursor:pointer;
-      border-radius:16px;
-      padding:12px 14px;
-      font-weight:1000;
-      font-size:13px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      user-select:none;
-    }
-
-    .btn.primary{
-      background:linear-gradient(180deg, var(--purple3), var(--purple));
-      color:#fff;
-      box-shadow:0 14px 28px rgba(0,0,0,.12);
-    }
-
-    .btn.chat{
-      background:linear-gradient(180deg, var(--green), var(--green2));
-      color:#fff;
-      box-shadow:0 14px 28px rgba(0,0,0,.12);
-    }
-
-    .btn.ghost{
-      background:#fff;
-      border:1px solid var(--line);
-      color:rgba(11,31,38,.82);
-      box-shadow:none;
-    }
-
-    .modal, .overlay{
-      position:absolute;
-      inset:0;
-      background:rgba(68,32,95,.55);
-      display:none;
-      z-index:50;
-      padding:12px;
-    }
-
-    .show{ display:block; }
-
-    .sheet{
-      position:absolute;
-      left:12px;
-      right:12px;
-      top:88px;
-      border-radius:26px;
-      background:#fff;
-      border:1px solid rgba(255,255,255,.65);
-      box-shadow:0 30px 90px rgba(0,0,0,.35);
-      overflow:hidden;
-    }
-
-    .topBar{
-      padding:14px;
-      border-bottom:1px solid rgba(0,0,0,.06);
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      background:rgba(90,40,125,.08);
-    }
-
-    .topBar .h{
-      font-weight:1100;
-      font-size:16px;
-      color:rgba(11,31,38,.92);
-    }
-
-    .sheetBody{ padding:14px; }
-
-    .kv{
-      display:grid;
-      grid-template-columns:1fr auto;
-      gap:10px;
-      padding:10px 0;
-      border-bottom:1px solid rgba(0,0,0,.06);
-      font-weight:900;
-      color:rgba(11,31,38,.80);
-      font-size:13px;
-    }
-
-    .kv:last-child{ border-bottom:none; }
-
-    .txTitle{
-      margin-top:14px;
-      font-weight:1100;
-      color:rgba(11,31,38,.86);
-      font-size:13px;
-    }
-
-    .tx{
-      margin-top:10px;
-      border:1px solid rgba(0,0,0,.06);
-      border-radius:18px;
-      overflow:hidden;
-    }
-
-    .txRow{
-      display:grid;
-      grid-template-columns:1fr auto;
-      gap:10px;
-      padding:12px;
-      border-bottom:1px solid rgba(0,0,0,.06);
-      font-size:13px;
-      background:#fff;
-    }
-
-    .txRow:last-child{ border-bottom:none; }
-
-    .txMain{
-      font-weight:1100;
-      color:rgba(11,31,38,.92);
-    }
-
-    .txMeta{
-      font-weight:900;
-      color:rgba(11,31,38,.55);
-      font-size:12px;
-      margin-top:2px;
-    }
-
-    .txAmt{ font-weight:1100; }
-    .neg{ color:#D62D2D; }
-    .pos{ color:#0E8A5B; }
-
-    .chatSheet{
-      position:absolute;
-      left:12px;
-      right:12px;
-      top:62px;
-      bottom:62px;
-      border-radius:26px;
-      background:#fff;
-      border:1px solid rgba(255,255,255,.65);
-      box-shadow:0 30px 90px rgba(0,0,0,.35);
-      overflow:hidden;
-      display:flex;
-      flex-direction:column;
-    }
-
-    .chatMount{
-      flex:1;
-      min-height:0;
-      position:relative;
-      overflow:hidden;
-      background:#fff;
-    }
-
-    #chatFrame{
-      position:absolute;
-      inset:0;
-      width:100%;
-      height:100%;
-      border:0;
-      display:block;
-      background:#fff;
-    }
-
-    .chatCloseFab{
-      position:absolute;
-      top:12px;
-      left:12px;
-      width:44px;
-      height:44px;
-      border-radius:16px;
-      border:1px solid rgba(0,0,0,.08);
-      background:#fff;
-      font-weight:1100;
-      cursor:pointer;
-      box-shadow:0 12px 28px rgba(0,0,0,.12);
-      z-index:5;
-      display:grid;
-      place-items:center;
-    }
-
+    .offerTitle{ font-weight:1100; color:rgba(11,31,38,.92); font-size:15px; }
+    .offerDesc{ margin-top:6px; font-size:12.5px; line-height:1.45; font-weight:900; color:rgba(11,31,38,.62); }
     .nav{
-      position:absolute;
-      left:0;
-      right:0;
-      bottom:0;
-      background:rgba(255,255,255,.92);
-      border-top:1px solid rgba(0,0,0,.06);
-      padding:10px 10px 14px;
-      display:flex;
-      justify-content:space-around;
-      z-index:10;
-      backdrop-filter:blur(10px);
+      position:absolute; left:0; right:0; bottom:0; background:rgba(255,255,255,.92); border-top:1px solid rgba(0,0,0,.06);
+      padding:10px 10px 14px; display:flex; justify-content:space-around; z-index:10; backdrop-filter:blur(10px);
     }
-
     .navItem{
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:6px;
-      font-size:11px;
-      font-weight:1000;
-      color:rgba(11,31,38,.45);
-      min-width:64px;
-      cursor:pointer;
-      user-select:none;
+      display:flex; flex-direction:column; align-items:center; gap:6px; font-size:11px; font-weight:1000; color:rgba(11,31,38,.45); min-width:64px; cursor:pointer; user-select:none;
     }
-
-    .navItem .ico{
-      width:28px;
-      height:28px;
-      display:grid;
-      place-items:center;
-      border-radius:12px;
-    }
-
+    .navItem .ico{ width:28px; height:28px; display:grid; place-items:center; border-radius:12px; }
     .navItem.active{ color:var(--purple); }
+    .navItem.active .ico{ background:rgba(90,40,125,.12); border:1px solid rgba(90,40,125,.16); color:var(--purple); }
 
-    .navItem.active .ico{
-      background:rgba(90,40,125,.12);
-      border:1px solid rgba(90,40,125,.16);
-      color:var(--purple);
+    .authOverlay{
+      position:absolute; inset:0; display:none; align-items:center; justify-content:center;
+      z-index:40; background:rgba(10,12,18,.30); backdrop-filter:blur(10px); padding:18px;
     }
-
-    .toastLayer{
-      position:absolute;
-      inset:0;
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding:22px;
-      z-index:120;
-      pointer-events:none;
+    .authOverlay.show{ display:flex; }
+    .authCard{
+      width:100%; max-width:360px; background:rgba(255,255,255,.88); backdrop-filter:blur(22px);
+      border-radius:28px; padding:20px; box-shadow:0 26px 80px rgba(0,0,0,.30); border:1px solid rgba(255,255,255,.55);
     }
-
-    .toastLayer.show{ display:flex; }
-
-    .toastCard{
-      width:min(360px, 100%);
-      background:#fff;
-      border:1px solid rgba(90,40,125,.14);
-      border-radius:28px;
-      box-shadow:0 24px 70px rgba(0,0,0,.28);
-      padding:18px;
-      pointer-events:auto;
-      transform:translateY(14px) scale(.98);
-      opacity:0;
-      transition:transform .25s ease, opacity .25s ease;
+    .authLogoWrap{
+      width:64px; height:64px; border-radius:20px; margin-bottom:14px;
+      background:linear-gradient(180deg,#5A287D,#44205F); display:grid; place-items:center;
+      box-shadow:0 14px 28px rgba(68,32,95,.22);
     }
-
-    .toastLayer.show .toastCard{
-      transform:translateY(0) scale(1);
-      opacity:1;
+    .authLogoWrap img{ width:42px; height:42px; object-fit:contain; display:block; }
+    .authTitle{ font-size:22px; font-weight:1100; color:#1d2932; margin:0 0 6px; }
+    .authSub{ font-size:13px; line-height:1.45; color:#667383; font-weight:800; margin-bottom:16px; }
+    .codeInput{
+      width:100%; border:1px solid rgba(0,0,0,.12); border-radius:18px; padding:16px;
+      font-size:24px; letter-spacing:8px; text-align:center; font-weight:1100; outline:none; color:#1d2932; margin-bottom:12px; background:#fff;
     }
+    .authHint{ font-size:12px; color:#667383; font-weight:900; margin-bottom:12px; }
+    .authError{ min-height:18px; font-size:12px; color:#D62D2D; font-weight:1000; }
 
-    .toastHeader{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom:12px;
+    .chatOverlay{
+      position:absolute; inset:0; display:none; align-items:center; justify-content:center;
+      background:rgba(68,32,95,.42); padding:12px; z-index:50;
     }
-
-    .toastHeaderLeft{
-      display:flex;
-      align-items:center;
-      gap:10px;
+    .chatOverlay.show{ display:flex; }
+    .chatSheet{
+      position:relative; width:100%; height:100%; border-radius:26px; background:#fff; border:1px solid rgba(255,255,255,.65);
+      box-shadow:0 30px 90px rgba(0,0,0,.35); overflow:hidden; display:flex; flex-direction:column;
     }
-
-    .toastIcon{
-      width:58px;
-      height:58px;
-      border-radius:18px;
-      display:grid;
-      place-items:center;
-      background:linear-gradient(180deg, #5A287D, #44205F);
-      border:1px solid rgba(90,40,125,.18);
-      box-shadow:0 10px 24px rgba(68,32,95,.22);
-      flex:0 0 auto;
-      overflow:hidden;
-      padding:10px;
-    }
-
-    .toastIcon svg{
-      width:40px;
-      height:40px;
-      display:block;
-    }
-
-    .toastTitle{
-      font-weight:1100;
-      color:rgba(11,31,38,.94);
-    }
-
-    .toastSub{
-      margin-top:2px;
-      font-size:12px;
-      font-weight:900;
-      color:rgba(11,31,38,.48);
-    }
-
-    .toastTime{
-      font-size:12px;
-      font-weight:900;
-      color:rgba(11,31,38,.45);
-      white-space:nowrap;
-    }
-
-    .toastText{
-      font-size:13px;
-      line-height:1.5;
-      font-weight:900;
-      color:rgba(11,31,38,.78);
+    .chatMount{ flex:1; min-height:0; position:relative; overflow:hidden; background:#fff; }
+    #chatFrame{ position:absolute; inset:0; width:100%; height:100%; border:0; display:block; background:#fff; }
+    .chatCloseFab{
+      position:absolute; top:12px; left:12px; width:44px; height:44px; border-radius:16px; border:1px solid rgba(0,0,0,.08);
+      background:#fff; font-weight:1100; cursor:pointer; box-shadow:0 12px 28px rgba(0,0,0,.12); z-index:5; display:grid; place-items:center;
     }
   </style>
 </head>
 <body>
-  <div class="phone">
+  <div class="device">
     <div class="screen">
-      <div class="header">
-        <div class="topRow">
-          <div class="time">9:41</div>
 
-          <div class="logoCenter" title="NatWest">
-            <img class="nwLogo" src="https://www.onlinebanking.natwest.com/assets/images/brandImages/logo.svg" alt="NatWest logo" />
-          </div>
+      <div class="homeScreen" id="homeScreen">
+        <div class="homeBlur"></div>
 
-          <div class="rightIcons">
-            <div class="badge" id="btnHeaderChat" title="Support chat">💬</div>
-            <div class="badge" id="btnAlerts" title="Alerts">
-              🔔
-              <div class="badgeDot" id="alertCount">2</div>
-            </div>
-          </div>
+        <div class="statusBar">
+          <div class="statusLeft">12:00</div>
+          <div class="dynamicIsland"></div>
+          <div class="statusRight">⋮&nbsp;📶&nbsp;▂▃▅&nbsp;▉</div>
         </div>
 
-        <div class="headline">
-          <div>
-            <div class="h1">Hello Sarah</div>
-            <div class="sub"><b>Sarah Johnson</b> • Customer number <b>45719382</b></div>
+        <div class="iconsArea">
+          <div class="widgetRow">
+            <div class="widget weatherWidget">
+              <div style="height:58px;"></div>
+              <div class="widgetSmallLabel">Weather</div>
+            </div>
+            <div class="widget">
+              <div class="calendarWidgetTop">WEDNESDAY</div>
+              <div class="calendarWidgetDate">1</div>
+              <div class="widgetSmallLabel" style="color:#8a9097;">Calendar</div>
+            </div>
           </div>
-          <div class="pillStatus"><span class="dot"></span> Cora available</div>
+
+          <div class="iconGrid">
+            <div class="iconItem">
+              <div class="appIcon icon-facetime">📹</div>
+              <div class="label">FaceTime</div>
+            </div>
+            <div class="iconItem calendarMini">
+              <div class="appIcon icon-calendar">
+                <div style="text-align:center;">
+                  <div class="day">Wed</div>
+                  <div class="date">1</div>
+                </div>
+              </div>
+              <div class="label">Calendar</div>
+            </div>
+            <div class="iconItem">
+              <div class="appIcon icon-photos"></div>
+              <div class="label">Photos</div>
+            </div>
+            <div class="iconItem">
+              <div class="appIcon icon-camera"><div class="cameraLens"></div></div>
+              <div class="label">Camera</div>
+            </div>
+
+            <div class="iconItem">
+              <div class="appIcon icon-mail">✉️</div>
+              <div class="label">Mail</div>
+            </div>
+            <div class="iconItem">
+              <div class="appIcon icon-notes">☰</div>
+              <div class="label">Notes</div>
+            </div>
+            <div class="iconItem">
+              <div class="appIcon icon-reminders">• • •</div>
+              <div class="label">Reminders</div>
+            </div>
+            <div class="iconItem">
+              <div class="appIcon icon-clock"><div class="clockFace"></div></div>
+              <div class="label">Clock</div>
+            </div>
+
+            <div class="iconItem">
+              <div class="appIcon icon-news">📰</div>
+              <div class="label">News</div>
+            </div>
+            <div class="iconItem">
+              <div class="appIcon icon-tv">tv</div>
+              <div class="label">TV</div>
+            </div>
+            <div class="iconItem">
+              <div class="appIcon icon-games">🚀</div>
+              <div class="label">Games</div>
+            </div>
+            <div class="iconItem">
+              <div class="appIcon icon-store">A</div>
+              <div class="label">App Store</div>
+            </div>
+
+            <div class="iconItem">
+              <div class="appIcon icon-maps">🗺️</div>
+              <div class="label">Maps</div>
+            </div>
+            <div class="iconItem">
+              <div class="appIcon icon-health">♥</div>
+              <div class="label">Health</div>
+            </div>
+            <div class="iconItem">
+              <div class="appIcon icon-wallet">💳</div>
+              <div class="label">Wallet</div>
+            </div>
+            <div class="iconItem">
+              <div class="appIcon icon-settings">⚙️</div>
+              <div class="label">Settings</div>
+            </div>
+          </div>
+
+          <div class="searchPill">⌕ Search</div>
         </div>
 
-        <div class="summaryWrap">
-          <div class="sumTop">
-            <div class="sumLabel">Total balance</div>
-            <div class="sumValue">£18,742.61</div>
+        <div class="dock">
+          <div class="iconItem" style="gap:0;">
+            <div class="appIcon icon-phone">📞</div>
           </div>
-
-          <div class="sumGrid">
-            <div class="legend">
-              <div class="legRow">
-                <div class="legLeft"><span class="swatch"></span> Current</div>
-                <div>£4,286.14</div>
-              </div>
-              <div class="legRow">
-                <div class="legLeft"><span class="swatch pink"></span> Savings</div>
-                <div>£14,456.47</div>
-              </div>
-              <div class="legSmall">Spending insights • Everyday banking</div>
-            </div>
-            <div class="donut"><span>£</span></div>
+          <div class="iconItem" style="gap:0;">
+            <div class="appIcon icon-safari">🧭</div>
+          </div>
+          <div class="iconItem" style="gap:0;">
+            <div class="appIcon icon-messages">💬</div>
+          </div>
+          <div class="iconItem" style="gap:0;">
+            <div class="appIcon icon-music">🎵</div>
           </div>
         </div>
       </div>
 
-      <div class="content">
-        <div class="tabs" role="tablist" aria-label="Sections">
-          <button class="tab active" id="tabAccounts">Accounts</button>
-          <button class="tab" id="tabPayments">Payments</button>
-          <button class="tab" id="tabMortgages">Mortgages</button>
-        </div>
-
-        <div id="viewAccounts">
-          <div class="card rowCard" id="btnManageMoney">
-            <div style="display:flex; align-items:center; gap:12px;">
-              <div class="pillCount">3</div>
-              <div style="font-weight:1100; color:rgba(11,31,38,.92);">Money tools & insights</div>
-            </div>
-            <div class="chev">›</div>
-          </div>
-
-          <div class="sectionTitle">
-            <span>Search transactions</span>
-            <span style="font-size:12px; font-weight:900; color:rgba(11,31,38,.45);">live demo</span>
-          </div>
-
-          <div class="search">
-            <div class="ico">🔎</div>
-            <input id="txSearch" placeholder="Try: groceries, salary, coffee…" autocomplete="off" />
-          </div>
-
-          <div class="sectionTitle"><span>CURRENT</span><span></span></div>
-          <div class="accountList">
-            <div class="card accountCard" data-acct="current-account">
-              <div class="bar"></div>
+      <div class="pushOverlay" id="pushOverlay">
+        <div class="pushCard">
+          <div class="pushHead">
+            <div class="pushLeft">
+              <div class="pushIcon">
+                <img src="https://www.onlinebanking.natwest.com/assets/images/brandImages/logo.svg" alt="NatWest logo">
+              </div>
               <div>
-                <div class="acctName">Select Account</div>
-                <div class="acctNum">•••• 2094 • Sort code 60-21-17</div>
-              </div>
-              <div class="acctRight">
-                <div class="bal">£4,286.14</div>
-                <div class="avail">Available: £4,286.14</div>
+                <div class="pushTitle">Cora</div>
+                <div class="pushSub">New in-app message</div>
               </div>
             </div>
+            <div class="pushTime">Just now</div>
           </div>
-
-          <div class="sectionTitle"><span>SAVINGS</span><span></span></div>
-          <div class="accountList">
-            <div class="card accountCard" data-acct="digital-saver">
-              <div class="bar pink"></div>
-              <div>
-                <div class="acctName">Digital Regular Saver</div>
-                <div class="acctNum">Easy access • Goal based</div>
-              </div>
-              <div class="acctRight">
-                <div class="bal">£14,456.47</div>
-                <div class="avail">Available: £14,456.47</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="sectionTitle"><span>CARD</span><span></span></div>
-          <div class="accountList">
-            <div class="card accountCard" data-acct="credit-card">
-              <div class="bar gold"></div>
-              <div>
-                <div class="acctName">NatWest Credit Card</div>
-                <div class="acctNum">Ending •• 8451</div>
-              </div>
-              <div class="acctRight">
-                <div class="bal">£682.32</div>
-                <div class="avail">Due 5 Apr</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="sectionTitle"><span>Quick actions</span><span></span></div>
+          <div class="pushText" id="pushText">Hi Sarah. We noticed you’ve been exploring properties recently. Thinking about buying? I can help you work out what’s possible, no commitment, just a conversation</div>
           <div class="btnRow">
-            <button class="btn primary" id="btnPay">➜ Pay</button>
-            <button class="btn ghost" id="btnTransfer">⇄ Transfer</button>
-            <button class="btn chat" id="btnChatNow">💬 Open chat</button>
+            <button class="btn primary" id="btnEngagePush">💬 Tap to open</button>
+            <button class="btn secondary" id="btnDismissPush">Dismiss</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="appScene" id="appScene">
+        <div class="header">
+          <div class="topRow">
+            <div class="topTime">9:41</div>
+
+            <div class="logoCenter" title="NatWest">
+              <img class="nwLogo" src="https://www.onlinebanking.natwest.com/assets/images/brandImages/logo.svg" alt="NatWest logo" />
+            </div>
+
+            <div class="rightIcons">
+              <div class="badge" id="btnHeaderChat" title="Support chat">💬</div>
+              <div class="badge" title="Alerts">
+                🔔
+                <div class="badgeDot">3</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="headline">
+            <div>
+              <div class="h1">Hello Sarah</div>
+              <div class="sub"><b>Sarah Johnson</b> • Customer number <b>45719382</b></div>
+            </div>
+            <div class="pillStatus"><span class="dot"></span> Cora available</div>
+          </div>
+
+          <div class="summaryWrap">
+            <div class="sumTop">
+              <div class="sumLabel">Total balance</div>
+              <div class="sumValue">£18,742.61</div>
+            </div>
+
+            <div class="sumGrid">
+              <div class="legend">
+                <div class="legRow">
+                  <div class="legLeft"><span class="swatch"></span> Current</div>
+                  <div>£4,286.14</div>
+                </div>
+                <div class="legRow">
+                  <div class="legLeft"><span class="swatch pink"></span> Savings</div>
+                  <div>£14,456.47</div>
+                </div>
+                <div class="legSmall">Spending insights • Everyday banking</div>
+              </div>
+              <div class="donut"><span>£</span></div>
+            </div>
           </div>
         </div>
 
-        <div id="viewPayments" style="display:none;">
-          <div class="card" style="padding:14px;">
-            <div style="font-weight:1100; color:rgba(11,31,38,.92);">Payments</div>
-            <div style="margin-top:6px; font-weight:900; color:rgba(11,31,38,.55); font-size:12px; line-height:1.35;">
-              Manage transfers, standing orders and upcoming bills from one place.
+        <div class="content">
+          <div class="tabs">
+            <button class="tab active" id="tabAccounts">Accounts</button>
+            <button class="tab" id="tabPayments">Payments</button>
+            <button class="tab" id="tabMortgages">Mortgages</button>
+          </div>
+
+          <div id="viewAccounts">
+            <div class="card rowCard">
+              <div style="display:flex; align-items:center; gap:12px;">
+                <div class="pillCount">3</div>
+                <div style="font-weight:1100; color:rgba(11,31,38,.92);">Money tools & insights</div>
+              </div>
+              <div class="chev">›</div>
             </div>
 
-            <div class="btnRow" style="margin-top:12px;">
-              <button class="btn primary" id="btnNewPayment">➜ New payment</button>
-              <button class="btn ghost" id="btnBeneficiaries">👥 Payees</button>
-              <button class="btn chat" id="btnPaymentsChat">💬 Ask Cora</button>
+            <div class="sectionTitle"><span>CURRENT</span><span></span></div>
+            <div class="accountList">
+              <div class="card accountCard">
+                <div class="bar"></div>
+                <div>
+                  <div class="acctName">Select Account</div>
+                  <div class="acctNum">•••• 2094 • Sort code 60-21-17</div>
+                </div>
+                <div class="acctRight">
+                  <div class="bal">£4,286.14</div>
+                  <div class="avail">Available: £4,286.14</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="sectionTitle"><span>SAVINGS</span><span></span></div>
+            <div class="accountList">
+              <div class="card accountCard">
+                <div class="bar pink"></div>
+                <div>
+                  <div class="acctName">Digital Regular Saver</div>
+                  <div class="acctNum">Easy access • Goal based</div>
+                </div>
+                <div class="acctRight">
+                  <div class="bal">£14,456.47</div>
+                  <div class="avail">Available: £14,456.47</div>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="sectionTitle"><span>Upcoming</span><span></span></div>
-          <div class="card" style="padding:14px;">
-            <div style="display:grid; gap:12px; font-size:13px;">
-              <div style="display:flex; justify-content:space-between; gap:10px;">
-                <div><b>Council Tax</b><br><span style="color:rgba(11,31,38,.55); font-weight:900; font-size:12px;">26 Mar • Direct Debit</span></div>
-                <div style="font-weight:1100;">£186.00</div>
+          <div id="viewPayments" style="display:none;">
+            <div class="card" style="padding:14px;">
+              <div style="font-weight:1100; color:rgba(11,31,38,.92);">Payments</div>
+              <div style="margin-top:6px; font-weight:900; color:rgba(11,31,38,.55); font-size:12px; line-height:1.35;">
+                Manage transfers, standing orders and upcoming bills from one place.
               </div>
-              <div style="display:flex; justify-content:space-between; gap:10px;">
-                <div><b>Energy</b><br><span style="color:rgba(11,31,38,.55); font-weight:900; font-size:12px;">29 Mar • Direct Debit</span></div>
-                <div style="font-weight:1100;">£94.25</div>
+            </div>
+          </div>
+
+          <div id="viewMortgages" style="display:none;">
+            <div class="mortgageHero">
+              <h3>Thinking about your next move?</h3>
+              <p>Explore NatWest mortgage options, compare routes into home ownership and chat with Cora to understand what could work for you.</p>
+            </div>
+
+            <div class="sectionTitle"><span>Mortgage options</span><span></span></div>
+            <div class="offerGrid">
+              <div class="card offerCard">
+                <div class="offerTag">First-time buyers</div>
+                <div class="offerTitle">Start with practical tools and guidance</div>
+                <div class="offerDesc">Discover ways to estimate borrowing, understand deposits and get ready for a smoother first step onto the property ladder.</div>
               </div>
-              <div style="display:flex; justify-content:space-between; gap:10px;">
-                <div><b>Mobile</b><br><span style="color:rgba(11,31,38,.55); font-weight:900; font-size:12px;">2 Apr • Card payment</span></div>
-                <div style="font-weight:1100;">£42.00</div>
+
+              <div class="card offerCard">
+                <div class="offerTag">Moving home</div>
+                <div class="offerTitle">Explore options for your next property</div>
+                <div class="offerDesc">If you are planning your next move, NatWest can help you look at fresh borrowing options, switching deals and keeping things simple.</div>
+              </div>
+
+              <div class="btnRow">
+                <button class="btn primary" id="btnShowPushAgain">🔔 Show push again</button>
               </div>
             </div>
           </div>
         </div>
 
-        <div id="viewMortgages" style="display:none;">
-          <div class="mortgageHero">
-            <h3>Thinking about your next move?</h3>
-            <p>Explore NatWest mortgage options, compare routes into home ownership and chat with Cora to understand what could work for you.</p>
+        <div class="nav">
+          <div class="navItem active" id="navAccounts"><div class="ico">🏠</div><div>Home</div></div>
+          <div class="navItem" id="navPayments"><div class="ico">⇄</div><div>Payments</div></div>
+          <div class="navItem" id="navMortgages"><div class="ico">🏡</div><div>Mortgages</div></div>
+          <div class="navItem" id="navChat"><div class="ico">💬</div><div>Chat</div></div>
+        </div>
+      </div>
+
+      <div class="authOverlay" id="authOverlay">
+        <div class="authCard">
+          <div class="authLogoWrap">
+            <img src="https://www.onlinebanking.natwest.com/assets/images/brandImages/logo.svg" alt="NatWest logo">
           </div>
-
-          <div class="sectionTitle"><span>Mortgage options</span><span></span></div>
-          <div class="offerGrid">
-            <div class="card offerCard">
-              <div class="offerTag">First-time buyers</div>
-              <div class="offerTitle">Start with practical tools and guidance</div>
-              <div class="offerDesc">Discover ways to estimate borrowing, understand deposits and get ready for a smoother first step onto the property ladder.</div>
-            </div>
-
-            <div class="card offerCard">
-              <div class="offerTag">Moving home</div>
-              <div class="offerTitle">Explore options for your next property</div>
-              <div class="offerDesc">If you are planning your next move, NatWest can help you look at fresh borrowing options, switching deals and keeping things simple.</div>
-            </div>
-
-            <div class="card offerCard">
-              <div class="offerTag">Remortgaging</div>
-              <div class="offerTitle">Review your deal before it ends</div>
-              <div class="offerDesc">See how reviewing your mortgage ahead of time could help you plan monthly payments with more confidence.</div>
-            </div>
-          </div>
-
+          <h2 class="authTitle">Confirm it’s you</h2>
+          <div class="authSub">Before entering your NatWest app, enter your 6 digit passcode.</div>
+          <input class="codeInput" id="authCode" type="password" inputmode="numeric" maxlength="6" placeholder="••••••" />
+          <div class="authHint">Demo code: 360948</div>
+          <div class="authError" id="authError"></div>
           <div class="btnRow">
-            <button class="btn chat" id="btnMortgageChat">💬 Chat about mortgages</button>
-            <button class="btn ghost" id="btnMortgageAlert">🔔 Test popout</button>
+            <button class="btn primary" id="btnAuthContinue">Continue</button>
+            <button class="btn secondary" id="btnAuthCancel">Cancel</button>
           </div>
         </div>
       </div>
 
-      <div class="nav">
-        <div class="navItem active" id="navAccounts"><div class="ico">🏠</div><div>Home</div></div>
-        <div class="navItem" id="navPayments"><div class="ico">⇄</div><div>Payments</div></div>
-        <div class="navItem" id="navMortgages"><div class="ico">🏡</div><div>Mortgages</div></div>
-        <div class="navItem" id="navChat"><div class="ico">💬</div><div>Chat</div></div>
-      </div>
-
-      <div class="modal" id="accountModal" aria-hidden="true">
-        <div class="sheet">
-          <div class="topBar">
-            <div class="h" id="acctTitle">Account</div>
-            <button class="btn ghost" id="btnCloseAccount">✕</button>
-          </div>
-          <div class="sheetBody">
-            <div id="acctKvs"></div>
-            <div class="txTitle">Recent transactions</div>
-            <div class="tx" id="acctTx"></div>
-            <div class="btnRow" style="margin-top:14px;">
-              <button class="btn primary" id="btnAcctPay">➜ Pay</button>
-              <button class="btn ghost" id="btnAcctStatement">📄 Statement</button>
-              <button class="btn chat" id="btnAcctChat">💬 Chat</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="modal" id="insightsModal" aria-hidden="true">
-        <div class="sheet">
-          <div class="topBar">
-            <div class="h">Money tools & insights</div>
-            <button class="btn ghost" id="btnCloseInsights">✕</button>
-          </div>
-          <div class="sheetBody">
-            <div class="card" style="padding:14px; box-shadow:none;">
-              <div style="display:grid; gap:12px; font-size:13px;">
-                <div><b>Spending summary</b><br><span style="color:rgba(11,31,38,.55); font-weight:900; font-size:12px;">Groceries are down 8% this month</span></div>
-                <div><b>Savings streak</b><br><span style="color:rgba(11,31,38,.55); font-weight:900; font-size:12px;">You have moved money to savings for 4 months in a row</span></div>
-                <div><b>Mortgage journey</b><br><span style="color:rgba(11,31,38,.55); font-weight:900; font-size:12px;">Explore home buying support and mortgage guidance</span></div>
-              </div>
-              <div class="btnRow" style="margin-top:14px;">
-                <button class="btn chat" id="btnInsightsChat">💬 Ask Cora</button>
-                <button class="btn ghost" id="btnInsightsClose2">Close</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="modal" id="alertsModal" aria-hidden="true">
-        <div class="sheet">
-          <div class="topBar">
-            <div class="h">Alerts</div>
-            <button class="btn ghost" id="btnCloseAlerts">✕</button>
-          </div>
-          <div class="sheetBody">
-            <div class="card" style="padding:14px; box-shadow:none;">
-              <div id="alertsList" style="display:grid; gap:10px; font-size:13px;">
-                <div><b>Spending update available</b><br><span style="color:rgba(11,31,38,.55); font-weight:900; font-size:12px;">See your latest account insights</span></div>
-                <div><b>Regular saver reminder</b><br><span style="color:rgba(11,31,38,.55); font-weight:900; font-size:12px;">Top up before the end of the month</span></div>
-              </div>
-              <div class="btnRow" style="margin-top:14px;">
-                <button class="btn chat" id="btnAlertsChat">💬 Open chat</button>
-                <button class="btn ghost" id="btnAlertsClose2">Close</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="overlay" id="chatOverlay" aria-hidden="true">
+      <div class="chatOverlay" id="chatOverlay">
         <div class="chatSheet">
           <button class="chatCloseFab" id="btnCloseChat" aria-label="Close chat">✕</button>
           <div class="chatMount">
-            <iframe id="chatFrame" title="NatWest Support Chat" src="natwest-chat-updated.html"></iframe>
+            <iframe id="chatFrame" title="NatWest Support Chat" src="chat.html"></iframe>
           </div>
         </div>
       </div>
 
-      <div class="toastLayer" id="toastLayer" aria-hidden="true">
-        <div class="toastCard" role="dialog" aria-modal="false" aria-label="Cora notification">
-          <div class="toastHeader">
-            <div class="toastHeaderLeft">
-              <div class="toastIcon" aria-label="NatWest logo">
-                <svg viewBox="0 0 64 64" aria-hidden="true">
-                  <g transform="translate(32 32)">
-                    <path d="M-13 -18H1L10 -4H-4Z" fill="#F9384B"/>
-                    <path d="M3 -3H17L26 11H12Z" fill="#D50032"/>
-                    <path d="M-26 11H-12L-3 -3H-17Z" fill="#D50032"/>
-                    <path d="M-10 4H4L13 18H-1Z" fill="#B4002A"/>
-                    <path d="M-10 4L-1 18H-15L-24 4Z" fill="#FF5B61"/>
-                    <path d="M1 -18H15L24 -4H10Z" fill="#B4002A"/>
-                  </g>
-                </svg>
-              </div>
-              <div>
-                <div class="toastTitle">Cora</div>
-                <div class="toastSub">New in-app message</div>
-              </div>
-            </div>
-            <div class="toastTime" id="toastTime">Just now</div>
-          </div>
-
-          <div class="toastText" id="toastText">Hi Sarah. We noticed you’ve been exploring properties recently. Thinking about buying? I can help you work out what’s possible, no commitment, just a conversation</div>
-
-          <div class="btnRow">
-            <button class="btn chat" id="btnToastOpen">💬 Tap to open</button>
-            <button class="btn ghost" id="btnToastDismiss">Dismiss</button>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 
   <script>
+    const DEMO_CODE = "360948";
+    const NTFY_TOPIC = "natwest-cora-proactive-demo-4f8e2b91";
+    const DEFAULT_PUSH = "Hi Sarah. We noticed you’ve been exploring properties recently. Thinking about buying? I can help you work out what’s possible, no commitment, just a conversation";
+
     const byId = (id) => document.getElementById(id);
     const show = (el) => el.classList.add("show");
     const hide = (el) => el.classList.remove("show");
 
-    const PROACTIVE_TEXT = "Hi Sarah. We noticed you’ve been exploring properties recently. Thinking about buying? I can help you work out what’s possible, no commitment, just a conversation";
-    const NTFY_TOPIC = "natwest-cora-proactive-demo-4f8e2b91";
-
-    const ACCOUNTS = {
-      "current-account": {
-        title: "Select Account",
-        balance: "£4,286.14",
-        available: "£4,286.14",
-        sortCode: "60-21-17",
-        accountNumber: "•••• 2094",
-        iban: "GB65NWBK60211720940000",
-        tx: [
-          { name: "Card payment • Tesco", meta: "Today • Ref: GROCERIES", amt: "-£54.60" },
-          { name: "Salary • Acorn Design", meta: "Yesterday • Ref: MAR SALARY", amt: "+£2,980.00" },
-          { name: "Coffee House", meta: "Mon • Ref: COFFEE", amt: "-£4.85" }
-        ]
-      },
-      "digital-saver": {
-        title: "Digital Regular Saver",
-        balance: "£14,456.47",
-        available: "£14,456.47",
-        sortCode: "60-21-17",
-        accountNumber: "•••• 7712",
-        iban: "GB65NWBK60211777120000",
-        interest: "5.50% AER",
-        tx: [
-          { name: "Transfer in • From current account", meta: "Yesterday • Ref: MONTHLY SAVE", amt: "+£350.00" },
-          { name: "Interest paid", meta: "1 Mar • Ref: INTEREST", amt: "+£22.18" },
-          { name: "Transfer in • From current account", meta: "1 Feb • Ref: SAVE", amt: "+£500.00" }
-        ]
-      },
-      "credit-card": {
-        title: "NatWest Credit Card",
-        balance: "£682.32",
-        available: "£4,317.68 available credit",
-        sortCode: "—",
-        accountNumber: "Ending 8451",
-        iban: "—",
-        tx: [
-          { name: "Online purchase • John Lewis", meta: "Today • Ref: HOME", amt: "-£129.00" },
-          { name: "Restaurant • The Ivy", meta: "Sat • Ref: DINING", amt: "-£78.40" },
-          { name: "Payment received", meta: "15 Mar • Ref: THANK YOU", amt: "+£250.00" }
-        ]
-      }
-    };
-
-    const ALL_TX = Object.values(ACCOUNTS).flatMap(a => a.tx.map(t => ({...t, account:a.title})));
-    let activeToastTimer = null;
-
-    function moneyClass(amt){
-      return (amt || "").trim().startsWith("-") ? "neg" : "pos";
-    }
-
-    function openAccount(key){
-      const data = ACCOUNTS[key];
-      if(!data) return;
-
-      byId("acctTitle").textContent = data.title;
-      const kvs = [
-        { k:"Balance", v:data.balance },
-        { k:"Available", v:data.available },
-        { k:"Account number", v:data.accountNumber },
-        { k:"Sort code", v:data.sortCode },
-        { k:"IBAN", v:data.iban }
-      ];
-      if(data.interest) kvs.push({ k:"Interest", v:data.interest });
-
-      byId("acctKvs").innerHTML = kvs.map(x => `
-        <div class="kv"><div>${x.k}</div><div style="color:rgba(11,31,38,.92)">${x.v}</div></div>
-      `).join("");
-
-      byId("acctTx").innerHTML = data.tx.map(t => `
-        <div class="txRow">
-          <div>
-            <div class="txMain">${t.name}</div>
-            <div class="txMeta">${t.meta}</div>
-          </div>
-          <div class="txAmt ${moneyClass(t.amt)}">${t.amt}</div>
-        </div>
-      `).join("");
-
-      show(byId("accountModal"));
-    }
+    const pushOverlay = byId("pushOverlay");
+    const appScene = byId("appScene");
+    const authOverlay = byId("authOverlay");
+    const chatOverlay = byId("chatOverlay");
+    const authCode = byId("authCode");
+    const authError = byId("authError");
 
     function setActiveTab(which){
-      const set = (id, on) => byId(id).classList.toggle("active", on);
-      set("tabAccounts", which==="accounts");
-      set("tabPayments", which==="payments");
-      set("tabMortgages", which==="mortgages");
+      byId("tabAccounts").classList.toggle("active", which === "accounts");
+      byId("tabPayments").classList.toggle("active", which === "payments");
+      byId("tabMortgages").classList.toggle("active", which === "mortgages");
 
-      byId("viewAccounts").style.display = which==="accounts" ? "block" : "none";
-      byId("viewPayments").style.display = which==="payments" ? "block" : "none";
-      byId("viewMortgages").style.display = which==="mortgages" ? "block" : "none";
+      byId("viewAccounts").style.display = which === "accounts" ? "block" : "none";
+      byId("viewPayments").style.display = which === "payments" ? "block" : "none";
+      byId("viewMortgages").style.display = which === "mortgages" ? "block" : "none";
 
-      byId("navAccounts").classList.toggle("active", which==="accounts");
-      byId("navPayments").classList.toggle("active", which==="payments");
-      byId("navMortgages").classList.toggle("active", which==="mortgages");
+      byId("navAccounts").classList.toggle("active", which === "accounts");
+      byId("navPayments").classList.toggle("active", which === "payments");
+      byId("navMortgages").classList.toggle("active", which === "mortgages");
+    }
+
+    function showPush(text = DEFAULT_PUSH){
+      byId("pushText").textContent = text;
+      show(pushOverlay);
+    }
+
+    function hidePush(){
+      hide(pushOverlay);
+    }
+
+    function openAuth(){
+      hidePush();
+      show(authOverlay);
+      authError.textContent = "";
+      authCode.value = "";
+      setTimeout(() => authCode.focus(), 80);
+    }
+
+    function enterApp(){
+      hide(authOverlay);
+      show(appScene);
     }
 
     function openChat(){
-      hideToast();
-      show(byId("chatOverlay"));
+      show(chatOverlay);
     }
 
-    function wireModal(id, closeBtnId){
-      byId(closeBtnId).addEventListener("click", () => hide(byId(id)));
-      byId(id).addEventListener("click", (e) => {
-        if(e.target === byId(id)) hide(byId(id));
-      });
+    function closeChat(){
+      hide(chatOverlay);
     }
 
-    function addAlertItem(title, subtitle){
-      const alertsList = byId("alertsList");
-      const row = document.createElement("div");
-      row.innerHTML = `<b>${title}</b><br><span style="color:rgba(11,31,38,.55); font-weight:900; font-size:12px;">${subtitle}</span>`;
-      alertsList.prepend(row);
-    }
-
-    function incrementAlertCount(){
-      const badge = byId("alertCount");
-      const n = Number(badge.textContent || "0");
-      badge.textContent = String(n + 1);
-    }
-
-    function hideToast(){
-      if (activeToastTimer) {
-        clearTimeout(activeToastTimer);
-        activeToastTimer = null;
+    function validateCode(){
+      const value = (authCode.value || "").trim();
+      if (value === DEMO_CODE) {
+        enterApp();
+        openChat();
+      } else {
+        authError.textContent = "Please enter the correct 6 digit code.";
       }
-      hide(byId("toastLayer"));
-    }
-
-    function showToast(text = PROACTIVE_TEXT){
-      byId("toastText").textContent = text;
-      byId("toastTime").textContent = "Just now";
-      show(byId("toastLayer"));
-      addAlertItem("Cora mortgage message", text);
-      incrementAlertCount();
-
-      if (activeToastTimer) clearTimeout(activeToastTimer);
-      activeToastTimer = setTimeout(() => {
-        hideToast();
-      }, 12000);
     }
 
     function parseIncomingNtfyMessage(message){
@@ -1281,1076 +886,58 @@
       const raw = String(message).trim();
       if (!raw) return null;
 
-      try {
-        return JSON.parse(raw);
-      } catch {}
+      try { return JSON.parse(raw); } catch {}
 
       if (raw.startsWith("message=")) {
         const value = raw.slice(8);
-        try {
-          return JSON.parse(value);
-        } catch {
-          return { text: decodeURIComponent(value.replace(/\+/g, " ")) };
-        }
+        try { return JSON.parse(value); }
+        catch { return { text: decodeURIComponent(value.replace(/\+/g, " ")) }; }
       }
 
       return { text: raw };
     }
 
     function subscribeToNtfy(){
-      const url = `https://ntfy.sh/${NTFY_TOPIC}/sse`;
-      const es = new EventSource(url);
+      const es = new EventSource(`https://ntfy.sh/${NTFY_TOPIC}/sse`);
 
       es.onmessage = (event) => {
         try {
           const envelope = JSON.parse(event.data);
           const parsed = parseIncomingNtfyMessage(envelope.message);
-          if (!parsed) return;
-
-          if (
-            parsed.type === "cora_mortgage_prompt" ||
-            parsed.type === "proactive_mortgage" ||
-            parsed.type === "mortgage_prompt" ||
-            parsed.text
-          ) {
-            showToast(parsed.text || PROACTIVE_TEXT);
-          }
+          if (parsed) showPush(parsed.text || DEFAULT_PUSH);
         } catch (e) {
-          console.warn("ntfy message parse issue", e);
+          console.warn("ntfy parse issue", e);
         }
       };
 
       es.onerror = () => {
         console.warn("ntfy subscription disconnected; browser will retry automatically.");
       };
-
-      window.__natwestNtfy = es;
     }
 
     document.addEventListener("DOMContentLoaded", () => {
       subscribeToNtfy();
 
-      byId("tabAccounts").onclick = () => setActiveTab("accounts");
-      byId("tabPayments").onclick = () => setActiveTab("payments");
-      byId("tabMortgages").onclick = () => setActiveTab("mortgages");
+      byId("btnEngagePush").onclick = openAuth;
+      byId("btnDismissPush").onclick = hidePush;
 
-      byId("navAccounts").onclick = () => setActiveTab("accounts");
-      byId("navPayments").onclick = () => setActiveTab("payments");
-      byId("navMortgages").onclick = () => setActiveTab("mortgages");
-      byId("navChat").onclick = openChat;
-
-      document.querySelectorAll(".accountCard").forEach(card => {
-        card.addEventListener("click", () => openAccount(card.getAttribute("data-acct")));
+      byId("btnAuthContinue").onclick = validateCode;
+      byId("btnAuthCancel").onclick = () => hide(authOverlay);
+      authCode.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") validateCode();
       });
 
-      wireModal("accountModal", "btnCloseAccount");
-      wireModal("insightsModal", "btnCloseInsights");
-      wireModal("alertsModal", "btnCloseAlerts");
-
-      byId("btnInsightsClose2").onclick = () => hide(byId("insightsModal"));
-      byId("btnAlertsClose2").onclick = () => hide(byId("alertsModal"));
-
-      byId("btnManageMoney").onclick = () => show(byId("insightsModal"));
-      byId("btnAlerts").onclick = () => show(byId("alertsModal"));
-
-      byId("btnPay").onclick = () => openAccount("current-account");
-      byId("btnTransfer").onclick = () => openAccount("digital-saver");
-      byId("btnAcctPay").onclick = () => alert("Demo: open payments flow");
-      byId("btnAcctStatement").onclick = () => alert("Demo: open statement");
-      byId("btnNewPayment").onclick = () => alert("Demo: new payment");
-      byId("btnBeneficiaries").onclick = () => alert("Demo: payees");
-
-      byId("btnChatNow").onclick = openChat;
       byId("btnHeaderChat").onclick = openChat;
-      byId("btnPaymentsChat").onclick = openChat;
-      byId("btnMortgageChat").onclick = openChat;
-      byId("btnInsightsChat").onclick = () => { hide(byId("insightsModal")); openChat(); };
-      byId("btnAlertsChat").onclick = () => { hide(byId("alertsModal")); openChat(); };
-      byId("btnAcctChat").onclick = () => { hide(byId("accountModal")); openChat(); };
-      byId("btnToastOpen").onclick = openChat;
-      byId("btnToastDismiss").onclick = hideToast;
-      byId("btnMortgageAlert").onclick = () => showToast();
-
-      byId("btnCloseChat").onclick = () => hide(byId("chatOverlay"));
-      byId("chatOverlay").addEventListener("click", (e) => {
-        if (e.target === byId("chatOverlay")) hide(byId("chatOverlay"));
-      });
-
-      const txInput = byId("txSearch");
-      txInput.addEventListener("input", () => {
-        const q = (txInput.value || "").trim().toLowerCase();
-        if (!q) return;
-        const hit = ALL_TX.find(t =>
-          (t.name + " " + t.meta + " " + t.account).toLowerCase().includes(q)
-        );
-        if (hit){
-          const acctKey = hit.account.includes("Saver")
-            ? "digital-saver"
-            : hit.account.includes("Credit Card")
-            ? "credit-card"
-            : "current-account";
-          openAccount(acctKey);
-          txInput.blur();
-        }
-      });
-    });
-  </script>
-</body>
-</html>
-      width:min(430px, 94vw);
-      height:min(900px, 94vh);
-      background:#0f1115;
-      border-radius:40px;
-      padding:14px;
-      box-shadow:0 34px 90px rgba(0,0,0,.35);
-      position:relative;
-    }
-    .screen{
-      height:100%;
-      border-radius:30px;
-      overflow:hidden;
-      background:var(--bg);
-      position:relative;
-      display:flex;
-      flex-direction:column;
-    }
-
-    .header{
-      padding:18px 18px 14px;
-      color:#fff;
-      background:
-        radial-gradient(920px 260px at 20% 0%, rgba(255,255,255,.16), rgba(255,255,255,0) 60%),
-        linear-gradient(180deg, var(--purple), var(--purple2));
-      box-shadow:0 10px 30px rgba(0,0,0,.22);
-    }
-    .topRow{
-      display:grid;
-      grid-template-columns: 1fr auto 1fr;
-      align-items:center;
-      gap:10px;
-      font-size:12px;
-      opacity:.96;
-    }
-    .time{ justify-self:start; font-weight:900; }
-    .rightIcons{ justify-self:end; display:flex; gap:10px; align-items:center; }
-    .badge{
-      width:28px;height:28px;border-radius:12px;
-      border:1px solid rgba(255,255,255,.22);
-      background:rgba(255,255,255,.10);
-      display:grid; place-items:center;
-      position:relative;
-      cursor:pointer;
-      user-select:none;
-    }
-    .badgeDot{
-      position:absolute;
-      top:-6px; right:-6px;
-      width:18px;height:18px;border-radius:999px;
-      background:var(--red);
-      color:#fff;
-      font-size:11px;
-      display:grid; place-items:center;
-      font-weight:1000;
-      border:2px solid var(--purple2);
-    }
-    .logoCenter {
-      justify-self: center;
-    }
-
-    .nwLogo {
-    height: 44px;
-    object-fit: contain;
-    }
-    .brandMark{
-      width:40px;height:40px;border-radius:12px;
-      display:grid;place-items:center;
-      background: rgba(255,255,255,.10);
-      border:1px solid rgba(255,255,255,.18);
-      overflow:hidden;
-    }
-    .brandMark img{ width:100%; height:100%; object-fit:contain; display:block; }
-    .brandText{ display:flex; flex-direction:column; line-height:1.05; text-align:left; }
-    .brandText .name{ font-weight:1000; font-size:14px; letter-spacing:.2px; }
-    .brandText .tag{ font-weight:900; font-size:11px; opacity:.88; }
-
-    .headline{
-      display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
-      gap:10px;
-      margin-top:8px;
-    }
-    .h1{ font-size:26px; font-weight:1100; margin:0; letter-spacing:-.3px; }
-    .sub{ margin-top:4px; font-size:12.5px; opacity:.92; font-weight:800; }
-
-    .pillStatus{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      background: rgba(255,255,255,.14);
-      border:1px solid rgba(255,255,255,.18);
-      border-radius:999px;
-      padding:8px 12px;
-      font-weight:900;
-      font-size:12px;
-      backdrop-filter: blur(10px);
-      white-space:nowrap;
-    }
-    .dot{ width:10px;height:10px;border-radius:999px; background:#43d17b; box-shadow:0 0 0 3px rgba(67,209,123,.18); }
-
-    .summaryWrap{
-      margin-top:14px;
-      background: rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.16);
-      border-radius:22px;
-      padding:14px;
-      backdrop-filter: blur(10px);
-    }
-    .sumTop{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; }
-    .sumLabel{ font-weight:900; font-size:12px; opacity:.85; }
-    .sumValue{ font-size:34px; font-weight:1100; letter-spacing:-.6px; }
-
-    .sumGrid{ display:grid; grid-template-columns: 1fr 120px; gap:14px; margin-top:10px; align-items:center; }
-    .legend{ display:flex; flex-direction:column; gap:10px; }
-    .legRow{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      font-size:13px; font-weight:900; color:rgba(255,255,255,.92);
-    }
-    .legLeft{ display:flex; align-items:center; gap:10px; }
-    .swatch{ width:10px;height:10px;border-radius:999px; background: #B162FF; box-shadow:0 0 0 3px rgba(177,98,255,.18); }
-    .swatch.pink{ background: #FF8FD8; box-shadow:0 0 0 3px rgba(255,143,216,.18); }
-    .legSmall{ font-size:12px; opacity:.86; font-weight:900; }
-
-    .donut{
-      width:120px;height:120px;border-radius:999px;
-      background: conic-gradient(#B162FF 0 290deg, #FF8FD8 290deg 336deg, rgba(255,255,255,.22) 336deg 360deg);
-      display:grid; place-items:center; position:relative;
-      box-shadow:0 18px 40px rgba(0,0,0,.18);
-    }
-    .donut::after{
-      content:"";
-      width:88px;height:88px;border-radius:999px;
-      background: linear-gradient(180deg, rgba(68,32,95,.92), rgba(68,32,95,.84));
-      border:1px solid rgba(255,255,255,.18);
-      position:absolute;
-    }
-    .donut span{ position:relative; z-index:1; font-weight:1100; font-size:26px; opacity:.95; }
-
-    .content{
-      flex:1;
-      overflow:auto;
-      padding:16px 16px 104px;
-    }
-
-    .tabs{
-      display:flex;
-      gap:10px;
-      margin:2px 2px 12px;
-    }
-    .tab{
-      flex:1;
-      border-radius:16px;
-      padding:10px 12px;
-      font-weight:1000;
-      font-size:13px;
-      border:1px solid var(--line);
-      background:#fff;
-      color: rgba(11,31,38,.70);
-      cursor:pointer;
-      user-select:none;
-      box-shadow:0 10px 22px rgba(0,0,0,.06);
-    }
-    .tab.active{
-      background: rgba(90,40,125,.10);
-      border:1px solid rgba(90,40,125,.18);
-      color: rgba(68,32,95,.95);
-      box-shadow:none;
-    }
-
-    .card{
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:22px;
-      box-shadow: var(--shadow);
-    }
-
-    .rowCard{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:12px; padding:14px;
-      cursor:pointer; user-select:none;
-    }
-    .pillCount{
-      width:30px;height:30px;border-radius:999px;
-      background: rgba(90,40,125,.12);
-      border:1px solid rgba(90,40,125,.20);
-      display:grid; place-items:center;
-      font-weight:1100; color: var(--purple);
-    }
-    .chev{ font-weight:1100; color: rgba(11,31,38,.45); font-size:18px; }
-
-    .sectionTitle{
-      font-weight:1100;
-      color: rgba(11,31,38,.55);
-      font-size:13px;
-      margin:18px 2px 10px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-    }
-
-    .search{
-      display:flex; gap:10px; align-items:center;
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:12px 12px;
-      box-shadow:0 10px 22px rgba(0,0,0,.06);
-    }
-    .search input{
-      width:100%;
-      border:none; outline:none;
-      font-weight:900;
-      font-size:13px;
-      color: rgba(11,31,38,.88);
-    }
-    .search .ico{ opacity:.65; }
-
-    .accountList{ display:grid; gap:12px; }
-    .accountCard{
-      padding:14px;
-      display:grid;
-      grid-template-columns: 4px 1fr auto;
-      gap:12px;
-      align-items:center;
-      cursor:pointer;
-      user-select:none;
-    }
-    .bar{ width:4px;height:44px;border-radius:99px; background: #A43BE2; }
-    .bar.pink{ background: #FF8FD8; }
-    .bar.gold{ background: #FFB84D; }
-    .acctName{ font-weight:1100; color: rgba(11,31,38,.92); }
-    .acctNum{ font-weight:900; font-size:12px; color: rgba(11,31,38,.55); margin-top:2px; }
-    .acctRight{ text-align:right; display:flex; flex-direction:column; gap:2px; min-width:120px; }
-    .bal{ font-weight:1100; color: rgba(11,31,38,.92); font-size:16px; }
-    .avail{ font-weight:900; color: rgba(11,31,38,.55); font-size:12px; }
-
-    .mortgageHero{
-      padding:16px;
-      background:linear-gradient(135deg, rgba(90,40,125,.96), rgba(111,45,168,.92));
-      color:#fff;
-      border-radius:22px;
-      box-shadow: var(--shadow);
-    }
-    .mortgageHero h3{ margin:0 0 8px; font-size:20px; }
-    .mortgageHero p{ margin:0; line-height:1.45; font-size:13px; font-weight:800; opacity:.95; }
-    .offerGrid{ display:grid; gap:12px; margin-top:14px; }
-    .offerCard{ padding:14px; }
-    .offerTag{
-      display:inline-flex; align-items:center; gap:8px;
-      border-radius:999px; padding:6px 10px;
-      background: rgba(90,40,125,.08);
-      border:1px solid rgba(90,40,125,.14);
-      color: var(--purple);
-      font-size:11px; font-weight:1000;
-      margin-bottom:10px;
-    }
-    .offerTitle{ font-weight:1100; color: rgba(11,31,38,.92); font-size:15px; }
-    .offerDesc{ margin-top:6px; font-size:12.5px; line-height:1.45; font-weight:900; color: rgba(11,31,38,.62); }
-
-    .notificationCard{
-      display:none;
-      margin-bottom:14px;
-      padding:14px;
-      border-radius:22px;
-      background:#fff;
-      border:1px solid rgba(90,40,125,.16);
-      box-shadow: var(--shadow);
-    }
-    .notificationCard.show{ display:block; }
-    .notificationTop{
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
-      margin-bottom:10px;
-    }
-    .notificationTopLeft{
-      display:flex; align-items:center; gap:10px;
-      font-weight:1100; color: rgba(11,31,38,.92);
-    }
-    .notificationIcon{
-      width:40px; height:40px; border-radius:14px;
-      display:grid; place-items:center;
-      background: rgba(90,40,125,.10);
-      border:1px solid rgba(90,40,125,.16);
-      color: var(--purple);
-      font-weight:1100;
-    }
-    .notificationTime{ font-size:12px; font-weight:900; color: rgba(11,31,38,.45); }
-    .notificationText{
-      font-size:13px; line-height:1.45; font-weight:900; color: rgba(11,31,38,.76);
-    }
-
-    .btnRow{ display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
-    .btn{
-      appearance:none; border:none; cursor:pointer;
-      border-radius:16px; padding:12px 14px;
-      font-weight:1000; font-size:13px;
-      display:inline-flex; align-items:center; justify-content:center; gap:10px;
-      user-select:none;
-    }
-    .btn.primary{ background: linear-gradient(180deg, var(--purple3), var(--purple)); color:#fff; box-shadow:0 14px 28px rgba(0,0,0,.12); }
-    .btn.chat{ background: linear-gradient(180deg, var(--green), var(--green2)); color:#fff; box-shadow:0 14px 28px rgba(0,0,0,.12); }
-    .btn.ghost{ background:#fff; border:1px solid var(--line); color: rgba(11,31,38,.82); box-shadow:none; }
-
-    .modal, .overlay{
-      position:absolute; inset:0;
-      background: rgba(68,32,95,.55);
-      display:none;
-      z-index:50;
-      padding:12px;
-    }
-    .show{ display:block; }
-    .sheet{
-      position:absolute;
-      left:12px; right:12px;
-      top:88px;
-      border-radius:26px;
-      background:#fff;
-      border:1px solid rgba(255,255,255,.65);
-      box-shadow: 0 30px 90px rgba(0,0,0,.35);
-      overflow:hidden;
-    }
-    .topBar{
-      padding:14px;
-      border-bottom:1px solid rgba(0,0,0,.06);
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      background: rgba(90,40,125,.08);
-    }
-    .topBar .h{ font-weight:1100; font-size:16px; color: rgba(11,31,38,.92); }
-    .sheetBody{ padding:14px; }
-
-    .kv{
-      display:grid; grid-template-columns: 1fr auto;
-      gap:10px; padding:10px 0;
-      border-bottom:1px solid rgba(0,0,0,.06);
-      font-weight:900; color: rgba(11,31,38,.80);
-      font-size:13px;
-    }
-    .kv:last-child{ border-bottom:none; }
-
-    .txTitle{ margin-top:14px; font-weight:1100; color: rgba(11,31,38,.86); font-size:13px; }
-    .tx{ margin-top:10px; border:1px solid rgba(0,0,0,.06); border-radius:18px; overflow:hidden; }
-    .txRow{
-      display:grid; grid-template-columns: 1fr auto;
-      gap:10px; padding:12px;
-      border-bottom:1px solid rgba(0,0,0,.06);
-      font-size:13px;
-      background:#fff;
-    }
-    .txRow:last-child{ border-bottom:none; }
-    .txMain{ font-weight:1100; color: rgba(11,31,38,.92); }
-    .txMeta{ font-weight:900; color: rgba(11,31,38,.55); font-size:12px; margin-top:2px; }
-    .txAmt{ font-weight:1100; }
-    .neg{ color:#D62D2D; }
-    .pos{ color:#0E8A5B; }
-
-    .chatSheet{
-      position:absolute;
-      left:12px; right:12px;
-      top:62px; bottom:62px;
-      border-radius:26px;
-      background:#fff;
-      border:1px solid rgba(255,255,255,.65);
-      box-shadow: 0 30px 90px rgba(0,0,0,.35);
-      overflow:hidden;
-      display:flex;
-      flex-direction:column;
-    }
-    .chatMount{ flex:1; min-height:0; position:relative; overflow:hidden; background:#fff; }
-    #chatFrame{ position:absolute; inset:0; width:100%; height:100%; border:0; display:block; background:#fff; }
-    .chatCloseFab{
-      position:absolute;
-      top:12px; left:12px;
-      width:44px;height:44px;
-      border-radius:16px;
-      border:1px solid rgba(0,0,0,.08);
-      background:#fff;
-      font-weight:1100;
-      cursor:pointer;
-      box-shadow:0 12px 28px rgba(0,0,0,.12);
-      z-index:5;
-      display:grid;
-      place-items:center;
-    }
-
-    .nav{
-      position:absolute;
-      left:0; right:0; bottom:0;
-      background: rgba(255,255,255,.92);
-      border-top:1px solid rgba(0,0,0,.06);
-      padding:10px 10px 14px;
-      display:flex;
-      justify-content:space-around;
-      z-index:10;
-      backdrop-filter: blur(10px);
-    }
-    .navItem{
-      display:flex; flex-direction:column; align-items:center;
-      gap:6px;
-      font-size:11px;
-      font-weight:1000;
-      color: rgba(11,31,38,.45);
-      min-width:64px;
-      cursor:pointer;
-      user-select:none;
-    }
-    .navItem .ico{ width:28px;height:28px; display:grid;place-items:center; border-radius:12px; }
-    .navItem.active{ color: var(--purple); }
-    .navItem.active .ico{ background: rgba(90,40,125,.12); border:1px solid rgba(90,40,125,.16); color: var(--purple); }
-  </style>
-</head>
-<body>
-  <div class="phone">
-    <div class="screen">
-      <div class="header">
-        <div class="topRow">
-          <div class="time">9:41</div>
-
-          <div class="logoCenter">
-            <img class="nwLogo" src="https://www.onlinebanking.natwest.com/assets/images/brandImages/logo.svg" />
-          </div>
-
-          <div class="rightIcons">
-            <div class="badge" id="btnHeaderChat" title="Support chat">💬</div>
-            <div class="badge" id="btnAlerts" title="Alerts">
-              🔔
-              <div class="badgeDot" id="alertCount">2</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="headline">
-          <div>
-            <div class="h1">Hello Sarah</div>
-            <div class="sub"><b>Sarah Johnson</b> • Customer number <b>45719382</b></div>
-          </div>
-          <div class="pillStatus"><span class="dot"></span> Cora available</div>
-        </div>
-
-        <div class="summaryWrap">
-          <div class="sumTop">
-            <div class="sumLabel">Total balance</div>
-            <div class="sumValue">£18,742.61</div>
-          </div>
-
-          <div class="sumGrid">
-            <div class="legend">
-              <div class="legRow">
-                <div class="legLeft"><span class="swatch"></span> Current</div>
-                <div>£4,286.14</div>
-              </div>
-              <div class="legRow">
-                <div class="legLeft"><span class="swatch pink"></span> Savings</div>
-                <div>£14,456.47</div>
-              </div>
-              <div class="legSmall">Spending insights • Everyday banking</div>
-            </div>
-            <div class="donut"><span>£</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="content">
-        <div class="notificationCard" id="proactiveNotification">
-          <div class="notificationTop">
-            <div class="notificationTopLeft">
-              <div class="notificationIcon">NW</div>
-              <div>
-                <div>Cora</div>
-                <div style="font-size:12px; font-weight:900; color:rgba(11,31,38,.48);">New in-app message</div>
-              </div>
-            </div>
-            <div class="notificationTime" id="proactiveTime">Just now</div>
-          </div>
-          <div class="notificationText" id="proactiveText">
-            Hi Sarah. We noticed you’ve been exploring properties recently. Thinking about buying? I can help you work out what’s possible, no commitment, just a conversation
-          </div>
-          <div class="btnRow">
-            <button class="btn chat" id="btnTapToOpen">💬 Tap to open</button>
-            <button class="btn ghost" id="btnDismissNotification">Dismiss</button>
-          </div>
-        </div>
-
-        <div class="tabs" role="tablist" aria-label="Sections">
-          <button class="tab active" id="tabAccounts">Accounts</button>
-          <button class="tab" id="tabPayments">Payments</button>
-          <button class="tab" id="tabMortgages">Mortgages</button>
-        </div>
-
-        <div id="viewAccounts">
-          <div class="card rowCard" id="btnManageMoney">
-            <div style="display:flex; align-items:center; gap:12px;">
-              <div class="pillCount">3</div>
-              <div style="font-weight:1100; color:rgba(11,31,38,.92);">Money tools & insights</div>
-            </div>
-            <div class="chev">›</div>
-          </div>
-
-          <div class="sectionTitle">
-            <span>Search transactions</span>
-            <span style="font-size:12px; font-weight:900; color:rgba(11,31,38,.45);">live demo</span>
-          </div>
-          <div class="search">
-            <div class="ico">🔎</div>
-            <input id="txSearch" placeholder="Try: groceries, salary, coffee…" autocomplete="off" />
-          </div>
-
-          <div class="sectionTitle"><span>CURRENT</span><span></span></div>
-          <div class="accountList">
-            <div class="card accountCard" data-acct="current-account">
-              <div class="bar"></div>
-              <div>
-                <div class="acctName">Select Account</div>
-                <div class="acctNum">•••• 2094 • Sort code 60-21-17</div>
-              </div>
-              <div class="acctRight">
-                <div class="bal">£4,286.14</div>
-                <div class="avail">Available: £4,286.14</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="sectionTitle"><span>SAVINGS</span><span></span></div>
-          <div class="accountList">
-            <div class="card accountCard" data-acct="digital-saver">
-              <div class="bar pink"></div>
-              <div>
-                <div class="acctName">Digital Regular Saver</div>
-                <div class="acctNum">Easy access • Goal based</div>
-              </div>
-              <div class="acctRight">
-                <div class="bal">£14,456.47</div>
-                <div class="avail">Available: £14,456.47</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="sectionTitle"><span>CARD</span><span></span></div>
-          <div class="accountList">
-            <div class="card accountCard" data-acct="credit-card">
-              <div class="bar gold"></div>
-              <div>
-                <div class="acctName">NatWest Credit Card</div>
-                <div class="acctNum">Ending •• 8451</div>
-              </div>
-              <div class="acctRight">
-                <div class="bal">£682.32</div>
-                <div class="avail">Due 5 Apr</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="sectionTitle"><span>Quick actions</span><span></span></div>
-          <div class="btnRow">
-            <button class="btn primary" id="btnPay">➜ Pay</button>
-            <button class="btn ghost" id="btnTransfer">⇄ Transfer</button>
-            <button class="btn chat" id="btnChatNow">💬 Open chat</button>
-          </div>
-        </div>
-
-        <div id="viewPayments" style="display:none;">
-          <div class="card" style="padding:14px;">
-            <div style="font-weight:1100; color:rgba(11,31,38,.92);">Payments</div>
-            <div style="margin-top:6px; font-weight:900; color:rgba(11,31,38,.55); font-size:12px; line-height:1.35;">
-              Manage transfers, standing orders and upcoming bills from one place.
-            </div>
-
-            <div class="btnRow" style="margin-top:12px;">
-              <button class="btn primary" id="btnNewPayment">➜ New payment</button>
-              <button class="btn ghost" id="btnBeneficiaries">👥 Payees</button>
-              <button class="btn chat" id="btnPaymentsChat">💬 Ask Cora</button>
-            </div>
-          </div>
-
-          <div class="sectionTitle"><span>Upcoming</span><span></span></div>
-          <div class="card" style="padding:14px;">
-            <div style="display:grid; gap:12px; font-size:13px;">
-              <div style="display:flex; justify-content:space-between; gap:10px;">
-                <div><b>Council Tax</b><br><span style="color:rgba(11,31,38,.55); font-weight:900; font-size:12px;">26 Mar • Direct Debit</span></div>
-                <div style="font-weight:1100;">£186.00</div>
-              </div>
-              <div style="display:flex; justify-content:space-between; gap:10px;">
-                <div><b>Energy</b><br><span style="color:rgba(11,31,38,.55); font-weight:900; font-size:12px;">29 Mar • Direct Debit</span></div>
-                <div style="font-weight:1100;">£94.25</div>
-              </div>
-              <div style="display:flex; justify-content:space-between; gap:10px;">
-                <div><b>Mobile</b><br><span style="color:rgba(11,31,38,.55); font-weight:900; font-size:12px;">2 Apr • Card payment</span></div>
-                <div style="font-weight:1100;">£42.00</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="viewMortgages" style="display:none;">
-          <div class="mortgageHero">
-            <h3>Thinking about your next move?</h3>
-            <p>Explore NatWest mortgage options, compare routes into home ownership and chat with Cora to understand what could work for you.</p>
-          </div>
-
-          <div class="sectionTitle"><span>Mortgage options</span><span></span></div>
-          <div class="offerGrid">
-            <div class="card offerCard">
-              <div class="offerTag">First-time buyers</div>
-              <div class="offerTitle">Start with practical tools and guidance</div>
-              <div class="offerDesc">Discover ways to estimate borrowing, understand deposits and get ready for a smoother first step onto the property ladder.</div>
-            </div>
-
-            <div class="card offerCard">
-              <div class="offerTag">Moving home</div>
-              <div class="offerTitle">Explore options for your next property</div>
-              <div class="offerDesc">If you are planning your next move, NatWest can help you look at fresh borrowing options, switching deals and keeping things simple.</div>
-            </div>
-
-            <div class="card offerCard">
-              <div class="offerTag">Remortgaging</div>
-              <div class="offerTitle">Review your deal before it ends</div>
-              <div class="offerDesc">See how reviewing your mortgage ahead of time could help you plan monthly payments with more confidence.</div>
-            </div>
-          </div>
-
-          <div class="btnRow">
-            <button class="btn chat" id="btnMortgageChat">💬 Chat about mortgages</button>
-            <button class="btn ghost" id="btnMortgageAlert">🔔 Send proactive prompt</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="nav">
-        <div class="navItem active" id="navAccounts"><div class="ico">🏠</div><div>Home</div></div>
-        <div class="navItem" id="navPayments"><div class="ico">⇄</div><div>Payments</div></div>
-        <div class="navItem" id="navMortgages"><div class="ico">🏡</div><div>Mortgages</div></div>
-        <div class="navItem" id="navChat"><div class="ico">💬</div><div>Chat</div></div>
-      </div>
-
-      <div class="modal" id="accountModal" aria-hidden="true">
-        <div class="sheet">
-          <div class="topBar">
-            <div class="h" id="acctTitle">Account</div>
-            <button class="btn ghost" id="btnCloseAccount">✕</button>
-          </div>
-          <div class="sheetBody">
-            <div id="acctKvs"></div>
-            <div class="txTitle">Recent transactions</div>
-            <div class="tx" id="acctTx"></div>
-            <div class="btnRow" style="margin-top:14px;">
-              <button class="btn primary" id="btnAcctPay">➜ Pay</button>
-              <button class="btn ghost" id="btnAcctStatement">📄 Statement</button>
-              <button class="btn chat" id="btnAcctChat">💬 Chat</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="modal" id="insightsModal" aria-hidden="true">
-        <div class="sheet">
-          <div class="topBar">
-            <div class="h">Money tools & insights</div>
-            <button class="btn ghost" id="btnCloseInsights">✕</button>
-          </div>
-          <div class="sheetBody">
-            <div class="card" style="padding:14px; box-shadow:none;">
-              <div style="display:grid; gap:12px; font-size:13px;">
-                <div><b>Spending summary</b><br><span style="color:rgba(11,31,38,.55); font-weight:900; font-size:12px;">Groceries are down 8% this month</span></div>
-                <div><b>Savings streak</b><br><span style="color:rgba(11,31,38,.55); font-weight:900; font-size:12px;">You have moved money to savings for 4 months in a row</span></div>
-                <div><b>Mortgage journey</b><br><span style="color:rgba(11,31,38,.55); font-weight:900; font-size:12px;">Explore home buying support and mortgage guidance</span></div>
-              </div>
-              <div class="btnRow" style="margin-top:14px;">
-                <button class="btn chat" id="btnInsightsChat">💬 Ask Cora</button>
-                <button class="btn ghost" id="btnInsightsClose2">Close</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="modal" id="alertsModal" aria-hidden="true">
-        <div class="sheet">
-          <div class="topBar">
-            <div class="h">Alerts</div>
-            <button class="btn ghost" id="btnCloseAlerts">✕</button>
-          </div>
-          <div class="sheetBody">
-            <div class="card" style="padding:14px; box-shadow:none;">
-              <div id="alertsList" style="display:grid; gap:10px; font-size:13px;">
-                <div><b>Spending update available</b><br><span style="color:rgba(11,31,38,.55); font-weight:900; font-size:12px;">See your latest account insights</span></div>
-                <div><b>Regular saver reminder</b><br><span style="color:rgba(11,31,38,.55); font-weight:900; font-size:12px;">Top up before the end of the month</span></div>
-              </div>
-              <div class="btnRow" style="margin-top:14px;">
-                <button class="btn chat" id="btnAlertsChat">💬 Open chat</button>
-                <button class="btn ghost" id="btnAlertsClose2">Close</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="overlay" id="chatOverlay" aria-hidden="true">
-        <div class="chatSheet">
-          <button class="chatCloseFab" id="btnCloseChat" aria-label="Close chat">✕</button>
-          <div class="chatMount">
-            <iframe id="chatFrame" title="NatWest Support Chat" src="natwest-chat.html"></iframe>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const byId = (id) => document.getElementById(id);
-    const show = (el) => el.classList.add("show");
-    const hide = (el) => el.classList.remove("show");
-
-    const PROACTIVE_TEXT = "Hi Sarah. We noticed you’ve been exploring properties recently. Thinking about buying? I can help you work out what’s possible, no commitment, just a conversation";
-    const NTFY_TOPIC = "natwest-cora-proactive-demo-4f8e2b91";
-
-    const ACCOUNTS = {
-      "current-account": {
-        title: "Select Account",
-        balance: "£4,286.14",
-        available: "£4,286.14",
-        sortCode: "60-21-17",
-        accountNumber: "•••• 2094",
-        iban: "GB65NWBK60211720940000",
-        tx: [
-          { name: "Card payment • Tesco", meta: "Today • Ref: GROCERIES", amt: "-£54.60" },
-          { name: "Salary • Acorn Design", meta: "Yesterday • Ref: MAR SALARY", amt: "+£2,980.00" },
-          { name: "Coffee House", meta: "Mon • Ref: COFFEE", amt: "-£4.85" }
-        ]
-      },
-      "digital-saver": {
-        title: "Digital Regular Saver",
-        balance: "£14,456.47",
-        available: "£14,456.47",
-        sortCode: "60-21-17",
-        accountNumber: "•••• 7712",
-        iban: "GB65NWBK60211777120000",
-        interest: "5.50% AER",
-        tx: [
-          { name: "Transfer in • From current account", meta: "Yesterday • Ref: MONTHLY SAVE", amt: "+£350.00" },
-          { name: "Interest paid", meta: "1 Mar • Ref: INTEREST", amt: "+£22.18" },
-          { name: "Transfer in • From current account", meta: "1 Feb • Ref: SAVE", amt: "+£500.00" }
-        ]
-      },
-      "credit-card": {
-        title: "NatWest Credit Card",
-        balance: "£682.32",
-        available: "£4,317.68 available credit",
-        sortCode: "—",
-        accountNumber: "Ending 8451",
-        iban: "—",
-        tx: [
-          { name: "Online purchase • John Lewis", meta: "Today • Ref: HOME", amt: "-£129.00" },
-          { name: "Restaurant • The Ivy", meta: "Sat • Ref: DINING", amt: "-£78.40" },
-          { name: "Payment received", meta: "15 Mar • Ref: THANK YOU", amt: "+£250.00" }
-        ]
-      }
-    };
-
-    const ALL_TX = Object.values(ACCOUNTS).flatMap(a => a.tx.map(t => ({...t, account:a.title})));
-
-    function moneyClass(amt){
-      return (amt || "").trim().startsWith("-") ? "neg" : "pos";
-    }
-
-    function openAccount(key){
-      const data = ACCOUNTS[key];
-      if(!data) return;
-
-      byId("acctTitle").textContent = data.title;
-      const kvs = [
-        { k:"Balance", v:data.balance },
-        { k:"Available", v:data.available },
-        { k:"Account number", v:data.accountNumber },
-        { k:"Sort code", v:data.sortCode },
-        { k:"IBAN", v:data.iban }
-      ];
-      if(data.interest) kvs.push({ k:"Interest", v:data.interest });
-
-      byId("acctKvs").innerHTML = kvs.map(x => `
-        <div class="kv"><div>${x.k}</div><div style="color:rgba(11,31,38,.92)">${x.v}</div></div>
-      `).join("");
-
-      byId("acctTx").innerHTML = data.tx.map(t => `
-        <div class="txRow">
-          <div>
-            <div class="txMain">${t.name}</div>
-            <div class="txMeta">${t.meta}</div>
-          </div>
-          <div class="txAmt ${moneyClass(t.amt)}">${t.amt}</div>
-        </div>
-      `).join("");
-
-      show(byId("accountModal"));
-    }
-
-    function setActiveTab(which){
-      const set = (id, on) => byId(id).classList.toggle("active", on);
-      set("tabAccounts", which==="accounts");
-      set("tabPayments", which==="payments");
-      set("tabMortgages", which==="mortgages");
-
-      byId("viewAccounts").style.display = which==="accounts" ? "block" : "none";
-      byId("viewPayments").style.display = which==="payments" ? "block" : "none";
-      byId("viewMortgages").style.display = which==="mortgages" ? "block" : "none";
-
-      byId("navAccounts").classList.toggle("active", which==="accounts");
-      byId("navPayments").classList.toggle("active", which==="payments");
-      byId("navMortgages").classList.toggle("active", which==="mortgages");
-    }
-
-    function openChat(){
-      show(byId("chatOverlay"));
-    }
-
-    function wireModal(id, closeBtnId){
-      byId(closeBtnId).addEventListener("click", () => hide(byId(id)));
-      byId(id).addEventListener("click", (e) => {
-        if(e.target === byId(id)) hide(byId(id));
-      });
-    }
-
-    function addAlertItem(title, subtitle, withTapButton = false){
-      const alertsList = byId("alertsList");
-      const row = document.createElement("div");
-      row.innerHTML = `<b>${title}</b><br><span style="color:rgba(11,31,38,.55); font-weight:900; font-size:12px;">${subtitle}</span>`;
-      alertsList.prepend(row);
-
-      if(withTapButton){
-        const btnWrap = document.createElement("div");
-        btnWrap.className = "btnRow";
-        btnWrap.style.marginTop = "8px";
-        btnWrap.innerHTML = `<button class="btn chat" type="button">💬 Tap to open</button>`;
-        btnWrap.querySelector("button").addEventListener("click", () => {
-          hide(byId("alertsModal"));
-          openChat();
-        });
-        alertsList.prepend(btnWrap);
-      }
-    }
-
-    function incrementAlertCount(){
-      const badge = byId("alertCount");
-      const n = Number(badge.textContent || "0");
-      badge.textContent = String(n + 1);
-    }
-
-    function showProactiveNotification(text = PROACTIVE_TEXT){
-      byId("proactiveText").textContent = text;
-      byId("proactiveTime").textContent = "Just now";
-      byId("proactiveNotification").classList.add("show");
-      addAlertItem("Cora mortgage message", text, true);
-      incrementAlertCount();
-    }
-
-    function subscribeToNtfy(){
-      const url = `https://ntfy.sh/${NTFY_TOPIC}/sse`;
-      const es = new EventSource(url);
-
-      es.onmessage = (event) => {
-        try {
-          const envelope = JSON.parse(event.data);
-          const message = envelope.message || "";
-          if(!message) return;
-
-          let parsed;
-          try {
-            parsed = JSON.parse(message);
-          } catch {
-            parsed = { text: message };
-          }
-
-          if (parsed.type === "cora_mortgage_prompt" || parsed.type === "proactive_mortgage") {
-            showProactiveNotification(parsed.text || PROACTIVE_TEXT);
-          }
-        } catch (e) {
-          console.warn("ntfy message parse issue", e);
-        }
-      };
-
-      es.onerror = () => {
-        console.warn("ntfy subscription disconnected; browser will retry automatically.");
-      };
-
-      window.__natwestNtfy = es;
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      subscribeToNtfy();
+      byId("navChat").onclick = openChat;
+      byId("btnCloseChat").onclick = closeChat;
+      byId("btnShowPushAgain").onclick = () => showPush();
 
       byId("tabAccounts").onclick = () => setActiveTab("accounts");
       byId("tabPayments").onclick = () => setActiveTab("payments");
       byId("tabMortgages").onclick = () => setActiveTab("mortgages");
-
       byId("navAccounts").onclick = () => setActiveTab("accounts");
       byId("navPayments").onclick = () => setActiveTab("payments");
       byId("navMortgages").onclick = () => setActiveTab("mortgages");
-      byId("navChat").onclick = openChat;
-
-      document.querySelectorAll(".accountCard").forEach(card => {
-        card.addEventListener("click", () => openAccount(card.getAttribute("data-acct")));
-      });
-
-      wireModal("accountModal", "btnCloseAccount");
-      wireModal("insightsModal", "btnCloseInsights");
-      wireModal("alertsModal", "btnCloseAlerts");
-      byId("btnInsightsClose2").onclick = () => hide(byId("insightsModal"));
-      byId("btnAlertsClose2").onclick = () => hide(byId("alertsModal"));
-
-      byId("btnManageMoney").onclick = () => show(byId("insightsModal"));
-      byId("btnAlerts").onclick = () => show(byId("alertsModal"));
-
-      byId("btnPay").onclick = () => openAccount("current-account");
-      byId("btnTransfer").onclick = () => openAccount("digital-saver");
-      byId("btnAcctPay").onclick = () => alert("Demo: open payments flow");
-      byId("btnAcctStatement").onclick = () => alert("Demo: open statement");
-      byId("btnNewPayment").onclick = () => alert("Demo: new payment");
-      byId("btnBeneficiaries").onclick = () => alert("Demo: payees");
-
-      byId("btnChatNow").onclick = openChat;
-      byId("btnHeaderChat").onclick = openChat;
-      byId("btnPaymentsChat").onclick = openChat;
-      byId("btnMortgageChat").onclick = openChat;
-      byId("btnInsightsChat").onclick = () => { hide(byId("insightsModal")); openChat(); };
-      byId("btnAlertsChat").onclick = () => { hide(byId("alertsModal")); openChat(); };
-      byId("btnAcctChat").onclick = () => { hide(byId("accountModal")); openChat(); };
-      byId("btnTapToOpen").onclick = openChat;
-      byId("btnDismissNotification").onclick = () => byId("proactiveNotification").classList.remove("show");
-
-      byId("btnMortgageAlert").onclick = () => showProactiveNotification();
-
-      byId("btnCloseChat").onclick = () => hide(byId("chatOverlay"));
-      byId("chatOverlay").addEventListener("click", (e) => {
-        if(e.target === byId("chatOverlay")) hide(byId("chatOverlay"));
-      });
-
-      const txInput = byId("txSearch");
-      txInput.addEventListener("input", () => {
-        const q = (txInput.value || "").trim().toLowerCase();
-        if (!q) return;
-        const hit = ALL_TX.find(t =>
-          (t.name + " " + t.meta + " " + t.account).toLowerCase().includes(q)
-        );
-        if (hit){
-          const acctKey = hit.account.includes("Saver")
-            ? "digital-saver"
-            : hit.account.includes("Credit Card")
-            ? "credit-card"
-            : "current-account";
-          openAccount(acctKey);
-          txInput.blur();
-        }
-      });
     });
   </script>
 </body>
