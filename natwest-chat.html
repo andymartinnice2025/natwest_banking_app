@@ -5,95 +5,39 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>NatWest Chat</title>
   <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      background: #fff;
-    }
-    body {
-      overflow: hidden;
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-    }
-    .boot {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      padding: 18px;
-      background: #fff;
-      z-index: 9999;
-    }
-    .boot.hidden { display: none; }
-    .bootTitle {
-      font-weight: 1000;
-      font-size: 16px;
-      color: #5A287D;
-      text-align: center;
-    }
-    .bootSub {
-      font-weight: 800;
-      font-size: 12px;
-      color: #667383;
-      text-align: center;
-      line-height: 1.4;
-      max-width: 340px;
-    }
-    .bootBtn {
-      border: none;
-      border-radius: 16px;
-      padding: 12px 14px;
-      font-weight: 1000;
-      cursor: pointer;
-      background: linear-gradient(180deg, #6F2DA8, #5A287D);
-      color: #fff;
-      width: min(340px, 92vw);
-      font-size: 14px;
-    }
-    .hideChrome [class*="home" i],
-    .hideChrome header[role="banner"],
-    .hideChrome [role="banner"] {
-      display: none !important;
-    }
+    html,body{height:100%;margin:0;background:#fff}
+    body{overflow:hidden;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+    .boot{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:18px;background:#fff;z-index:9999}
+    .boot.hidden{display:none}
+    .bootLogo{height:38px;object-fit:contain;display:block;margin-bottom:6px}
+    .bootTitle{font-weight:1000;font-size:16px;color:#5A287D;text-align:center}
+    .bootSub{font-weight:800;font-size:12px;color:#667383;text-align:center;line-height:1.4;max-width:340px}
+    .bootBtn{border:none;border-radius:16px;padding:12px 14px;font-weight:1000;cursor:pointer;background:linear-gradient(180deg,#6F2DA8,#5A287D);color:#fff;width:min(340px,92vw);font-size:14px}
+    .hideChrome [class*="home" i],.hideChrome header[role="banner"],.hideChrome [role="banner"]{display:none!important}
   </style>
 </head>
 <body>
   <div class="boot" id="boot">
+    <img class="bootLogo" src="https://www.onlinebanking.natwest.com/assets/images/brandImages/logo.svg" alt="NatWest logo" />
     <div class="bootTitle">Support chat • NatWest</div>
-    <div class="bootSub">
-      Loading chat… If it doesn’t open immediately, tap “Start chat”.
-      <br>(The launcher can take a moment to render.)
-    </div>
+    <div class="bootSub">Loading chat… If it doesn’t open immediately, tap “Start chat”.<br>(The launcher can take a moment to render.)</div>
     <button class="bootBtn" id="bootStart">Start chat</button>
   </div>
 
   <script src="https://github.com/Cognigy/Webchat/releases/latest/download/webchat.js"></script>
-
   <script>
-    const ENDPOINT =
-      "https://endpoint-trial.cognigy.ai/7f16f530223b0af05b75798a5425b90cb186eaaa635ab01ee77cb3e30285dfb5";
-
+    const ENDPOINT = "https://endpoint-trial.cognigy.ai/7f16f530223b0af05b75798a5425b90cb186eaaa635ab01ee77cb3e30285dfb5";
     const boot = document.getElementById("boot");
     const bootStart = document.getElementById("bootStart");
-
-    const customer = {
-      name: "Sarah Johnson",
-      firstName: "Sarah",
-      customerNumber: "45719382"
-    };
+    const customer = { name:"Sarah Johnson", firstName:"Sarah", customerNumber:"45719382" };
 
     function hasUsableInput() {
       const t = document.querySelector("textarea");
       if (t && t.offsetWidth > 0 && t.offsetHeight > 0) return true;
-
       const inp = document.querySelector("input[type='text']");
       if (inp && inp.offsetWidth > 0 && inp.offsetHeight > 0) return true;
-
       const ce = document.querySelector("[contenteditable='true']");
       if (ce && ce.offsetWidth > 0 && ce.offsetHeight > 0) return true;
-
       return false;
     }
 
@@ -122,26 +66,12 @@
     }
 
     function clickStartConversationIfPresent() {
-      const labels = [
-        "Start conversation",
-        "Start Conversation",
-        "Start",
-        "Begin",
-        "Get started"
-      ];
-
+      const labels = ["Start conversation","Start Conversation","Start","Begin","Get started"];
       const btns = Array.from(document.querySelectorAll("button"));
       for (const b of btns) {
         const txt = (b.innerText || "").trim();
         if (!txt) continue;
-
-        if (
-          labels.some(
-            (l) =>
-              txt.toLowerCase() === l.toLowerCase() ||
-              txt.toLowerCase().includes(l.toLowerCase())
-          )
-        ) {
+        if (labels.some((l) => txt.toLowerCase() === l.toLowerCase() || txt.toLowerCase().includes(l.toLowerCase()))) {
           if (b.offsetWidth > 0 && b.offsetHeight > 0) {
             b.click();
             return true;
@@ -171,39 +101,31 @@
     function clearCognigyStorage() {
       try {
         Object.keys(localStorage).forEach((key) => {
-          if (key.toLowerCase().includes("cognigy")) {
-            localStorage.removeItem(key);
-          }
+          if (key.toLowerCase().includes("cognigy")) localStorage.removeItem(key);
         });
-
         Object.keys(sessionStorage).forEach((key) => {
-          if (key.toLowerCase().includes("cognigy")) {
-            sessionStorage.removeItem(key);
-          }
+          if (key.toLowerCase().includes("cognigy")) sessionStorage.removeItem(key);
         });
       } catch (e) {
         console.warn("Could not clear stored chat state", e);
       }
     }
-
     clearCognigyStorage();
 
-    const freshSessionId =
-      "session-" + Date.now() + "-" + Math.random().toString(36).slice(2, 10);
+    const freshSessionId = "session-" + Date.now() + "-" + Math.random().toString(36).slice(2,10);
 
     try {
       initWebchat(ENDPOINT, {
         userId: customer.customerNumber,
         sessionId: freshSessionId,
         settings: {
-          embeddingConfiguration: {
-            awaitEndpointConfig: true
-          },
+          embeddingConfiguration: { awaitEndpointConfig: true },
           payload: {
             customerName: customer.name,
             firstName: customer.firstName,
             customerNumber: customer.customerNumber,
-            bankName: "NatWest"
+            bankName: "NatWest",
+            authenticated: true
           }
         }
       });
@@ -222,88 +144,34 @@
       attemptOpen();
       if (hasUsableInput()) obs.disconnect();
     });
-    obs.observe(document.documentElement, { childList: true, subtree: true });
+    obs.observe(document.documentElement, { childList:true, subtree:true });
 
     (function installStreamMergeShim() {
-      let lastMergeAt = 0;
-      const MERGE_WINDOW_MS = 1400;
-
-      function isVisible(el) {
-        return !!(el && el.getClientRects && el.getClientRects().length);
-      }
-
-      function getBubbles() {
-        const selectors = [
-          "[class*='message' i]",
-          "[data-testid*='message' i]",
-          "[role='listitem']"
-        ].join(",");
-
-        return Array.from(document.querySelectorAll(selectors)).filter(isVisible);
-      }
-
-      function isBotBubble(el) {
+      function isVisible(el){ return !!(el && el.getClientRects && el.getClientRects().length); }
+      function getBubbles(){ return Array.from(document.querySelectorAll("[class*='message' i],[data-testid*='message' i],[role='listitem']")).filter(isVisible); }
+      function isBotBubble(el){
         const cls = (el.className || "").toString().toLowerCase();
         const tid = (el.getAttribute("data-testid") || "").toLowerCase();
-
-        return (
-          cls.includes("bot") ||
-          cls.includes("agent") ||
-          cls.includes("incoming") ||
-          tid.includes("bot") ||
-          tid.includes("agent") ||
-          tid.includes("incoming")
-        );
+        return cls.includes("bot") || cls.includes("agent") || cls.includes("incoming") || tid.includes("bot") || tid.includes("agent") || tid.includes("incoming");
       }
-
-      function textNode(el) {
-        return (
-          el.querySelector("[class*='text' i]") ||
-          el.querySelector("[class*='content' i]") ||
-          el.querySelector("p") ||
-          el
-        );
-      }
-
-      function mergeIfNeeded() {
+      function textNode(el){ return el.querySelector("[class*='text' i]") || el.querySelector("[class*='content' i]") || el.querySelector("p") || el; }
+      function mergeIfNeeded(){
         const bubbles = getBubbles();
         if (bubbles.length < 2) return;
-
         const b2 = bubbles[bubbles.length - 1];
         const b1 = bubbles[bubbles.length - 2];
-
         if (!isBotBubble(b1) || !isBotBubble(b2)) return;
-
-        const now = Date.now();
-        const t1 = textNode(b1);
-        const t2 = textNode(b2);
-        const chunk = (t2.innerText || "").trim();
-
+        const t1 = textNode(b1), t2 = textNode(b2), chunk = (t2.innerText || "").trim();
         if (!chunk) return;
-
         const sep = (t1.innerText || "").trim().length ? "\n" : "";
         t1.innerText = ((t1.innerText || "").trimEnd()) + sep + chunk;
         b2.remove();
-        lastMergeAt = now;
       }
-
       const mergeObserver = new MutationObserver((mutations) => {
         if (!mutations.some((m) => m.addedNodes && m.addedNodes.length)) return;
-
-        const now = Date.now();
-        if (lastMergeAt && now - lastMergeAt > MERGE_WINDOW_MS) {
-          // retained for easy tuning
-        }
-
-        for (let i = 0; i < 4; i++) {
-          mergeIfNeeded();
-        }
+        for (let i = 0; i < 4; i++) mergeIfNeeded();
       });
-
-      mergeObserver.observe(document.documentElement, {
-        childList: true,
-        subtree: true
-      });
+      mergeObserver.observe(document.documentElement, { childList:true, subtree:true });
     })();
   </script>
 </body>
