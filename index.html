@@ -424,22 +424,12 @@
     }
     @keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
     .chatHandleBar{
-      position:absolute;top:10px;left:50%;transform:translateX(-50%);
-      width:42px;height:4px;border-radius:99px;
-      background:rgba(0,0,0,.13);z-index:6;
+      position:relative;padding:14px 0 6px;display:flex;align-items:center;justify-content:center;
+      cursor:pointer;flex-shrink:0;
     }
+    .chatHandleBar::after{content:"";width:42px;height:4px;border-radius:99px;background:rgba(0,0,0,.13);display:block;}
     .chatMount{flex:1;min-height:0;position:relative;overflow:hidden;background:#fff;}
     #chatFrame{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;background:#fff;}
-    .chatCloseFab{
-      position:absolute;top:12px;right:12px;
-      width:32px;height:32px;border-radius:50%;
-      border:none;background:rgba(0,0,0,.08);
-      cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.10);
-      z-index:5;display:grid;place-items:center;
-      font-size:17px;line-height:1;color:#666;
-      transition:background .14s;
-    }
-    .chatCloseFab:active{background:rgba(0,0,0,.16);}
   </style>
 </head>
 <body>
@@ -626,7 +616,6 @@
         <div class="chatOverlay" id="chatOverlay">
           <div class="chatSheet">
             <div class="chatHandleBar"></div>
-            <button class="chatCloseFab" id="btnCloseChat" aria-label="Close">✕</button>
             <div class="chatMount">
               <iframe id="chatFrame" title="NatWest Support Chat" src="chat.html"></iframe>
             </div>
@@ -736,7 +725,7 @@
       authCode.addEventListener("keydown",e=>{ if(e.key==="Enter") validateCode(); });
       byId("btnHeaderChat").onclick  = openChat;
       byId("navChat").onclick        = openChat;
-      byId("btnCloseChat").onclick   = closeChat;
+      document.querySelector(".chatHandleBar").onclick = closeChat;
       byId("btnShowPushAgain").onclick = ()=>showPush(DEFAULT_PUSH);
       byId("tabAccounts").onclick  = ()=>setActiveTab("accounts");
       byId("tabPayments").onclick  = ()=>setActiveTab("payments");
