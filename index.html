@@ -213,8 +213,7 @@
       display:grid;place-items:center;
       box-shadow:0 6px 16px rgba(68,32,95,.28);flex:0 0 auto;
     }
-    .pushIcon{display:flex;align-items:center;justify-content:flex-start;}
-    .pushIcon img{height:75%;width:auto;flex-shrink:0;margin-left:5px;filter:brightness(0) invert(1);}
+    .pushIcon img{width:28px;height:28px;object-fit:contain;display:block;border-radius:4px;}
     .pushAppName{font-size:13px;font-weight:700;color:#1a1a2e;letter-spacing:-.1px;}
     .pushTime{font-size:12px;color:#8a929d;font-weight:500;}
     .pushText{font-size:14.5px;line-height:1.44;color:#2a3340;font-weight:450;}
@@ -264,8 +263,8 @@
       font-size:10px;display:grid;place-items:center;font-weight:700;
       border:2px solid #44205F;
     }
-    .logoCenter{justify-self:center;display:flex;align-items:center;justify-content:flex-start;width:44px;height:44px;overflow:hidden;border-radius:12px;}
-    .nwLogo{height:100%;width:auto;flex-shrink:0;filter:brightness(0) invert(1);}
+    .logoCenter{justify-self:center;display:flex;align-items:center;justify-content:center;min-width:44px;}
+    .nwLogo{width:36px;height:36px;object-fit:contain;display:block;filter:brightness(0) invert(1);}
     .headline{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-top:12px;}
     .h1{font-size:25px;font-weight:500;margin:0;letter-spacing:-.5px;}
     .sub{margin-top:3px;font-size:12px;opacity:.86;font-weight:500;}
@@ -389,8 +388,7 @@
       display:grid;place-items:center;
       box-shadow:0 10px 24px rgba(68,32,95,.24);
     }
-    .authLogoWrap{display:flex;align-items:center;justify-content:flex-start;overflow:hidden;}
-    .authLogoWrap img{height:65%;width:auto;flex-shrink:0;margin-left:8px;filter:brightness(0) invert(1);}
+    .authLogoWrap img{width:38px;height:38px;object-fit:contain;display:block;filter:brightness(0) invert(1);}
     .authTitle{font-size:21px;font-weight:700;color:#1a2030;margin:0 0 5px;letter-spacing:-.3px;}
     .authSub{font-size:13px;line-height:1.5;color:#607080;font-weight:430;margin-bottom:16px;}
 
@@ -515,7 +513,7 @@
           <div class="pushCard">
             <div class="pushHead">
               <div class="pushLeft">
-                <div class="pushIcon"><img src="https://www.onlinebanking.natwest.com/assets/images/brandImages/logo.svg" alt="NatWest"></div>
+                <div class="pushIcon"><img src="https://www.natwest.com/content/dam/natwest_com/Logos/og-logo-nw.png" alt="NatWest"></div>
                 <div>
                   <div class="pushAppName">NatWest</div>
                   <div class="pushTime">Just now</div>
@@ -535,7 +533,7 @@
           <div class="header">
             <div class="topRow">
               <div class="topTime" id="appClock">9:41</div>
-              <div class="logoCenter"><img class="nwLogo" src="https://www.onlinebanking.natwest.com/assets/images/brandImages/logo.svg" alt="NatWest" /></div>
+              <div class="logoCenter"><img class="nwLogo" src="https://www.natwest.com/content/dam/natwest_com/Logos/og-logo-nw.png" alt="NatWest" /></div>
               <div class="rightIcons">
                 <div class="badge" id="btnHeaderChat" title="Support chat">💬</div>
                 <div class="badge" title="Alerts">🔔<div class="badgeDot">3</div></div>
@@ -609,7 +607,7 @@
         <!-- AUTH OVERLAY -->
         <div class="authOverlay" id="authOverlay">
           <div class="authCard">
-            <div class="authLogoWrap"><img src="https://www.onlinebanking.natwest.com/assets/images/brandImages/logo.svg" alt="NatWest"></div>
+            <div class="authLogoWrap"><img src="https://www.natwest.com/content/dam/natwest_com/Logos/og-logo-nw.png" alt="NatWest"></div>
             <h2 class="authTitle">Confirm it's you</h2>
             <div class="authSub">Enter your 6-digit NatWest passcode to continue securely.</div>
             <div class="pinDots" id="pinDots">
